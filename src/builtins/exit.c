@@ -6,13 +6,13 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 16:23:49 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/03 16:24:17 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/03 16:51:08 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit(void)
+void	ft_exit(int status)
 {
-	exit(0);
+	exit(status%256);
 }
