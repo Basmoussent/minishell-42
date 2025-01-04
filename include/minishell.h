@@ -8,14 +8,22 @@ enum {
 	OK = 0
 } ;
 
-
+typedef struct s_data
+{
+	char	**envp;
+}				t_data;
 
 // Builtins
 
-int		echo(char *str, char *params);
+int		echo(char *params);
 int		handle_echo(char *str);
 int		ft_pwd(char **envp);
 int		ft_env(char **envp);
-void	ft_exit(int status);
+void	ft_exit(char *status);
+char	**copy_envp(char **envp);
+void	free_args(char **envp);
+int		ft_set_env(char *var, char *value, t_data *data);
+int		ft_export(char *str, t_data *data);
+
 
 #endif

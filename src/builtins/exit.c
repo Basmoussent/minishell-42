@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 16:23:49 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/03 16:51:08 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/04 14:33:26 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit(int status)
+void	ft_exit(char *status)
 {
-	exit(status%256);
+	exit(ft_atol(status));
 }

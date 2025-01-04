@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 15:42:04 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/04 23:11:21 by bdenfir          ###   ########.fr       */
+/*   Created: 2024/12/09 16:27:38 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/01/04 14:27:41 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char *av[], char *envp[])
+long	ft_atol(const char *str)
 {
-    t_data data;
+	long	i;
+	int		min;
+	long	rslt;
 
-    data.envp = copy_envp(envp);
-    printf("Program: %s\n", av[0]);
-    printf("%s\n\n", envp[ac - 1]);
-    ft_export("CA=PI", &data);
-    ft_env(data.envp);
-    free_args(data.envp);
-    return (0);
+	i = 0;
+	min = 1;
+	rslt = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			min = -1;
+		i++;
+	}
+	while (ft_isdigit(str[i]))
+	{
+		rslt *= 10;
+		rslt += str[i++] - '0';
+	}
+	return (rslt * min);
 }

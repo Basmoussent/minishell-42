@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:54:12 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/03 15:24:51 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/04 14:27:53 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n);
 void	free_tab(char **tab);
 int		occur(const char *str, char c);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+long	ft_atol(const char *str);
 
 // OTHER FUNCTIONS //
 char	*ft_substr(char const *s, unsigned int start, size_t len);

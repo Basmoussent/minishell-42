@@ -18,7 +18,12 @@ libft/libft.a:
 	make -C libft
 
 clean:
-	make -C libft clean
-	rm -rf build $(EXEC)
+	make -C libft fclean
+	rm -rf build  # Remove only object files (stored in build/)
 
-.PHONY: all clean
+fclean: clean
+	rm -f $(EXEC)  # Remove the executable in addition to object files
+
+re: fclean all
+
+.PHONY: all clean fclean re
