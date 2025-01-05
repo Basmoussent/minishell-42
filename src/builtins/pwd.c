@@ -14,7 +14,7 @@
 
 int	ft_pwd(char **envp)
 {
-	int		i;
+	int	i;
 
 	if (!envp || !*envp)
 		return (KO);
@@ -23,5 +23,5 @@ int	ft_pwd(char **envp)
 		i++;
 	printf("%s\n", ft_strchr(envp[i], '/'));
 	return (OK);
-	
 }
+

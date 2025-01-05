@@ -12,14 +12,14 @@
 
 #include "libft.h"
 
-long	ft_atol(const char *str)
+long ft_atol(const char *str)
 {
-	long	i;
-	int		min;
-	long	rslt;
+	long i;
+	int	 min;
+	long rslt;
 
-	i = 0;
-	min = 1;
+	i	 = 0;
+	min	 = 1;
 	rslt = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;

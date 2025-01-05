@@ -16,7 +16,7 @@
 putendl_fd will just write the content of the s memory area
 and add a line return at the end.
 */
-void	ft_putendl_fd(char *s, int fd)
+void ft_putendl_fd(char *s, int fd)
 {
 	if (s != NULL)
 	{

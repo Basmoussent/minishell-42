@@ -23,12 +23,12 @@ parameters.
 return a pointer to the allocated area.
 */
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void *ft_calloc(size_t nmemb, size_t size)
 {
-	void		*new;
-	size_t		i;
+	void *new;
+	size_t i;
 
-	new = (void *) malloc(size * nmemb);
+	new = (void *)malloc(size * nmemb);
 	if (!new)
 		return (NULL);
 	i = 0;

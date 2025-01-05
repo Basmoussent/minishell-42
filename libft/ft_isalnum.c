@@ -15,10 +15,10 @@
 /*
 isalnum verify if a character is alpha-numeric,
 which means if he is either in the alphabet or digits.
-	
+
 */
 
-int	ft_isalnum(int str)
+int ft_isalnum(int str)
 {
 	if (ft_isalpha(str) || ft_isdigit(str))
 		return (1);

@@ -14,7 +14,7 @@
 isdigit check if a character belong to the digits or not
 */
 
-int	ft_isdigit(int str)
+int ft_isdigit(int str)
 {
 	if (str >= '0' && str <= '9')
 		return (2048);

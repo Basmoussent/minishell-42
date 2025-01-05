@@ -18,13 +18,13 @@ to the standard output (1) we will write to a specific
 file descriptor
 */
 
-void	ft_putnbr_fd(int nb, int fd)
+void ft_putnbr_fd(int nb, int fd)
 {
-	unsigned int	n;
-	unsigned char	c;
+	unsigned int  n;
+	unsigned char c;
 
 	if (fd == -1)
-		return ;
+		return;
 	if (nb < 0)
 	{
 		write(fd, "-", 1);

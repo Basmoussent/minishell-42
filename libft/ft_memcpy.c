@@ -18,17 +18,17 @@ the memcpy funciton will copy the content related to the
 it will only copy the first n bytes of src.
 */
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void *ft_memcpy(void *dest, const void *src, size_t n)
 {
-	unsigned long int	i;
-	char				*strd;
-	char				*srcd;
+	unsigned long int i;
+	char			 *strd;
+	char			 *srcd;
 
 	if (!dest && !src)
 		return (NULL);
 	strd = (char *)dest;
 	srcd = (char *)src;
-	i = -1;
+	i	 = -1;
 	while (++i < n)
 		strd[i] = srcd[i];
 	return (dest);

@@ -17,15 +17,15 @@ substr will extract a substring starting from start and
 at max of lenght len, from the s string.
 */
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char *ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*substr;
+	char *substr;
 
 	if (!ft_strlen(s) || ft_strlen(s) < start)
 		return (ft_strdup(""));
 	if (ft_strlen(s) - start < len)
 		len = ft_strlen(s) - start;
-	substr = malloc (sizeof(char) * (len + 1));
+	substr = malloc(sizeof(char) * (len + 1));
 	if (!substr)
 		return (0);
 	ft_strlcpy(substr, &s[start], len + 1);

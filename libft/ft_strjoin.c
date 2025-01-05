@@ -18,10 +18,10 @@ strjoin will converge s1 and s2 together.
 ex ft_strjoin("s1", "s2") -> "s1ss2"
 */
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char *ft_strjoin(char const *s1, char const *s2)
 {
-	char			*ptr;
-	unsigned int	i;
+	char		 *ptr;
+	unsigned int i;
 
 	i = 0;
 	if (!s1)

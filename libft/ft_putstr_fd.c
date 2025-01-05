@@ -15,7 +15,7 @@
 /*
 putstr_fd will write a string to a specific file descriptor
 */
-void	ft_putstr_fd(char *s, int fd)
+void ft_putstr_fd(char *s, int fd)
 {
 	if (s && fd != -1)
 		write(fd, s, ft_strlen(s));

@@ -18,10 +18,10 @@ the f function and return the result
 of the concatenation of every result,
 */
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char *ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char	*ret_str;
-	int		i;
+	char *ret_str;
+	int	  i;
 
 	if (!s || !f)
 		return (NULL);

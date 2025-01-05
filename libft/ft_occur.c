@@ -10,15 +10,15 @@
 /*					*/
 /* ************************************************************************** */
 
-int	occur(const char *str, char c)
+int occur(const char *str, char c)
 {
-	int		count;
-	int		i;
+	int count;
+	int i;
 
 	if (!str)
 		return (0);
 	count = 0;
-	i = 0;
+	i	  = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == c)

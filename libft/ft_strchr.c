@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h" 
+#include "libft.h"
 
 /*
 strchr will search for the first occurence of c in the s memory area
@@ -18,9 +18,9 @@ and return a pointer to it, Null will be returned if no occurence
 is found.
 */
 
-char	*ft_strchr(const char *s, int c)
+char *ft_strchr(const char *s, int c)
 {
-	int		i;
+	int i;
 
 	i = 0;
 	if (!s)
@@ -28,7 +28,7 @@ char	*ft_strchr(const char *s, int c)
 	c = (unsigned char)c;
 	while (s[i])
 	{
-		if (s[i] == (char) c)
+		if (s[i] == (char)c)
 			return ((char *)(s + i));
 		i++;
 	}

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h" 
+#include "libft.h"
 
 /*
 strrchr will return the last occurence of a character
@@ -18,16 +18,16 @@ in a string.
 if nothing is found, NULL is returned
 */
 
-char	*ft_strrchr(const char *s, int c)
+char *ft_strrchr(const char *s, int c)
 {
-	int		i;
+	int i;
 
 	i = ft_strlen(s);
 	if (!c)
 		return ((char *)(s + i));
 	while (i != -1)
 	{
-		if (s[i] == (char) c)
+		if (s[i] == (char)c)
 			return ((char *)(s + i));
 		i--;
 	}

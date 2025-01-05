@@ -26,7 +26,7 @@ linked to any file so we can specifyt it in the fd parameter of
 the write function adn write to it.
 */
 
-void	ft_putchar_fd(char c, int fd)
+void ft_putchar_fd(char c, int fd)
 {
 	if (ft_isascii(c) && fd != -1)
 		write(fd, &c, 1);

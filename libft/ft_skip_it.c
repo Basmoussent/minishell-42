@@ -12,14 +12,14 @@
 
 #include "libft.h"
 
-char	*ft_skipt_it(char *str, int c)
+char *ft_skipt_it(char *str, int c)
 {
-	int	i;
-	int	len;
+	int i;
+	int len;
 
 	if (!str)
 		return (NULL);
-	i = 0;
+	i	= 0;
 	len = ft_strlen(str);
 	while (i <= len && str[i] != c)
 		i++;

@@ -13,15 +13,15 @@
 #include "libft.h"
 
 /*
-memchr is a function that will search for the first occurence c, starting 
+memchr is a function that will search for the first occurence c, starting
 from the adresse pointed by s and searching through the n next bytes.
 
 the funtion will return a pointer to the firtst occurence.
 */
 
-void	*ft_memchr(const void *s, int c, size_t n)
+void *ft_memchr(const void *s, int c, size_t n)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (i < n)
@@ -34,8 +34,8 @@ void	*ft_memchr(const void *s, int c, size_t n)
 }
 
 /*
-#include <stdio.h>
 #include <stddef.h>
+#include <stdio.h>
 int main(){
 
 	char	str[] = "Eu vou encontrar um ponto . Ca esta ele!";

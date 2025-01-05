@@ -14,14 +14,14 @@
 
 /*
 strnstr will return a pointer to the first occurence
-of the little string inside the big string, only the first 
+of the little string inside the big string, only the first
 len character are searched in.
 */
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char *ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	i;
-	size_t	j;
+	size_t i;
+	size_t j;
 
 	i = 0;
 	if (!ft_strlen(little))
@@ -30,7 +30,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	{
 		j = 0;
 		while (i + j < len && little[j] && big[i + j]
-			&& big[i + j] == little[j])
+			   && big[i + j] == little[j])
 			j++;
 		if (!little[j])
 			return ((char *)&big[i]);

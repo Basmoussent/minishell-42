@@ -27,6 +27,6 @@ fclean: clean
 re: fclean all
 
 norm:
-	sh ./utils/norm_it.sh
+	@bash ./utils/norm_it.sh
 
 .PHONY: all clean fclean re

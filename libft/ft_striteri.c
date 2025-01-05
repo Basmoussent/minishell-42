@@ -16,9 +16,9 @@
 striteri will pass every character of s to the f function.
 */
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+void ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (s[i])

@@ -24,14 +24,14 @@ ex ; -42born2code -> -42
 ex : ThisWillReturn0 -> 0
 */
 
-int	ft_atoi(const char *str)
+int ft_atoi(const char *str)
 {
-	int	i;
-	int	min;
-	int	rslt;
+	int i;
+	int min;
+	int rslt;
 
-	i = 0;
-	min = 1;
+	i	 = 0;
+	min	 = 1;
 	rslt = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;

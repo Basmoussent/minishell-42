@@ -13,19 +13,19 @@
 #include "libft.h"
 
 /*
-bzero is a function that will set to 0 the next n_bytes 
+bzero is a function that will set to 0 the next n_bytes
 starting from the adresse passed as a parameter.
 
 ex : "ThisIsARandomMemoryAdress"
 ex : 0000000000000000000000000
 
-(it wont be display as shown in the example but 0 representes empty 
+(it wont be display as shown in the example but 0 representes empty
 memory)
 */
 
-void	ft_bzero(void *s, size_t n)
+void ft_bzero(void *s, size_t n)
 {
-	unsigned char	*p;
+	unsigned char *p;
 
 	p = s;
 	while (n)

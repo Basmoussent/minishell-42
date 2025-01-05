@@ -16,7 +16,7 @@ isascii checks if a character belongs to the ascii table
 note : (extended ascii table isn't included)
 */
 
-int	ft_isascii(int str)
+int ft_isascii(int str)
 {
 	if (str >= 0 && str <= 127)
 		return (1);

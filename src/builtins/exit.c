@@ -16,3 +16,4 @@ void	ft_exit(char *status)
 {
 	exit(ft_atol(status));
 }
+

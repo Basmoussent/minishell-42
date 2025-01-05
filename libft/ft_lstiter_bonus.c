@@ -17,13 +17,13 @@ go to the list 'lst' and apply the function
 'f' to the content of each element.
 */
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+void ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	t_list	*node;
+	t_list *node;
 
 	node = lst;
 	if (!lst || !f)
-		return ;
+		return;
 	while (node->next != NULL)
 	{
 		f(node->content);

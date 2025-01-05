@@ -14,16 +14,16 @@
 
 /*
 The memset funciton is used to set the  first n_bytes of the s
-memory area, to a constant (c) byte.  
+memory area, to a constant (c) byte.
 */
 
-void	*ft_memset(void *s, int c, size_t n)
+void *ft_memset(void *s, int c, size_t n)
 {
-	unsigned long int	i;
-	char				*str;
+	unsigned long int i;
+	char			 *str;
 
 	str = (char *)s;
-	i = -1;
+	i	= -1;
 	while (++i < n)
 		str[i] = c;
 	return (s);

@@ -14,7 +14,7 @@
 isalpha is a function that checks if a character is in the alphabet or not.
 */
 
-int	ft_isalpha(int c)
+int ft_isalpha(int c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
 		return (1);

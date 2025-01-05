@@ -6,21 +6,16 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 15:42:04 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/04 23:11:21 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/05 20:13:29 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int ac, char *av[], char *envp[])
+int	main(int ac, char *av[])
 {
-    t_data data;
-
-    data.envp = copy_envp(envp);
-    printf("Program: %s\n", av[0]);
-    printf("%s\n\n", envp[ac - 1]);
-    ft_export("CA=PI", &data);
-    ft_env(data.envp);
-    free_args(data.envp);
-    return (0);
+	printf("Program: %s\n", av[ac - 1]);
+	handle_echo("popo");
+	return (0);
 }
+
