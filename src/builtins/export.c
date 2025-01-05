@@ -37,13 +37,16 @@ char	**copy_envp(char **envp)
 		}
 		i++;
 	}
-	env_copy[i] = NULL;
+	env_copy[i
+
+	] = NULL;
 	return (env_copy);
 }
 
 void	free_args(char **envp)
 {
 	int i = 0;
+	char **test_variable = ft_split(envp, '=');
 	while (envp[i])
 		free(envp[i++]);
 	free(envp);

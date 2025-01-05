@@ -113,82 +113,82 @@ def add_newline_between_functions(lines):
 	return processed_lines
 
 def clean_empty_lines_in_function_body(lines, file_name):
-    """
-    Ensures there is exactly one empty line after variable declarations
-    and removes any other unnecessary empty lines within function bodies.
-    Additionally, removes lines flagged by norminette as "EMPTY_LINE_FUNCTION".
-    """
-    lines_to_remove = set()
+	"""
+	Ensures there is exactly one empty line after variable declarations
+	and removes any other unnecessary empty lines within function bodies.
+	Additionally, removes lines flagged by norminette as "EMPTY_LINE_FUNCTION".
+	"""
+	lines_to_remove = set()
 
-    # Run norminette and capture the output
-    try:
-        result = subprocess.run(
-            ["norminette", file_name],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        # Parse the output to find lines with "EMPTY_LINE_FUNCTION" errors
-        for line in result.stdout.splitlines():
-            if "EMPTY_LINE_FUNCTION" in line:
-                match = re.search(r'line:\s*(\d+)', line)
-                if match:
-                    lines_to_remove.add(int(match.group(1)))
-    except Exception as e:
-        print(f"Error running norminette: {e}")
-        # Continue processing even if norminette fails
-        lines_to_remove = set()
+	# Run norminette and capture the output
+	try:
+		result = subprocess.run(
+			["norminette", file_name],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE,
+			text=True
+		)
+		# Parse the output to find lines with "EMPTY_LINE_FUNCTION" errors
+		for line in result.stdout.splitlines():
+			if "EMPTY_LINE_FUNCTION" in line:
+				match = re.search(r'line:\s*(\d+)', line)
+				if match:
+					lines_to_remove.add(int(match.group(1)))
+	except Exception as e:
+		print(f"Error running norminette: {e}")
+		# Continue processing even if norminette fails
+		lines_to_remove = set()
 
-    processed_lines = []
-    in_function = False
-    last_line_was_declaration = False
-    consecutive_empty_lines = 0
+	processed_lines = []
+	in_function = False
+	last_line_was_declaration = False
+	consecutive_empty_lines = 0
 
-    for i, line in enumerate(lines, start=1):
-        stripped_line = line.strip()
+	for i, line in enumerate(lines, start=1):
+		stripped_line = line.strip()
 
-        # Skip lines flagged by norminette
-        if i in lines_to_remove:
-            continue
+		# Skip lines flagged by norminette
+		if i in lines_to_remove:
+			continue
 
-        # Check if we are entering a function
-        if re.match(r'^\w.*\(', stripped_line):
-            in_function = True
+		# Check if we are entering a function
+		if re.match(r'^\w.*\(', stripped_line):
+			in_function = True
 
-        # Check if we are exiting a function
-        if in_function and stripped_line == '}':
-            in_function = False
+		# Check if we are exiting a function
+		if in_function and stripped_line == '}':
+			in_function = False
 
-        # If inside a function, handle empty lines
-        if in_function:
-            if stripped_line == '':
-                consecutive_empty_lines += 1
-            else:
-                consecutive_empty_lines = 0
+		# If inside a function, handle empty lines
+		if in_function:
+			if stripped_line == '':
+				consecutive_empty_lines += 1
+			else:
+				consecutive_empty_lines = 0
 
-            if consecutive_empty_lines > 1:
-                continue
+			if consecutive_empty_lines > 1:
+				continue
 
-            if consecutive_empty_lines == 1 and not last_line_was_declaration:
-                continue
+			if consecutive_empty_lines == 1 and not last_line_was_declaration:
+				continue
 
-            # Check if the current line is a variable declaration
-            if re.match(r'^\s*\w+(\s+\**\w+)+\s*;', stripped_line):
-                last_line_was_declaration = True
-            else:
-                last_line_was_declaration = False
+			# Check if the current line is a variable declaration
+			if re.match(r'^\s*\w+(\s+\**\w+)+\s*;', stripped_line):
+				last_line_was_declaration = True
+			else:
+				last_line_was_declaration = False
 
-        processed_lines.append(line)
+		processed_lines.append(line)
 
-    # Ensure the last line is a newline if the file ends with code
-    if processed_lines and processed_lines[-1].strip() != '':
-        processed_lines.append('\n')
+	# Ensure the last line is a newline if the file ends with code
+	if processed_lines and processed_lines[-1].strip() != '':
+		processed_lines.append('\n')
 
-    # Write the processed lines back to the file
-    with open(file_name, 'w') as file:
-        file.writelines(processed_lines)
+	# Write the processed lines back to the file
+	with open(file_name, 'w') as file:
+		file.writelines(processed_lines)
 
-    return processed_lines
+	return processed_lines
 
 def align_variable_declarations(lines):
 	"""
@@ -224,6 +224,72 @@ def align_variable_declarations(lines):
 
 	return aligned_lines
 
+def separate_delcaration_assignation(lines, file_name):
+	patterns = [
+		r"^\s*(\w+\s+\w+\s*=\s*.+;)",
+		r"^\s*(\w+\s+\*\w+\s*=\s*.+;)",
+		r"^\s*(\w+\s+\*\*\w+\s*=\s*.+;)",
+		r"^\s*(\w+\s+\*\*\*\w+\s*=\s*.+;)"
+		r"^\s*(\w+\s+\*\*\*\*\w+\s*=\s*.+;)"
+		r"^\s*(\w+\s+\*\*\*\*\*\w+\s*=\s*.+;)"
+	]
+	# yes it's horrible and what ?
+
+	dict_variable = {}
+	processed_lines = []
+
+	for line in lines:
+		original_line = line.strip()
+		for pattern in patterns:
+			match = re.match(pattern, original_line)
+			if match:
+				parts = original_line.split('=', 1)
+				decl = parts[0].strip() + ';'
+				name = decl.split()[-1].strip(';').lstrip('*')
+				assignation = f'\t{name} = {parts[1].strip()}'
+				dict_variable[decl] = assignation
+				line = f'\t{decl}\n'
+				break
+
+		processed_lines.append(line)
+	
+	# Append assignments after the last declaration
+	for i, line in enumerate(processed_lines):
+		stripped_line = line.strip()
+		if stripped_line in dict_variable and i + 1 < len(processed_lines) and processed_lines[i + 1].strip() not in dict_variable:
+			for decl, assignation in dict_variable.items():
+				print(1)
+				processed_lines.insert(i + 1, f"{assignation}\n")
+			break
+
+	# Write the processed lines back to the file or print them
+	for line in processed_lines:
+		print(line, end='')
+
+	return processed_lines
+
+def add_newline_after_declarations(lines):
+    """
+    Adds a newline after variable declarations if there isn't one already.
+    """
+    processed_lines = []
+    declaration_pattern = re.compile(r'^\s*\w+(\s+\**\w+)+\s*;')
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        processed_lines.append(line)
+
+        # Check if the current line is a variable declaration
+        if declaration_pattern.match(line.strip()):
+            # Check if the next line is not empty
+            if i + 1 < len(lines) and lines[i + 1].strip() != '':
+                processed_lines.append('\n')
+
+        i += 1
+
+    return processed_lines
+
 def process_lines(lines, file_path):
 	processed_lines = []
 	for line in lines:
@@ -242,9 +308,12 @@ def process_lines(lines, file_path):
 	if file_path.endswith('.h'):
 		processed_lines = align_prototypes(processed_lines)
 	if file_path.endswith('.c'):
+		processed_lines = separate_delcaration_assignation(processed_lines, file_path)
 		processed_lines = add_newline_between_functions(processed_lines)
 		processed_lines = align_variable_declarations(processed_lines)
 		processed_lines = clean_empty_lines_in_function_body(processed_lines, file_path)
+		processed_lines = add_newline_after_declarations(processed_lines)
+		
 	return processed_lines
 
 def process_code_in_place(file_path):
@@ -252,10 +321,24 @@ def process_code_in_place(file_path):
 	processed_lines = process_lines(lines, file_path)
 	write_file(file_path, processed_lines)
 
+def test_regex_on_file(pattern, file_path):
+	
+	# Open the file and read lines
+	with open(file_path, 'r') as file:
+		lines = file.readlines()
+
+	# Apply the regex to each line and print matches
+	for line in lines:
+		match = re.match(pattern, line)
+		if match:
+			print(f"Matched line: {line.strip()}")
+
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
 		print("Usage: python format_code.py <file_path>")
 		sys.exit(1)
-
+	with open(sys.argv[1], 'r') as file:
+		lines = file.readlines()
+	
 	file_path = sys.argv[1]
 	process_code_in_place(file_path)
