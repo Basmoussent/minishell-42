@@ -105,28 +105,43 @@ int	ft_export(char *str, t_data *data)
 
 int	ft_set_env(char *var, char *value, t_data *data)
 {
-	int		i;
+	size_t		i;
 	char	*new_entry;
+	char	**new_envp;
+	size_t	env_len;
 
-	i = 0;
 	if (!var || !value || !data || !data->envp)
 		return (-1);
 
 	new_entry = ft_strjoin(ft_strjoin(var, "="), value);
 	if (!new_entry)
 		return (-1);
-	while (data->envp[i])
+	for (i = 0; data->envp[i]; i++)
 	{
-		if (ft_strncmp(data->envp[i], var, ft_strlen(var)) == 0 && data->envp[i][ft_strlen(var)] == '=')
+		if (ft_strncmp(data->envp[i], var, ft_strlen(var)) == 0 &&
+			data->envp[i][ft_strlen(var)] == '=')
 		{
 			free(data->envp[i]);
 			data->envp[i] = new_entry;
 			return (0);
 		}
-		i++;
 	}
-	data->envp = ft_realloc(data->envp, sizeof(data->envp), sizeof(new_entry));
-	if (!data->envp)
+	env_len = 0;
+	while (data->envp[env_len])
+		env_len++;
+
+	new_envp = malloc((env_len + 2) * sizeof(char *));
+	if (!new_envp)
 		return (free(new_entry), -1);
+
+	for (i = 0; i < env_len; i++)
+		new_envp[i] = data->envp[i];
+
+	new_envp[env_len] = new_entry;
+	new_envp[env_len + 1] = NULL;
+
+	free(data->envp);
+
+	data->envp = new_envp;
 	return (0);
 }

@@ -22,8 +22,11 @@ clean:
 	rm -rf build  # Remove only object files (stored in build/)
 
 fclean: clean
-	rm -f $(EXEC)  # Remove the executable in addition to object files
+	rm -f $(EXEC)
 
 re: fclean all
+
+norm:
+	sh ./utils/norm_it.sh
 
 .PHONY: all clean fclean re
