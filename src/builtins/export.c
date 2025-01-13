@@ -45,8 +45,9 @@ char	**copy_envp(char **envp)
 
 void	free_args(char **envp)
 {
-	int i = 0;
-	char **test_variable = ft_split(envp, '=');
+	int i;
+	
+	i = 0;
 	while (envp[i])
 		free(envp[i++]);
 	free(envp);

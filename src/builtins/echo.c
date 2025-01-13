@@ -6,29 +6,33 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 14:56:20 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/05 20:19:56 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/12 20:29:26 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_echo(char *str)
+int	echo(char *str)
 {
-	char	*params;
+    char	*params;
+    int		newline;
 
-	params = ft_skipt_it(str, ' ');
-	while (params && ft_strncmp(params, "-n ", 3) == 0)
-		params = ft_skipt_it(params + 2, ' ');
-	echo(params);
-	return (OK);
+    params = ft_skipt_it(str, ' ');
+    newline = 1;
+    while (params && ft_strncmp(params, "-n", 2) == 0 && (params[2] == ' ' || params[2] == '\0'))
+    {
+        newline = 0;
+        params = ft_skipt_it(params + 2, ' ');
+    }
+    handle_echo(params, newline);
+    return (OK);
 }
 
-int	echo(char *params)
+int	handle_echo(char *params, int newline)
 {
-	if (!params)
-		printf("%s\n", ft_skipt_it(params, ' '));
-	else
-		printf("%s", params);
-	return (OK);
+    if (params)
+        printf("%s", params);
+    if (newline)
+        printf("\n");
+    return (OK);
 }
-

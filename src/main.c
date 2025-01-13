@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 15:42:04 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/05 20:13:29 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/12 20:35:05 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int ac, char *av[])
 {
 	printf("Program: %s\n", av[ac - 1]);
-	handle_echo("popo");
+	echo("echo popo");
 	return (0);
 }
 

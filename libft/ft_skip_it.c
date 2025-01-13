@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_skip_it.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 15:18:48 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/03 15:24:46 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/12 20:23:48 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ char *ft_skipt_it(char *str, int c)
 		i++;
 	while (i <= len && str[i] == c)
 		i++;
+	if (str[i] == '\0')
+		return (str);
 	return (&str[i]);
 }

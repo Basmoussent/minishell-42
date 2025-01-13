@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/05 19:25:53 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/12 20:26:26 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ typedef struct s_data
 
 // Builtins
 
-int		echo(char *params);
-int		handle_echo(char *str);
+int		echo(char *str);
+int	handle_echo(char *params, int newline);	
 int		ft_pwd(char **envp);
 int		ft_env(char **envp);
 void	ft_exit(char *status);
