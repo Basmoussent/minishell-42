@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/14 22:39:59 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/14 22:47:49 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ enum
 {
 	KO = 1,
 	OK = 0
+};
+
+enum	s_token {
+	NONE = 0,
+	PIPE = 1,
+	TRUNCATE = 2,
+	APPEND = 3,
+	REDIRECT_INPUT = 4,
+	HEREDOC = 5
 };
 
 typedef struct s_data
