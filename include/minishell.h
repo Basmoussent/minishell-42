@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/12 20:26:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/14 22:39:59 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ typedef struct s_data
 
 // Builtins
 
-int		echo(char *str);
-int	handle_echo(char *params, int newline);	
+int		ft_echo(char *str);
+int		handle_echo(char *params, int newline);	
 int		ft_pwd(char **envp);
 int		ft_env(char **envp);
-void	ft_exit(char *status);
+int		ft_exit(char *input);
+
+
 char	**copy_envp(char **envp);
 void	free_args(char **envp);
 int		ft_set_env(char *var, char *value, t_data *data);

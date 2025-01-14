@@ -3,7 +3,6 @@ import sys
 import os
 import subprocess
 
-
 def read_file(file_path):
 	with open(file_path, 'r') as file:
 		return file.readlines()
@@ -197,7 +196,7 @@ def align_variable_declarations(lines):
 	# Collect all variable declarations
 	declarations = []
 	for line in lines:
-		match = re.match(r'^\s*(\w+(\s+\**\w+)*\s+)(\w+)(\s*;)', line)
+		match = re.match(r'^\s*(\w+(\s+\*{0,5}\w+)*\s+)(\w+)(\s*;)', line)
 		if match:
 			declarations.append(line)
 
@@ -205,12 +204,12 @@ def align_variable_declarations(lines):
 		return lines
 
 	# Calculate the maximum length of the type part
-	max_type_length = max(len(re.match(r'^\s*(\w+(\s+\**\w+)*\s+)', line).group(1)) for line in declarations)
+	max_type_length = max(len(re.match(r'^\s*(\w+(\s+\*{0,5}\w+)*\s+)', line).group(1)) for line in declarations)
 
 	# Align the declarations
 	aligned_lines = []
 	for line in lines:
-		match = re.match(r'^\s*(\w+(\s+\**\w+)*\s+)(\w+)(\s*;)', line)
+		match = re.match(r'^\s*(\w+(\s+\*{0,5}\w+)*\s+)(\w+)(\s*;)', line)
 		if match:
 			type_part = match.group(1)
 			variable_name = match.group(3)
@@ -224,47 +223,45 @@ def align_variable_declarations(lines):
 
 	return aligned_lines
 
-def separate_delcaration_assignation(lines, file_name):
-	patterns = [
-		r"^\s*(\w+\s+\w+\s*=\s*.+;)",
-		r"^\s*(\w+\s+\*\w+\s*=\s*.+;)",
-		r"^\s*(\w+\s+\*\*\w+\s*=\s*.+;)",
-		r"^\s*(\w+\s+\*\*\*\w+\s*=\s*.+;)"
-		r"^\s*(\w+\s+\*\*\*\*\w+\s*=\s*.+;)"
-		r"^\s*(\w+\s+\*\*\*\*\*\w+\s*=\s*.+;)"
-	]
-	# yes it's horrible and what ?
+def separate_declaration_assignation(lines):
+	"""
+	Separate variable declaration and assignment to different lines
+	"""
 
 	dict_variable = {}
 	processed_lines = []
 
 	for line in lines:
 		original_line = line.strip()
-		for pattern in patterns:
-			match = re.match(pattern, original_line)
-			if match:
-				parts = original_line.split('=', 1)
-				decl = parts[0].strip() + ';'
-				name = decl.split()[-1].strip(';').lstrip('*')
-				assignation = f'\t{name} = {parts[1].strip()}'
-				dict_variable[decl] = assignation
-				line = f'\t{decl}\n'
-				break
-
+		match = re.match(r"^\s*(\w+\s+\*{0,5}\w+\s*=\s*.+;)", original_line)
+		if match:
+			print("found a match :", match)
+			parts = original_line.split('=', 1)
+			decl = parts[0].strip() + ';'
+			name = decl.split()[-1].strip(';').lstrip('*')
+			assignation = f'\t{name} = {parts[1].strip()}'
+			dict_variable[decl] = assignation
+			line = f"\t{decl}\n"
+			break
 		processed_lines.append(line)
-	
+
+	if dict_variable:
+		edit = True
+
 	# Append assignments after the last declaration
 	for i, line in enumerate(processed_lines):
 		stripped_line = line.strip()
 		if stripped_line in dict_variable and i + 1 < len(processed_lines) and processed_lines[i + 1].strip() not in dict_variable:
 			for decl, assignation in dict_variable.items():
-				print(1)
 				processed_lines.insert(i + 1, f"{assignation}\n")
+			if edit:
+				processed_lines.insert(i + 1, "\n")
+				edit = False
 			break
 
-	# Write the processed lines back to the file or print them
-	for line in processed_lines:
-		print(line, end='')
+	# Align declarations with tabs
+	for i, line in enumerate(processed_lines):
+		processed_lines[i] = re.sub(r'(\b\w+\b)\s+(\*?\s*\*?\s*\*?\s*\w+\s*;)', r'\1\t\2', line)
 
 	return processed_lines
 
@@ -308,12 +305,11 @@ def process_lines(lines, file_path):
 	if file_path.endswith('.h'):
 		processed_lines = align_prototypes(processed_lines)
 	if file_path.endswith('.c'):
-		processed_lines = separate_delcaration_assignation(processed_lines, file_path)
 		processed_lines = add_newline_between_functions(processed_lines)
-		processed_lines = align_variable_declarations(processed_lines)
 		processed_lines = clean_empty_lines_in_function_body(processed_lines, file_path)
 		processed_lines = add_newline_after_declarations(processed_lines)
-		
+		processed_lines = separate_declaration_assignation(processed_lines)
+		#processed_lines = align_variable_declarations(processed_lines)
 	return processed_lines
 
 def process_code_in_place(file_path):

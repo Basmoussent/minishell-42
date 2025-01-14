@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 14:56:20 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/12 20:29:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:18:33 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	echo(char *str)
+int	ft_echo(char *str)
 {
     char	*params;
     int		newline;
