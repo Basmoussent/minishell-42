@@ -1,38 +1,54 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 14:56:20 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/14 19:18:33 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*                                      */
+/*                            :::     ::::::::   */
+/*   echo.c            :+:   :+:    :+:   */
+/*                          +:+ +:+       +:+    */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+    */
+/*                        +#+#+#+#+#+   +#+     */
+/*   Created: 2025/01/03 14:56:20 by bdenfir           #+#  #+#          */
+/*   Updated: 2025/01/14 19:18:33 by bdenfir          ###   ########.fr    */
+/*                                      */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char *str)
-{
-    char	*params;
-    int		newline;
+void ft_echo(char *input) {
+    bool in_single_quotes = false;
+    bool in_double_quotes = false;
+    char buffer[20000];
+    int buffer_index = 0;
 
-    params = ft_skipt_it(str, ' ');
-    newline = 1;
-    while (params && ft_strncmp(params, "-n", 2) == 0 && (params[2] == ' ' || params[2] == '\0'))
+    input = ft_skipt_it(input, ' ');
+    for (int i = 0; input[i] != '\0'; i++)
     {
-        newline = 0;
-        params = ft_skipt_it(params + 2, ' ');
+        char ch = input[i];
+        if (ch == '\'' && !in_double_quotes)
+        {
+            in_single_quotes = !in_single_quotes;
+            continue;
+        }
+        if (ch == '"' && !in_single_quotes)
+        {
+            in_double_quotes = !in_double_quotes;
+            continue;
+        }
+        if (in_single_quotes || in_double_quotes || (ch != '\'' && ch != '"')) {
+            buffer[buffer_index++] = ch;
+        }
     }
-    handle_echo(params, newline);
-    return (OK);
+    buffer[buffer_index] = '\0';
+    printf("%s\n", buffer);
 }
-
-int	handle_echo(char *params, int newline)
-{
-    if (params)
-        printf("%s", params);
-    if (newline)
-        printf("\n");
-    return (OK);
+//
+// Implementer le -n
+//              faire en sorte que echo -n -n -n -n == echo -n
+// gerer la derniere new line
+// couper en sous fonctions
+//
+//
+//
+//
+int main() {
+    ft_echo("echo \"'test'\" \"123\"");
+    return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/14 22:47:49 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:12:03 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <stdbool.h>
+
+#define COLOR_RESET   "\033[0m"
+#define COLOR_GREEN   "\033[32m"
+#define COLOR_RED     "\033[31m"
+#define COLOR_YELLOW  "\033[33m"
+#define COLOR_CYAN    "\033[36m"
 
 enum
 {
@@ -37,7 +50,7 @@ typedef struct s_data
 
 // Builtins
 
-int		ft_echo(char *str);
+void		ft_echo(char *str);
 int		handle_echo(char *params, int newline);	
 int		ft_pwd(char **envp);
 int		ft_env(char **envp);
@@ -48,5 +61,12 @@ char	**copy_envp(char **envp);
 void	free_args(char **envp);
 int		ft_set_env(char *var, char *value, t_data *data);
 int		ft_export(char *str, t_data *data);
+
+
+
+//TEST SUITE
+
+int ft_exit_test(void);
+int ft_echo_test(void);
 
 #endif

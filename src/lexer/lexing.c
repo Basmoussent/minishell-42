@@ -12,18 +12,18 @@
 
 #include "minishell.h"
 
-enum s_token lexer(char *input)
-{
-	if (input == "|")
-		return PIPE;
-	if (input == ">")
-		return TRUNCATE;
-	if (input == ">>")
-		return APPEND;
-	if (input == "<")
-		return REDIRECT_INPUT;
-	if (input == "<<")
-		return HEREDOC;
-    return NONE;
-}
+// enum s_token lexer(char *input)
+// {
+// 	if (*input == "|")
+// 		return PIPE;
+// 	if (*input == ">")
+// 		return TRUNCATE;
+// 	if (*input == ">>")
+// 		return APPEND;
+// 	if (*input == "<")
+// 		return REDIRECT_INPUT;
+// 	if (*input == "<<")
+// 		return HEREDOC;
+//     return NONE;
+// }
 
