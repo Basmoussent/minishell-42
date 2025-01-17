@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/01/17 17:17:03 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/17 18:32:19 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@
 //     return NONE;
 // }
 
-char    *lexing(char *input)
+char	*lexing(char *input)
 {
-    int		count;
-    char	**lexed_input;
+	int		count;
+	char	**lexed_input;
 
 	input = trim_input(input);
-    count = count_tokens(input);
-    if (!count)
-        return (NULL);
-    lexed_input = split_whitespace(input);
+	count = count_tokens(input);
+	if (!count)
+		return (NULL);
+	lexed_input = split_whitespace(input);
 }

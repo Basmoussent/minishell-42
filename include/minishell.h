@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/17 18:11:33 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/17 18:40:42 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,16 @@ int		ft_set_env(char *var, char *value, t_data *data);
 int		ft_export(char *str, t_data *data);
 
 // LEXER
+int 	is_space(char c);
+char	*is_quote(char *end);
+size_t	ft_strnlen(const char *s, size_t maxlen);
+char	*ft_strndup(const char *s, size_t n);
+int		free_tokens(char **tokens);
+
 char 	**split_whitespace(char *input);
 int		count_tokens(char *input);
 char    *lexing(char *input);
 char	*trim_input(char *input);
-int 	is_space(char c);
 char	*get_next_quote(char *input, int double_qte);
 
 
