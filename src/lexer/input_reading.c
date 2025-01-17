@@ -3,107 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   input_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/01/14 22:10:31 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/17 17:54:44 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int is_space(char c)
-// {
-// 	return (c == ' ' || c == '\t' || c == '\n' 
-// 		|| c == '\r' || c == '\f' || c == '\v');
-// }
+size_t ft_strnlen(const char *s, size_t maxlen)
+{
+    size_t len = 0;
+    while (len < maxlen && s[len] != '\0')
+    {
+        len++;
+    }
+    return len;
+}
 
-// char	*get_next_quote(char *input, int double_qte)
-// {
-// 	char	sep;
-// 	int		i;
-	
-// 	i = 0;
-// 	if (!double_qte)
-// 		sep = '\'';
-// 	else sep = '"';
-// 	while (*input && *input != sep)
-// 		*input++;
-// 	return (input);	
-// }
+static char *ft_strndup(const char *s, size_t n)
+{
+    char *dup;
+    size_t len = ft_strnlen(s, n);
 
-// int	count_tokens(char *input)
-// {
-//     char	*start;
-//     int		token_count;
+    dup = (char *)malloc(len + 1);
+    if (!dup)
+        return NULL;
 
-// 	start = input;
-// 	token_count = 0;
-//     while (*start)
-// 	{
-//         while (is_space(*start))
-//             start++;
-//         if (*start == '\0')
-//             break;
-//         token_count++;
-// 		if (*start == "\'")
-// 			start = get_next_quote(start, 1);
-// 		else if (*start == '"')
-// 			start = get_next_quote(start, 0);
-//         else while (*start && !is_space(*start))
-//             start++;
-// 	}
-//     return (token_count);
-// }
+    ft_strlcpy(dup, s, len + 1);
+    return dup;
+}
 
-// char	*split_whitespace(char *input)
-// {
-// 	char	*start;
-// 	char	*end;
-// 	char	*tokens;
-// 	int		token_count;
+static char *find_token_end(char *start)
+{
+    char *end;
 
-// 	tokens = malloc(sizeof(char) * count_tokens(input));
-// 	if (!tokens)
-// 		return (0);
-// 	while (*start)
-// 	{
-// 		while (is_space(*start))
-// 			start++;
-// 		if (!start)
-// 			break;
-// 		if (*start == '"')
-// 			end = get_next_quote(start, 1);
-// 		else if (*start == '\'')
-// 			end = get_next_quote;
-// 		else
-// 		{
-// 			end = start;
-// 			while (*end != '\0' && is_space(*end))
-// 				end++;
-// 			tokens[token_count] = malloc (*end - *start + 1);
-// 			if (!tokens[token_count])
-// 				return (0);
-// 			//strncpy(tokens[*token_count], start, length);
-// 			tokens[token_count][*end - *start] = '\0';
-// 			(token_count)++;
-// 			start = end;
-// 		}
-// 	}
-// 	return (tokens);
-// }
+    if (*start == '"')
+        end = get_next_quote(start + 1, 1);
+    else if (*start == '\'')
+        end = get_next_quote(start + 1, 0);
+    else
+    {
+        end = start;
+        while (*end && !is_space(*end) && *end != '"' && *end != '\'')
+            end++;
+    }
+    return end;
+}
 
-// char	*trim_input(char *input)
-// {
-// 	char	*end;
-	
-// 	while (is_space((unsigned char)*input))
-// 		input++;
-// 	if (*input == 0)
-// 		return (input);
-// 	end = input + ft_strlen(input) - 1;
-// 	while (end > input && is_space((unsigned char)*end))
-// 		end--;
-// 	*(end + 1) = '\0';
-// 	return (input);
-// }
+char **allocate_tokens(char *input)
+{
+    char **tokens = malloc(sizeof(char *) * (count_tokens(input) + 1));
+    if (!tokens)
+        return NULL;
+    return tokens;
+}
+
+void skip_whitespace(char **start)
+{
+    while (is_space(**start))
+        (*start)++;
+}
+
+char **split_whitespace(char *input)
+{
+    char **tokens = allocate_tokens(input);
+    char *start = input;
+    char *end;
+    int i = 0;
+
+    if (!tokens)
+        return NULL;
+
+    while (*start)
+    {
+        skip_whitespace(&start);
+        if (*start == '\0')
+            break;
+        end = find_token_end(start);
+        tokens[i++] = ft_strndup(start, end - start);
+        if (!tokens[i - 1])
+        {
+            free(tokens);
+            return NULL;
+        }
+        start = (*end == '"' || *end == '\'') ? end + 1 : end;
+    }
+    tokens[i] = NULL;
+    return tokens;
+}
