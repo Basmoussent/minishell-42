@@ -6,55 +6,58 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:52:01 by amine             #+#    #+#             */
-/*   Updated: 2025/01/17 17:58:36 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/17 21:27:28 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 // Function prototypes
 char *trim_input(char *input);
 int count_tokens(char *input);
 char **split_whitespace(char *input);
+enum s_token classify_token(char *token);
+t_ast_node *parse_tokens(char **tokens);
 
-
-void print_tokens(char **tokens)
+void print_ast(t_ast_node *node, int level)
 {
-    int i = 0;
-    while (tokens[i])
-    {
-        printf("Token %d: '%s'\n", i, tokens[i]);
-        i++;
-    }
+    if (!node)
+        return;
+    for (int i = 0; i < level; i++)
+        printf("  ");
+    printf("Node (Type: %d, Value: '%s')\n", node->type, node->value);
+    print_ast(node->left, level + 1);
+    print_ast(node->right, level + 1);
+}
+
+void free_ast(t_ast_node *node)
+{
+    if (!node)
+        return;
+    free_ast(node->left);
+    free_ast(node->right);
+    free(node->value);
+    free(node);
 }
 
 int main()
 {
-    char input1[] = "   Hello, 'World!   ";
-    char input2[] = "  'dsfsdf' This is a test string.   ";
-    char input3[] = "NoSpacesHere";
-    char input4[] = "   ";
-    char input5[] = "  \"Hello, World!\"   ";
-    char input6[] = "  'Hello, World!'   ";
-    char input7[] = "command1 | command2";
-    char input8[] = "command1 > output.txt";
-    char input9[] = "command1 >> output.txt";
-    char input10[] = "command1 < input.txt";
-    char input11[] = "echo \"    ";
+    char *input1 = "echo mdr | cd libft";
+    
+        printf("Original: '%s'\n", input1);
+        char **tokens = split_whitespace(input1);
+        t_ast_node *ast = parse_tokens(tokens);
 
-    char *inputs[] = {input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11};
-    int num_inputs = sizeof(inputs) / sizeof(inputs[0]);
-
-    for (int i = 0; i < num_inputs; i++)
-    {
-        printf("Original: '%s'\n", inputs[i]);
-        char **tokens = split_whitespace(inputs[i]);
-        print_tokens(tokens);
+        printf("AST:\n");
+        print_ast(ast, 0);
         printf("\n");
-        // Free allocated memory for tokens
+        printf("%s", tokens[0]);
+        // Free allocated memory for tokens and AST
         free(tokens);
-    }
+        //free_ast(ast);
+    
 
     return 0;
 }

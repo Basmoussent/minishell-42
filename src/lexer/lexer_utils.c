@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:36:11 by amine             #+#    #+#             */
-/*   Updated: 2025/01/17 18:40:34 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/17 18:49:15 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	is_space(char c)
 		|| c == '\r' || c == '\f' || c == '\v');
 }
 
-int	free_tokens(char **tokens)
+char	**free_tokens(char **tokens)
 {
 	int	i;
 
@@ -59,5 +59,5 @@ int	free_tokens(char **tokens)
 		i++;
 	}
 	free(tokens);
-	return (KO);
+	return (NULL);
 }

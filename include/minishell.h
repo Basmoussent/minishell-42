@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/17 18:40:42 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/17 20:10:38 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ enum	s_token {
 	HEREDOC = 5
 };
 
+typedef struct s_ast_node
+{
+	enum s_token type;
+	char *value;
+	struct s_ast_node *left;
+	struct s_ast_node *right;
+}	t_ast_node;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -67,13 +75,15 @@ int 	is_space(char c);
 char	*is_quote(char *end);
 size_t	ft_strnlen(const char *s, size_t maxlen);
 char	*ft_strndup(const char *s, size_t n);
-int		free_tokens(char **tokens);
+char	**free_tokens(char **tokens);
 
-char 	**split_whitespace(char *input);
-int		count_tokens(char *input);
-char    *lexing(char *input);
-char	*trim_input(char *input);
-char	*get_next_quote(char *input, int double_qte);
+char 		**split_whitespace(char *input);
+int			count_tokens(char *input);
+char    	*lexing(char *input);
+char		*trim_input(char *input);
+char		*get_next_quote(char *input, int double_qte);
+t_ast_node	*parse_tokens(char **tokens);
+t_ast_node 	*create_ast_node(enum s_token type, char *value);
 
 
 
