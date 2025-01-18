@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   classify_tokens.c                                  :+:      :+:    :+:   */
+/*   create_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:52:21 by amine             #+#    #+#             */
-/*   Updated: 2025/01/17 23:51:00 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 02:50:21 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,11 @@ t_ast_node	*loop_node(t_ast_node *root, t_ast_node **current, char *token)
 	return (root);
 }
 
-t_ast_node *parse_tokens(char **tokens)
+t_ast_node *parse_tokens(char **tokens, t_data *data)
 {
     t_ast_node	*root;
     t_ast_node	*current;
+	char		*expanded_token;	
     int			i;
 
 	root = NULL;
@@ -87,7 +88,9 @@ t_ast_node *parse_tokens(char **tokens)
 	i = 0;
     while (tokens[i])
     {
-        root = loop_node(root, &current, tokens[i]);
+		expanded_token = expand_variable(tokens[i], data);
+		root = loop_node(root, &current, expanded_token);
+		free(expanded_token);
 		if (!root)
             return (NULL);
         i++;

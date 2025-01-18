@@ -6,13 +6,13 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/01/17 23:49:12 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 02:32:59 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*lexing(char *input)
+t_ast_node	*lexing(char *input, t_data *data)
 {
 	int			count;
 	char		**lexed_input;
@@ -25,5 +25,6 @@ char	*lexing(char *input)
 	lexed_input = split_whitespace(input);
 	if (!lexed_input)
 		return (NULL);
-	ast = parse_tokens(lexed_input);
+	ast = parse_tokens(lexed_input, data);
+	return (ast);
 }

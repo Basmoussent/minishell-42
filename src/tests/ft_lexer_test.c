@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:52:01 by amine             #+#    #+#             */
-/*   Updated: 2025/01/17 21:27:28 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 03:02:54 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ char *trim_input(char *input);
 int count_tokens(char *input);
 char **split_whitespace(char *input);
 enum s_token classify_token(char *token);
-t_ast_node *parse_tokens(char **tokens);
+t_ast_node *parse_tokens(char **tokens, t_data *data);
+char *expand_variable(char *input, t_data *data);
+char **copy_envp(char **envp);
+void free_args(char **args);
 
 void print_ast(t_ast_node *node, int level)
 {
@@ -42,22 +45,30 @@ void free_ast(t_ast_node *node)
     free(node);
 }
 
-int main()
+int test(int argc, char **argv, char **envp)
 {
-    char *input1 = "echo mdr | cd libft";
-    
-        printf("Original: '%s'\n", input1);
-        char **tokens = split_whitespace(input1);
-        t_ast_node *ast = parse_tokens(tokens);
+    if (argc != 1 || !argv)
+    {
+        printf("Usage: ./ft_lexer_test\n");
+        return 1;
+    }
+    t_data data;
+    data.envp = copy_envp(envp);
+
+    char *input5 = "echo dsqd$VAR_NAMEdfss$VAR_NAMEgfg";
+
+        char **tokens = split_whitespace(input5);
+        t_ast_node *ast = parse_tokens(tokens, &data);
 
         printf("AST:\n");
         print_ast(ast, 0);
         printf("\n");
-        printf("%s", tokens[0]);
+
         // Free allocated memory for tokens and AST
         free(tokens);
-        //free_ast(ast);
+        free_ast(ast);
     
 
+    free_args(data.envp);
     return 0;
 }

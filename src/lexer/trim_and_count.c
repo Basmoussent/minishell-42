@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:35:30 by amine             #+#    #+#             */
-/*   Updated: 2025/01/17 18:36:58 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 00:24:01 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 char	*get_next_quote(char *input, int double_qte)
 {
 	char	sep;
-	int		i;
 
-	i = 0;
 	if (!double_qte)
 		sep = '\'';
 	else
 		sep = '"';
 	while (*input && *input != sep)
-		*input++;
+		input++;
 	return (input);
 }
 
