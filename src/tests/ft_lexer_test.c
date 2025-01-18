@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:52:01 by amine             #+#    #+#             */
-/*   Updated: 2025/01/18 03:02:54 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 03:27:41 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int test(int argc, char **argv, char **envp)
     t_data data;
     data.envp = copy_envp(envp);
 
-    char *input5 = "echo dsqd$VAR_NAMEdfss$VAR_NAMEgfg";
+    char *input5 = "echo dsqd$VAR_NAME$VAR_NAMEsdq";
 
         char **tokens = split_whitespace(input5);
         t_ast_node *ast = parse_tokens(tokens, &data);

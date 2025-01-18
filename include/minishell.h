@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/18 02:33:08 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 03:19:19 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char		*trim_input(char *input);
 char		*get_next_quote(char *input, int double_qte);
 t_ast_node 	*parse_tokens(char **tokens, t_data *data);
 t_ast_node 	*create_ast_node(enum s_token type, char *value);
-char		*expand_variable(char *input, t_data *data);
+char 	*expand_all_variables(char *input, t_data *data);
 
 
 

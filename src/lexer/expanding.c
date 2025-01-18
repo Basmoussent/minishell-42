@@ -6,26 +6,30 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 02:10:34 by amine             #+#    #+#             */
-/*   Updated: 2025/01/18 02:57:11 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 03:24:43 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *get_env_value(char *name, t_data *data)
+char	*get_env_value(char *name, t_data *data)
 {
-    int i;
-    size_t len = strlen(name);
+	int		i;
+	size_t	len;
 
-    for (i = 0; data->envp[i] != NULL; i++)
-    {
-        if (strncmp(data->envp[i], name, len) == 0 && data->envp[i][len] == '=')
-            return data->envp[i] + len + 1;
-    }
-    return NULL;
+	len = ft_strlen(name);
+	i = 0;
+	while (data->envp[i])
+	{
+		if (ft_strncmp(data->envp[i], name, len) == 0
+			&& data->envp[i][len] == '=')
+			return (data->envp[i] + len + 1);
+		i++;
+	}
+	return (NULL);
 }
 
-char *extract_var_name(char *start)
+char	*extract_var_name(char *start)
 {
 	char	*end;
 	char	*value;
@@ -33,7 +37,7 @@ char *extract_var_name(char *start)
 	end = start + 1;
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
-    value = ft_strndup(start + 1, end - start - 1);
+	value = ft_strndup(start + 1, end - start - 1);
 	if (!value)
 		return (NULL);
 	return (value);
@@ -55,29 +59,40 @@ char	*replace_variable(char *input, char *start, char *var_value, char *end)
 	return (result);
 }
 
-char *expand_variable(char *input, t_data *data)
+char	*expand_single_variable(char *input, t_data *data)
 {
-    char	*start;
-    char	*end;
-    char	*var_name;
-    char	*var_value;
-    char	*result;
-    char	*temp;
+	char	*start;
+	char	*end;
+	char	*var_name;
+	char	*var_value;
+	char	*result;
+
+	start = ft_strchr(input, '$');
+	if (!start)
+		return (ft_strdup(input));
+	end = start + 1;
+	while (*end && (ft_isalnum(*end) || *end == '_'))
+		end++;
+	var_name = extract_var_name(start);
+	var_value = get_env_value(var_name, data);
+	free(var_name);
+	if (!var_value)
+		var_value = "";
+	result = replace_variable(input, start, var_value, end);
+	return (result);
+}
+
+char	*expand_all_variables(char *input, t_data *data)
+{
+	char	*result;
+	char	*temp;
 
 	result = ft_strdup(input);
 	if (!result)
 		return (NULL);
-	while ((start = ft_strchr(result, '$')))
+	while (ft_strchr(result, '$'))
 	{
-		end = start + 1;
-		while (*end && (ft_isalnum(*end) || *end == '_'))
-			end++;
-		var_name = extract_var_name(start);
-		var_value = get_env_value(var_name, data);
-		free(var_name);
-		if (!var_value)
-			var_value = "";
-		temp = replace_variable(result, start, var_value, end);
+		temp = expand_single_variable(result, data);
 		free(result);
 		result = temp;
 	}

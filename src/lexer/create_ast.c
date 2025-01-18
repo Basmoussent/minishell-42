@@ -6,16 +6,16 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:52:21 by amine             #+#    #+#             */
-/*   Updated: 2025/01/18 02:50:21 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/18 03:25:47 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_type(enum s_token type)
+int	is_type(enum s_token type)
 {
 	return (type == PIPE || type == TRUNCATE || type == APPEND
-			|| type == REDIRECT_INPUT || type == HEREDOC);
+		|| type == REDIRECT_INPUT || type == HEREDOC);
 }
 
 enum	s_token	classify_token(char *token)
@@ -76,24 +76,24 @@ t_ast_node	*loop_node(t_ast_node *root, t_ast_node **current, char *token)
 	return (root);
 }
 
-t_ast_node *parse_tokens(char **tokens, t_data *data)
+t_ast_node	*parse_tokens(char **tokens, t_data *data)
 {
-    t_ast_node	*root;
-    t_ast_node	*current;
+	t_ast_node	*root;
+	t_ast_node	*current;
 	char		*expanded_token;	
-    int			i;
+	int			i;
 
 	root = NULL;
 	current = NULL;
 	i = 0;
-    while (tokens[i])
-    {
-		expanded_token = expand_variable(tokens[i], data);
+	while (tokens[i])
+	{
+		expanded_token = expand_all_variables(tokens[i], data);
 		root = loop_node(root, &current, expanded_token);
 		free(expanded_token);
 		if (!root)
-            return (NULL);
-        i++;
-    }
+			return (NULL);
+		i++;
+	}
 	return (root);
 }
