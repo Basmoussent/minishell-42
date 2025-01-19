@@ -102,7 +102,6 @@ int	ft_export(char *str, t_data *data)
 			str++;
 		if (*str == ' ')
 			*str++ = '\0';
-		printf("%s - %s\n", var, value);
 		ft_set_env(var, value, data);
 		free(var);
 	}

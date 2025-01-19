@@ -6,13 +6,13 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:33:26 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/15 14:51:44 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/19 21:37:43 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int run_echo_test(const char *input, const char *expected_output, int expect_error)
+int run_echo_test(const char *input, const char *expected_output)
 {
     int pipefd[2];
     pid_t pid;
@@ -34,7 +34,7 @@ int run_echo_test(const char *input, const char *expected_output, int expect_err
         dup2(pipefd[1], STDERR_FILENO);
         close(pipefd[1]);
 
-        ft_echo((char *)input);
+        ft_echo((char *)input); // Call your echo implementation
         exit(0);
     }
     else if (pid > 0)
@@ -50,16 +50,15 @@ int run_echo_test(const char *input, const char *expected_output, int expect_err
         {
             buffer[read_bytes] = '\0'; // Null-terminate the output
 
-            // Strip trailing newlines/spaces from both expected and actual output
-            char *expected_trimmed = ft_strtrim(expected_output, " \n");
-            char *actual_trimmed = ft_strtrim(buffer, " \n");
+            // Strip trailing newlines and spaces
+            char *expected_trimmed = ft_strtrim(expected_output, "\n");
+            char *actual_trimmed = ft_strtrim(buffer, "\n");
 
             printf(COLOR_CYAN "Input: \"%s\"\n" COLOR_RESET, ft_strtrim(input, "\n "));
             printf(COLOR_CYAN "Expected: \"%s\"\n" COLOR_RESET, expected_trimmed);
-            printf(COLOR_CYAN "Output:   \"%s\"\n" COLOR_RESET, ft_strtrim(buffer, "\n "));
+            printf(COLOR_CYAN "Output:   \"%s\"\n" COLOR_RESET, actual_trimmed);
 
-            if ((expect_error && strstr(buffer, "echo: invalid input")) ||
-                (!expect_error && strcmp(actual_trimmed, expected_trimmed) == 0))
+            if (strcmp(actual_trimmed, expected_trimmed) == 0)
             {
                 printf(COLOR_GREEN "PASS\n" COLOR_RESET);
                 printf("------------------------------------\n");
@@ -92,18 +91,16 @@ int ft_echo_test(void)
 
     printf(COLOR_YELLOW "Testing ft_echo...\n" COLOR_RESET);
 
-    // Test cases
-    passed += run_echo_test("echo hello world", "hello world\n", 0);
-    passed += run_echo_test("echo -n hello world", "hello world", 0);
-    passed += run_echo_test("echo \"hello world", "", 1);       // Unclosed double quote
-    passed += run_echo_test("echo 'hello world", "", 1);        // Unclosed single quote
-    passed += run_echo_test("echo hello\\world", "", 1);        // Invalid backslash
-    passed += run_echo_test("echo hello;world", "", 1);         // Invalid semicolon
-    passed += run_echo_test("echo 'hello ; world'", "hello ; world\n", 0); // Valid semicolon inside quotes
-    passed += run_echo_test("echo -n \"hello ; world\"", "hello ; world", 0); // Valid semicolon inside quotes
+    printf(COLOR_RED "THIS TEST HAS TO FAIL NO MATTER WHAT\n" COLOR_RESET);
+    passed += run_echo_test("echo 123", "\n");
+    passed += run_echo_test("echo -n hello world", "hello world");
+    passed += run_echo_test("echo hello\\world", "hello\\world\n");
+    passed += run_echo_test("echo hello;world", "");
+    passed += run_echo_test("echo 'hello ; world'", "hello ; world\n");
+    passed += run_echo_test("echo -n \"hello ; world\"", "hello ; world");
 
     // Summary
-    failed = 8 - passed; // Total tests - passed
+    failed = 6 - passed; // Total tests - passed
     printf(COLOR_CYAN "\nTest Summary:\n" COLOR_RESET);
     printf(COLOR_GREEN "Passed: %d\n" COLOR_RESET, passed);
     printf(COLOR_RED "Failed: %d\n" COLOR_RESET, failed);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/18 03:19:19 by amine            ###   ########.fr       */
+/*   Updated: 2025/01/19 21:48:09 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,20 @@ typedef struct s_data
 
 // Builtins
 
-void		ft_echo(char *str);
-int		handle_echo(char *params, int newline);	
+int		ft_echo(char *str);
 int		ft_pwd(char **envp);
 int		ft_env(char **envp);
 int		ft_exit(char *input);
+int		ft_unset(char *input, t_data *data);
+int		ft_export(char *str, t_data *data);
 
+
+int		is_valid_varname(char *var);
+void	ft_process_input(char *input, char *buffer);
 
 char	**copy_envp(char **envp);
 void	free_args(char **envp);
 int		ft_set_env(char *var, char *value, t_data *data);
-int		ft_export(char *str, t_data *data);
 
 // LEXER
 int 	is_space(char c);
@@ -86,7 +89,8 @@ t_ast_node 	*parse_tokens(char **tokens, t_data *data);
 t_ast_node 	*create_ast_node(enum s_token type, char *value);
 char 	*expand_all_variables(char *input, t_data *data);
 
-
+// UTILS
+bool	validate_command(const char *cmd);
 
 //TEST SUITE
 
