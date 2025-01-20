@@ -68,3 +68,23 @@ void	ft_process_input(char *input, char *buffer)
 	}
 	buffer[buffer_index] = '\0';
 }
+
+void	free_args(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
+}
+
+void free_ast(t_ast_node *node)
+{
+	if (!node)
+		return;
+	free_ast(node->left);
+	free_ast(node->right);
+	free(node->value);
+	free(node);
+}

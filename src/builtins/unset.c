@@ -6,12 +6,13 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 22:20:44 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/19 22:42:39 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:54:02 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Function to check if the argument is a valid variable name
 int	unset_it(const char *var, t_data *data)
 {
 	int		i;
@@ -40,6 +41,7 @@ int	unset_it(const char *var, t_data *data)
 	return (0);
 }
 
+// Function to check if the argument is a valid variable name
 void	check_args(char *arg, int *ret, t_data *data)
 {
 	ft_process_input(arg, arg);
@@ -65,6 +67,7 @@ void	check_args(char *arg, int *ret, t_data *data)
 	}
 }
 
+// Function to process the arguments
 int	ft_unset_process_args(char **args, t_data *data)
 {
 	int	i;
@@ -76,7 +79,7 @@ int	ft_unset_process_args(char **args, t_data *data)
 		check_args(args[i], &ret, data);
 	return (ret);
 }
-
+// Function to unset a variable
 int	ft_unset(char *input, t_data *data)
 {
 	char	**args;
@@ -99,7 +102,3 @@ int	ft_unset(char *input, t_data *data)
 	free_args(args);
 	return (ret);
 }
-
-
-// Je dois gere le cas ou les args sont en quote
-// pas tres dur mais je vias nehss la

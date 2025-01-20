@@ -19,7 +19,7 @@ libft/libft.a:
 
 clean:
 	make -C libft fclean
-	rm -rf build  # Remove only object files (stored in build/)
+	rm -rf build
 
 fclean: clean
 	rm -f $(EXEC)

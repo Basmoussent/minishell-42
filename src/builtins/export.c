@@ -41,16 +41,6 @@ char	**copy_envp(char **envp)
 	return (env_copy);
 }
 
-void	free_args(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
-}
-
 int	is_valid_varname(char *var)
 {
 	int	i;
