@@ -23,12 +23,9 @@ int main(int ac, char *av[], char *envp[])
 		fprintf(stderr, "Error: Failed to copy environment variables.\n");
 		return (1);
 	}
-	printf("Testing ft_export:\n");
-	//ft_export("TEST_VAR=hello_world", data);
-	ft_export("CACA=CACA", data);
-	ft_export("PIPI=POUET", data);
-	ft_env(data->envp);
-	ft_unset("unset \"CACA\" PIPI", data);
+	printf("Testing ft_unset:\n");
+	ft_export("unset=caca", data);
+	ft_unset("TERM\\ROGRAM", data);
 	ft_env(data->envp);
 	free_args(data->envp);
 

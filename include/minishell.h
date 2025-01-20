@@ -69,6 +69,7 @@ int		ft_export(char *str, t_data *data);
 int		is_valid_varname(char *var);
 void	ft_process_input(char *input, char *buffer);
 
+int	check_syntax(char *input);
 char	**copy_envp(char **envp);
 void	free_args(char **envp);
 int		ft_set_env(char *var, char *value, t_data *data);

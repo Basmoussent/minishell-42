@@ -40,11 +40,12 @@ int	unset_it(const char *var, t_data *data)
 	return (0);
 }
 
-void check_args(char *arg, int *ret, t_data *data)
+void	check_args(char *arg, int *ret, t_data *data)
 {
-	if (occur(arg, '=') != 0)
+	ft_process_input(arg, arg);
+	if (!arg || occur(arg, '=') != 0)
 	{
-		printf(COLOR_RED "unset: '%s': invalid parameter name\n" COLOR_RESET, arg);
+		printf(COLOR_RED "unset: '%s': invalid parameter\n" COLOR_RESET, arg);
 		*ret = KO;
 	}
 	else if (is_valid_varname(arg))
@@ -54,6 +55,8 @@ void check_args(char *arg, int *ret, t_data *data)
 			printf(COLOR_RED "unset: Failed to unset '%s'\n" COLOR_RESET, arg);
 			*ret = KO;
 		}
+		else
+			printf(COLOR_GREEN "Unsetting '%s'\n" COLOR_RESET, arg);
 	}
 	else
 	{
@@ -61,13 +64,14 @@ void check_args(char *arg, int *ret, t_data *data)
 		*ret = KO;
 	}
 }
+
 int	ft_unset_process_args(char **args, t_data *data)
 {
 	int	i;
 	int	ret;
 
 	ret = OK;
-	i = 0;
+	i = -1;
 	while (args[++i])
 		check_args(args[i], &ret, data);
 	return (ret);
@@ -75,17 +79,17 @@ int	ft_unset_process_args(char **args, t_data *data)
 
 int	ft_unset(char *input, t_data *data)
 {
-	char	*trimmed_input;
 	char	**args;
 	int		ret;
+	char	*buffer;
 
-	if (!input || !data || !data->envp)
+	if (!input || !data || !data->envp || !validate_command(input))
 		return (KO);
-	trimmed_input = ft_strtrim(input, " ");
-	if (!trimmed_input)
+	buffer = ft_strtrim(input, " ");
+	if (!buffer)
 		return (KO);
-	args = ft_split(trimmed_input, ' ');
-	free(trimmed_input);
+	args = ft_split(buffer, ' ');
+	free(buffer);
 	if (!args || !args[0])
 	{
 		free_args(args);
@@ -95,6 +99,7 @@ int	ft_unset(char *input, t_data *data)
 	free_args(args);
 	return (ret);
 }
+
 
 // Je dois gere le cas ou les args sont en quote
 // pas tres dur mais je vias nehss la

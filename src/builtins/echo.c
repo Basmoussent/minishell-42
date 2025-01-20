@@ -35,35 +35,6 @@ bool	ft_check_n_flag(char **input)
 	return (n_flag);
 }
 
-// Function to process the input and remove quotes
-void	ft_process_input(char *input, char *buffer)
-{
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-	int		i;
-	int		buffer_index;
-
-	in_single_quotes = false;
-	in_double_quotes = false;
-	buffer_index = 0;
-	i = -1;
-	while (input[++i] != '\0')
-	{
-		if (input[i] == '\'' && !in_double_quotes)
-		{	
-            in_single_quotes = !in_single_quotes;
-			continue ;
-		}
-        if (input[i] == '"' && !in_single_quotes)
-		{
-			in_double_quotes = !in_double_quotes;
-			continue ;
-		}
-		buffer[buffer_index++] = input[i];
-	}
-	buffer[buffer_index] = '\0';
-}
-
 //Main function to implement the echo command
 int	ft_echo(char *input)
 {
