@@ -38,13 +38,6 @@ int	heredoc_logic(char *delimiter)
 		write(fd, line, strlen(line));
 		free(line);
 	}
-	close(fd);
-	fd = open(tempfile, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening temporary file for heredoc");
-		exit(1);
-	}
 	unlink(tempfile);
 	return (fd);
 }

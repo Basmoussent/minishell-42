@@ -20,16 +20,16 @@ int	is_type(enum s_token type)
 
 enum	s_token	classify_token(char *token)
 {
-	if (ft_strncmp(token, "|", 1) == 0)
+	if (ft_strncmp(token, ">>", 2) == 0)
+		return (APPEND);
+	else if (ft_strncmp(token, "<<", 2) == 0)
+		return (HEREDOC);
+	else if (ft_strncmp(token, "|", 1) == 0)
 		return (PIPE);
 	else if (ft_strncmp(token, ">", 1) == 0)
 		return (TRUNCATE);
-	else if (ft_strncmp(token, ">>", 1) == 0)
-		return (APPEND);
 	else if (ft_strncmp(token, "<", 1) == 0)
 		return (REDIRECT_INPUT);
-	else if (ft_strncmp(token, "<<", 1) == 0)
-		return (HEREDOC);
 	return (NONE);
 }
 

@@ -40,21 +40,35 @@ char	*find_executable(char *cmd, char **envp)
 	return (0);
 }
 
+// Function to free the arguments
 static void execute_command(t_ast_node *node, char **envp)
 {
     char *cmd_path;
     char **args = NULL;
 
-    if (!node || !node->right || !node->right->value)
+    if (!node || !node->value)
     {
-        write(2, "Invalid command structure\n", 26);
+        write(2, "Invalid command structure\n", 27);
         exit(1);
     }
-    args = ft_split(node->right->value, ' ');
-    if (!args)
+    if (node->right && node->right->value)
     {
-        perror("Error allocating memory for arguments");
-        exit(1);
+        char *full_args = ft_strjoin(node->value, " ");
+        char *temp = ft_strjoin(full_args, node->right->value);
+        args = ft_split(temp, ' ');
+        free(full_args);
+        free(temp);
+    }
+    else
+    {
+        args = malloc(2 * sizeof(char *));
+        if (!args)
+        {
+            perror("Error allocating memory for arguments");
+            exit(1);
+        }
+        args[0] = ft_strdup(node->value);
+        args[1] = NULL;
     }
     cmd_path = find_executable(node->value, envp);
     if (!cmd_path)
@@ -70,6 +84,7 @@ static void execute_command(t_ast_node *node, char **envp)
     exit(1);
 }
 
+// Function to execute a pipe
 static void execute_pipe(t_ast_node *node, char **envp)
 {
     int pipe_fds[2];
@@ -93,25 +108,22 @@ static void execute_pipe(t_ast_node *node, char **envp)
         perror("fork");
         exit(1);
     }
-
     if (pid == 0)
     {
-        dup2(pipe_fds[1], STDOUT_FILENO);
         close(pipe_fds[0]);
+        dup2(pipe_fds[1], STDOUT_FILENO);
         close(pipe_fds[1]);
         exec_ast(node->left, envp);
         exit(1);
     }
-
+    close(pipe_fds[1]);
     dup2(pipe_fds[0], STDIN_FILENO);
     close(pipe_fds[0]);
-    close(pipe_fds[1]);
     waitpid(pid, NULL, 0);
     exec_ast(node->right, envp);
 }
 
-
-
+// Function to handle heredoc
 static void handle_redirection(t_ast_node *node)
 {
     int fd;
@@ -121,7 +133,6 @@ static void handle_redirection(t_ast_node *node)
         write(2, "Invalid redirection structure\n", 31);
         exit(1);
     }
-
     if (node->type == TRUNCATE)
         fd = open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     else if (node->type == APPEND)
@@ -144,21 +155,22 @@ static void handle_redirection(t_ast_node *node)
     close(fd);
 }
 
-void	exec_ast(t_ast_node *node, char **envp)
+// Function to execute the abstract syntax tree
+void exec_ast(t_ast_node *node, char **envp)
 {
-	if (!node)
-		return;
+    if (!node)
+        return;
 
-	if (node->type == PIPE)
-		execute_pipe(node, envp);
-	else if (node->type == TRUNCATE || node->type == APPEND
-		|| node->type == REDIRECT_INPUT || node->type == HEREDOC)
-	{
-		handle_redirection(node);
-		exec_ast(node->left, envp);
-	}
-	else
-		execute_command(node, envp);
+    if (node->type == PIPE)
+        execute_pipe(node, envp);
+    else if (node->type == TRUNCATE || node->type == APPEND
+             || node->type == REDIRECT_INPUT || node->type == HEREDOC)
+    {
+        handle_redirection(node);
+        exec_ast(node->left, envp);
+    }
+    else
+        execute_command(node, envp);
 }
 
 void	cleanup_and_exit(t_ast_node *root, int status)
@@ -166,3 +178,8 @@ void	cleanup_and_exit(t_ast_node *root, int status)
 	free_ast(root);
 	exit(status);
 }
+
+//
+// norme - memory leak - rendr le code lisible
+// here6doc mqrche pqs
+//

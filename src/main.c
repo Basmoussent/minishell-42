@@ -15,6 +15,7 @@
 int main(int argc, char **argv, char **envp)
 {
 	t_data data;
+
 	data.envp = copy_envp(envp);
 	char **tokens = split_whitespace(argv[argc-1]);
 	t_ast_node *ast = parse_tokens(tokens, &data);
