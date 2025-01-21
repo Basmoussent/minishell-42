@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/20 22:59:58 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/21 19:49:43 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void print_ast(t_ast_node *node, const char *prefix, int is_left);
 
 // EXEC
 int		heredoc_logic(char *delimiter);
-void	exec_ast(t_ast_node *node, char **envp);
+void exec_ast(t_ast_node *node, char **envp);
 
 // UTILS
 bool	validate_command(const char *cmd);

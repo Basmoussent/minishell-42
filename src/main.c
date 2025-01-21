@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/20 23:05:05 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/21 19:48:33 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **envp)
 	t_ast_node *ast = parse_tokens(tokens, &data);
 	print_ast(ast, "", 0);
 	exec_ast(ast, data.envp);	
-	free(tokens);
+	free_args(tokens);
 	free_ast(ast);
 	free_args(data.envp);
 	
