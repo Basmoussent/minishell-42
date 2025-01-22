@@ -115,7 +115,7 @@ static void execute_command(t_ast_node *node, t_data *data)
 }
 
 // Function to execute a pipe
-static void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
+void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
 {
 	close(pipe_fds[0]);
 	dup2(pipe_fds[1], STDOUT_FILENO);
@@ -128,7 +128,7 @@ static void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
 static void execute_pipe(t_ast_node *node, t_data *data)
 {
     int pipe_fds[2];
-    pid_t pid;
+    pid_t left_pid, right_pid;
 
     if (!node || !node->left || !node->right)
     {
@@ -137,20 +137,34 @@ static void execute_pipe(t_ast_node *node, t_data *data)
     }
     if (pipe(pipe_fds) == -1)
         handle_error("pipe");
-    pid = fork();
-    if (pid == -1)
+    left_pid = fork();
+    if (left_pid == -1)
         handle_error("fork");
-    if (pid == 0)
+    if (left_pid == 0)
     {
-        execute_child(node, data, pipe_fds);
-        cleanup_and_exit(node, data->envp, NULL, NULL, 1);
+        close(pipe_fds[0]);
+        dup2(pipe_fds[1], STDOUT_FILENO);
+        close(pipe_fds[1]);
+        exec_ast(node->left, data);
+        exit(1);
     }
-    close(pipe_fds[1]);
-    dup2(pipe_fds[0], STDIN_FILENO);
+    right_pid = fork();
+    if (right_pid == -1)
+        handle_error("fork");
+    if (right_pid == 0)
+    {
+        close(pipe_fds[1]);
+        dup2(pipe_fds[0], STDIN_FILENO);
+        close(pipe_fds[0]);
+        exec_ast(node->right, data);
+        exit(1);
+    }
     close(pipe_fds[0]);
-    waitpid(pid, NULL, 0);
-    exec_ast(node->right, data);
+    close(pipe_fds[1]);
+    waitpid(left_pid, NULL, 0);
+    waitpid(right_pid, NULL, 0);
 }
+
 
 // Function to redirect output
 void	redirect_output(t_ast_node * node, int fd)
