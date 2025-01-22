@@ -24,5 +24,4 @@ int main(int argc, char **argv, char **envp)
 	free_args(tokens);
 	free_ast(ast);
 	free_args(data.envp);
-	
 }

@@ -30,6 +30,7 @@
 #define TYPE_COLOR "\033[1;34m"
 #define VALUE_COLOR "\033[1;32m"
 #define INDENT_COLOR "\033[0;33m"
+#define HERE_DOC_TMP ".heredoc_tmp"
 
 enum
 {
@@ -97,6 +98,7 @@ void exec_ast(t_ast_node *node, char **envp);
 
 // UTILS
 bool	validate_command(const char *cmd);
+void cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path, int status);
 
 //TEST SUITE
 int ft_exit_test(void);

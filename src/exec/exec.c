@@ -76,44 +76,42 @@ static char **prepare_args(t_ast_node *node)
 
 void get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
 {
-    if (access(node->value, X_OK) == 0)
-        *cmd_path = ft_strdup(node->value);
-    else
-        *cmd_path = find_executable(node->value, envp);
-    if (!*cmd_path)
-    {
-        free_args(args);
-        handle_error("Command not found");
-    }
+	if (access(node->value, X_OK) == 0)
+		*cmd_path = ft_strdup(node->value);
+	else
+		*cmd_path = find_executable(node->value, envp);
+	if (!*cmd_path)
+	{
+		free_args(args);
+		handle_error("Command not found");
+	}
 }
 
 static void execute_command(t_ast_node *node, char **envp)
 {
-    pid_t pid;
-    char *cmd_path;
-    char **args;
+	pid_t pid;
+	char *cmd_path;
+	char **args;
 
-    if (!node || !node->value)
-        handle_error("Invalid command structure");
-    args = prepare_args(node);
-    pid = fork();
-    if (pid == -1)
-        handle_error("fork");
-    if (pid == 0)
-    {
-        cmd_path = NULL;
-        get_cmd_path(node, envp, &cmd_path, args);
-        execve(cmd_path, args, envp);
-        perror("execve");
-        free(cmd_path);
-        free_args(args);
-        exit(1);
-    }
-    else
-    {
-        free_args(args);
-        waitpid(pid, NULL, 0);
-    }
+	if (!node || !node->value)
+		handle_error("Invalid command structure");
+	args = prepare_args(node);
+	pid = fork();
+	if (pid == -1)
+		handle_error("fork");
+	if (pid == 0)
+	{
+		cmd_path = NULL;
+		get_cmd_path(node, envp, &cmd_path, args);
+		execve(cmd_path, args, envp);
+		perror("execve");
+		cleanup_and_exit(node, envp, args, cmd_path, 1);
+	}
+	else
+	{
+		free_args(args);
+		waitpid(pid, NULL, 0);
+	}
 }
 
 // Function to execute a pipe
@@ -127,28 +125,41 @@ static void	execute_child(t_ast_node *node, char **envp, int *pipe_fds)
 }
 
 // Function to execute a pipe
-static void	execute_pipe(t_ast_node *node, char **envp)
+static void execute_pipe(t_ast_node *node, char **envp)
 {
-	int		pipe_fds[2];
-	pid_t	pid;
+    int pipe_fds[2];
+    pid_t pid;
 
-	if (!node || !node->left || !node->right)
-	{
-		write(2, "Invalid pipe structure\n", 23);
-		exit(1);
-	}
-	if (pipe(pipe_fds) == -1)
-		handle_error("pipe");
-	pid = fork();
-	if (pid == -1)
-		handle_error("fork");
-	if (pid == 0)
-		execute_child(node, envp, pipe_fds);
-	close(pipe_fds[1]);
-	dup2(pipe_fds[0], STDIN_FILENO);
-	close(pipe_fds[0]);
-	waitpid(pid, NULL, 0);
-	exec_ast(node->right, envp);
+    if (!node || !node->left || !node->right)
+    {
+        write(2, "Invalid pipe structure\n", 23);
+        cleanup_and_exit(node, envp, NULL, NULL, 1);
+    }
+    if (pipe(pipe_fds) == -1)
+        handle_error("pipe");
+    pid = fork();
+    if (pid == -1)
+        handle_error("fork");
+    if (pid == 0)
+    {
+        execute_child(node, envp, pipe_fds);
+        cleanup_and_exit(node, envp, NULL, NULL, 1);
+    }
+    close(pipe_fds[1]);
+    dup2(pipe_fds[0], STDIN_FILENO);
+    close(pipe_fds[0]);
+    waitpid(pid, NULL, 0);
+    exec_ast(node->right, envp);
+}
+
+// Function to redirect output
+void	redirect_output(t_ast_node * node, int fd)
+{
+	if (node->type == REDIRECT_INPUT || node->type == HEREDOC)
+		dup2(fd, STDIN_FILENO);
+	else
+		dup2(fd, STDOUT_FILENO);
+	close(fd);
 }
 
 // Function to handle heredoc
@@ -177,16 +188,6 @@ static void	handle_redirection(t_ast_node *node)
 		exit(1);
 	}
 	redirect_output(node, fd);
-	close(fd);
-}
-
-// Function to redirect output
-void	redirect_output(t_ast_node * node, int fd)
-{
-	if (node->type == REDIRECT_INPUT || node->type == HEREDOC)
-		dup2(fd, STDIN_FILENO);
-	else
-		dup2(fd, STDOUT_FILENO);
 }
 
 // Function to execute the abstract syntax tree
@@ -194,7 +195,6 @@ void	exec_ast(t_ast_node *node, char **envp)
 {
 	if (!node || !envp)
 		return ;
-
 	if (node->type == PIPE)
 		execute_pipe(node, envp);
 	else if (node->type == TRUNCATE || node->type == APPEND
@@ -208,13 +208,21 @@ void	exec_ast(t_ast_node *node, char **envp)
 }
 
 // Function to handle cleanup and exit
-void	cleanup_and_exit(t_ast_node *root, int status)
+void	cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path, int status)
 {
-	free_ast(root);
+	if (root)
+		free_ast(root);
+	if (envp)
+		free_args(envp);
+	if (args)
+		free_args(args);
+	if (cmd_path)
+		free(cmd_path);
 	exit(status);
 }
 
 //
-// norme - memory leak - rendr le code lisible
+// memory leak - rendr le code lisible
 // here6doc mqrche pqs
+// unlink le fichier tmp
 //
