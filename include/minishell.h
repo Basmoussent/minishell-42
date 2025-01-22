@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/21 19:49:43 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/22 20:48:21 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,21 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <sys/wait.h>
 # include <stdbool.h>
+# include <sys/wait.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
 
 #define COLOR_RESET   "\033[0m"
 #define COLOR_GREEN   "\033[32m"
 #define COLOR_RED     "\033[31m"
 #define COLOR_YELLOW  "\033[33m"
 #define COLOR_CYAN    "\033[36m"
+#define COLOR_CYAN_BOLD "\033[1;36m"
+#define COLOR_YELLOW_BOLD  "\033[1;33m"
 #define TYPE_COLOR "\033[1;34m"
 #define VALUE_COLOR "\033[1;32m"
 #define INDENT_COLOR "\033[0;33m"
@@ -58,6 +65,7 @@ typedef struct s_ast_node
 typedef struct s_data
 {
 	char	**envp;
+	int		ast;
 }	t_data;
 
 // Builtins
@@ -68,6 +76,9 @@ int		ft_exit(char *input);
 int		ft_unset(char *input, t_data *data);
 int		ft_export(char *str, t_data *data);
 int		ft_cd(char *path, t_data *data);
+int		ft_ast(t_data *data);
+
+// ENV
 int		is_valid_varname(char *var);
 void	ft_process_input(char *input, char *buffer);
 char	**copy_envp(char **envp);
@@ -94,7 +105,11 @@ void print_ast(t_ast_node *node, const char *prefix, int is_left);
 
 // EXEC
 int		heredoc_logic(char *delimiter);
-void exec_ast(t_ast_node *node, char **envp);
+void	exec_ast(t_ast_node *node, t_data *data);
+void	handle_redirection(t_ast_node *node);
+int		exec_builtin(t_ast_node *node, t_data *data);
+int		is_builtin(t_ast_node *node);
+void	redirect_output(t_ast_node * node, int fd);
 
 // UTILS
 bool	validate_command(const char *cmd);

@@ -87,7 +87,7 @@ void get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
 	}
 }
 
-static void execute_command(t_ast_node *node, char **envp)
+static void execute_command(t_ast_node *node, t_data *data)
 {
 	pid_t pid;
 	char *cmd_path;
@@ -102,10 +102,10 @@ static void execute_command(t_ast_node *node, char **envp)
 	if (pid == 0)
 	{
 		cmd_path = NULL;
-		get_cmd_path(node, envp, &cmd_path, args);
-		execve(cmd_path, args, envp);
+		get_cmd_path(node, data->envp, &cmd_path, args);
+		execve(cmd_path, args, data->envp);
 		perror("execve");
-		cleanup_and_exit(node, envp, args, cmd_path, 1);
+		cleanup_and_exit(node, data->envp, args, cmd_path, 1);
 	}
 	else
 	{
@@ -115,17 +115,17 @@ static void execute_command(t_ast_node *node, char **envp)
 }
 
 // Function to execute a pipe
-static void	execute_child(t_ast_node *node, char **envp, int *pipe_fds)
+static void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
 {
 	close(pipe_fds[0]);
 	dup2(pipe_fds[1], STDOUT_FILENO);
 	close(pipe_fds[1]);
-	exec_ast(node->left, envp);
+	exec_ast(node->left, data);
 	exit(1);
 }
 
 // Function to execute a pipe
-static void execute_pipe(t_ast_node *node, char **envp)
+static void execute_pipe(t_ast_node *node, t_data *data)
 {
     int pipe_fds[2];
     pid_t pid;
@@ -133,7 +133,7 @@ static void execute_pipe(t_ast_node *node, char **envp)
     if (!node || !node->left || !node->right)
     {
         write(2, "Invalid pipe structure\n", 23);
-        cleanup_and_exit(node, envp, NULL, NULL, 1);
+        cleanup_and_exit(node, data->envp, NULL, NULL, 1);
     }
     if (pipe(pipe_fds) == -1)
         handle_error("pipe");
@@ -142,14 +142,14 @@ static void execute_pipe(t_ast_node *node, char **envp)
         handle_error("fork");
     if (pid == 0)
     {
-        execute_child(node, envp, pipe_fds);
-        cleanup_and_exit(node, envp, NULL, NULL, 1);
+        execute_child(node, data, pipe_fds);
+        cleanup_and_exit(node, data->envp, NULL, NULL, 1);
     }
     close(pipe_fds[1]);
     dup2(pipe_fds[0], STDIN_FILENO);
     close(pipe_fds[0]);
     waitpid(pid, NULL, 0);
-    exec_ast(node->right, envp);
+    exec_ast(node->right, data);
 }
 
 // Function to redirect output
@@ -162,49 +162,23 @@ void	redirect_output(t_ast_node * node, int fd)
 	close(fd);
 }
 
-// Function to handle heredoc
-static void	handle_redirection(t_ast_node *node)
-{
-	int	fd;
-
-	if (!node || !node->right || !node->right->value)
-	{
-		write(2, "Invalid redirection structure\n", 31);
-		exit(1);
-	}
-	if (node->type == TRUNCATE)
-		fd = open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (node->type == APPEND)
-		fd = open(node->right->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (node->type == REDIRECT_INPUT)
-		fd = open(node->right->value, O_RDONLY);
-	else if (node->type == HEREDOC)
-		fd = heredoc_logic(node->right->value);
-	else
-		return ;
-	if (fd == -1)
-	{
-		perror("Error opening file");
-		exit(1);
-	}
-	redirect_output(node, fd);
-}
-
 // Function to execute the abstract syntax tree
-void	exec_ast(t_ast_node *node, char **envp)
+void	exec_ast(t_ast_node *node, t_data *data)
 {
-	if (!node || !envp)
+	if (!node || !data->envp)
 		return ;
 	if (node->type == PIPE)
-		execute_pipe(node, envp);
+		execute_pipe(node, data);
 	else if (node->type == TRUNCATE || node->type == APPEND
 			 || node->type == REDIRECT_INPUT || node->type == HEREDOC)
 	{
 		handle_redirection(node);
-		exec_ast(node->left, envp);
+		exec_ast(node->left, data);
 	}
+	else if (!is_builtin(node))
+		execute_command(node, data);
 	else
-		execute_command(node, envp);
+		exec_builtin(node, data);
 }
 
 // Function to handle cleanup and exit
@@ -223,6 +197,5 @@ void	cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path
 
 //
 // memory leak - rendr le code lisible
-// here6doc mqrche pqs
 // unlink le fichier tmp
 //

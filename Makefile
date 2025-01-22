@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -Werror -Wunused -Wextra -g3
+CFLAGS = -Iinclude -Wall -Werror -Wunused -Wextra -g3 
+LIB_FLAGS = -lreadline
 SRC = $(shell find src -name '*.c')
 OBJ = $(SRC:src/%.c=build/%.o)
 EXEC = minishell
@@ -8,7 +9,7 @@ LIBFT = libft/libft.a
 all: $(EXEC)
 
 $(EXEC): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(EXEC)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(EXEC) $(LIB_FLAGS)
 
 build/%.o: src/%.c
 	mkdir -p $(dir $@)
