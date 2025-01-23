@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/22 20:48:21 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:50:44 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ char		*expand_all_variables(char *input, t_data *data);
 char		*get_env_value(char *name, t_data *data);
 void		free_ast(t_ast_node *node);
 void print_ast(t_ast_node *node, const char *prefix, int is_left);
+void compress_ast(t_ast_node *node);
 
 // EXEC
 int		heredoc_logic(char *delimiter);
