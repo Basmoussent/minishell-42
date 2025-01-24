@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:50:10 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/23 20:09:59 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/24 13:51:28 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,23 @@ char *concat_with_space(const char *str1, const char *str2)
 void compress_ast(t_ast_node *node)
 {
     if (!node)
-        return;
+        return ;
 
     compress_ast(node->left);
     compress_ast(node->right);
 
-    // Ensure the node is a command and the right node is an argument
     if (node->type == 0 && node->right && node->right->type == 0)
     {
-        printf("Linking command: '%s' with argument: '%s'\n", node->value, node->right->value);
+        printf("Compressing: '%s' <- '%s'\n", node->value, node->right->value);
 
-        // Link the command node to its argument node
-        t_ast_node *arg_node = node->right;
-        node->right = arg_node->right;
-        arg_node->right = NULL;
+        char *new_value = concat_with_space(node->value, node->right->value);
+        free(node->value);
+        node->value = new_value;
 
-        // Attach the argument node to the command node's arguments list
-        if (!node->left)
-        {
-            node->left = arg_node;
-        }
-        else
-        {
-            t_ast_node *last_arg = node->left;
-            while (last_arg->right)
-                last_arg = last_arg->right;
-            last_arg->right = arg_node;
-        }
+        t_ast_node *temp = node->right;
+        node->right = temp->right;
+        free(temp->value);
+        free(temp);
     }
 }
+

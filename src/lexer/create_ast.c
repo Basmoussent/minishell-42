@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:52:21 by amine             #+#    #+#             */
-/*   Updated: 2025/01/23 19:56:36 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:46:45 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,35 @@ t_ast_node	*loop_node(t_ast_node *root, t_ast_node **current, char *token)
 	return (root);
 }
 
+void	split_command_arg(t_ast_node *node)
+{
+	char *arg;
+	char *space;
+
+	space = ft_strchr(node->value, ' ');
+	if (!space)
+		return ;
+	arg = ft_strdup(space);
+	ft_strchr(node->value, ' ')[0] = '\0';
+	if (arg)
+	{
+		*arg = '\0';
+		node->right = create_ast_node(0, arg + 1);
+	}
+
+}
+
+void compress_ast(t_ast_node *node)
+{
+    if (!node)
+        return;
+
+    if (node->type == 0)
+        split_command_arg(node);
+    compress_ast(node->left);
+    compress_ast(node->right);
+}
+
 t_ast_node *parse_tokens(char **tokens, t_data *data)
 {
     t_ast_node *root;
@@ -97,8 +126,9 @@ t_ast_node *parse_tokens(char **tokens, t_data *data)
         i++;
     }
 
-    printf("Compressing AST...\n");
+    printf("Compressing ...\n");
     compress_ast(root);
+	traverse_and_split(root);
     return root;
 }
 

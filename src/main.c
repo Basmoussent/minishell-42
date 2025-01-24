@@ -37,7 +37,7 @@ int main(int argc, char **argv, char **envp)
 	if (argc != 1 || !argv[0])
 		return (0);
 	data.envp = copy_envp(envp);
-	data.ast = 0;
+	data.ast = 1;
 	while (1)
 	{
 		input = read_input();
