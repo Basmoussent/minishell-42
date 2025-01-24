@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*					*/
-/*			  :::	::::::::   */
-/*   exec.c   :+:   :+:	:+:   */
-/*			  +:+ +:+	+:+   */
-/*   By: bdenfir <bdenfir@student.42.fr>			+#+  +:+	   +#+  */
-/*			+#+#+#+#+#+   +#+  */
-/*   Created: 2025/01/20 20:13:43 by bdenfir		   #+#  #+#	*/
-/*   Updated: 2025/01/21 18:57:30 by bdenfir		  ###   ########.fr */
-/*					*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/01/24 16:49:57 by bdenfir          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -105,7 +105,7 @@ static void execute_command(t_ast_node *node, t_data *data)
 		get_cmd_path(node, data->envp, &cmd_path, args);
 		execve(cmd_path, args, data->envp);
 		perror("execve");
-		cleanup_and_exit(node, data->envp, args, cmd_path, 1);
+		cleanup_and_exit(node, data, args, cmd_path, 1);
 	}
 	else
 	{
@@ -133,7 +133,7 @@ static void execute_pipe(t_ast_node *node, t_data *data)
     if (!node || !node->left || !node->right)
     {
         write(2, "Invalid pipe structure\n", 23);
-        cleanup_and_exit(node, data->envp, NULL, NULL, 1);
+        cleanup_and_exit(node, data, NULL, NULL, 1);
     }
     if (pipe(pipe_fds) == -1)
         handle_error("pipe");
@@ -176,32 +176,52 @@ void	redirect_output(t_ast_node * node, int fd)
 	close(fd);
 }
 
-// Function to execute the abstract syntax tree
-void	exec_ast(t_ast_node *node, t_data *data)
+void reset_stream(int saved_stdin, int saved_stdout)
 {
-	if (!node || !data->envp)
-		return ;
-	if (node->type == PIPE)
-		execute_pipe(node, data);
-	else if (node->type == TRUNCATE || node->type == APPEND
-			 || node->type == REDIRECT_INPUT || node->type == HEREDOC)
-	{
-		handle_redirection(node);
-		exec_ast(node->left, data);
-	}
-	else if (!is_builtin(node))
-		execute_command(node, data);
-	else
-		exec_builtin(node, data);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+}
+
+// Function to execute the abstract syntax tree
+void exec_ast(t_ast_node *node, t_data *data)
+{
+    int saved_stdin;
+    int saved_stdout;
+
+    if (!node || !data)
+        return;
+
+    // Save the original file descriptors
+    saved_stdin = dup(STDIN_FILENO);
+    saved_stdout = dup(STDOUT_FILENO);
+
+    if (node->type == PIPE)
+        execute_pipe(node, data);
+    else if (node->type == TRUNCATE || node->type == APPEND
+             || node->type == REDIRECT_INPUT || node->type == HEREDOC)
+    {
+        handle_redirection(node);
+        exec_ast(node->left, data);
+
+        // Restore the original file descriptors
+        dup2(saved_stdin, STDIN_FILENO);
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdin);
+        close(saved_stdout);
+    }
+    else
+        execute_command(node, data);
 }
 
 // Function to handle cleanup and exit
-void	cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path, int status)
+void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status)
 {
 	if (root)
 		free_ast(root);
-	if (envp)
-		free_args(envp);
+	if (data->envp)
+		free_args(data->envp);
 	if (args)
 		free_args(args);
 	if (cmd_path)
@@ -213,3 +233,4 @@ void	cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path
 // memory leak - rendr le code lisible
 // unlink le fichier tmp
 //
+

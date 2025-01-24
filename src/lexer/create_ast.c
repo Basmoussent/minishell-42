@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   create_ast.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 18:52:21 by amine             #+#    #+#             */
-/*   Updated: 2025/01/24 15:46:45 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   create_ast.c									   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: bdenfir <bdenfir@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/17 18:52:21 by amine			 #+#	#+#			 */
+/*   Updated: 2025/01/24 16:02:07 by bdenfir		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -76,59 +76,26 @@ t_ast_node	*loop_node(t_ast_node *root, t_ast_node **current, char *token)
 	return (root);
 }
 
-void	split_command_arg(t_ast_node *node)
+t_ast_node	*parse_tokens(char **tokens, t_data *data)
 {
-	char *arg;
-	char *space;
+	t_ast_node	*root;
+	t_ast_node	*current;
+	char		*expanded_token;
+	int			i;
 
-	space = ft_strchr(node->value, ' ');
-	if (!space)
-		return ;
-	arg = ft_strdup(space);
-	ft_strchr(node->value, ' ')[0] = '\0';
-	if (arg)
+	root = NULL;
+	current = NULL;
+	i = 0;
+	while (tokens[i])
 	{
-		*arg = '\0';
-		node->right = create_ast_node(0, arg + 1);
+		expanded_token = expand_all_variables(tokens[i], data);
+		root = loop_node(root, &current, expanded_token);
+		free(expanded_token);
+		if (!root)
+			return (NULL);
+		i++;
 	}
-
-}
-
-void compress_ast(t_ast_node *node)
-{
-    if (!node)
-        return;
-
-    if (node->type == 0)
-        split_command_arg(node);
-    compress_ast(node->left);
-    compress_ast(node->right);
-}
-
-t_ast_node *parse_tokens(char **tokens, t_data *data)
-{
-    t_ast_node *root;
-    t_ast_node *current;
-    char *expanded_token;
-    int i;
-
-    root = NULL;
-    current = NULL;
-    i = 0;
-
-    while (tokens[i])
-    {
-        expanded_token = expand_all_variables(tokens[i], data);
-        root = loop_node(root, &current, expanded_token);
-        free(expanded_token);
-        if (!root)
-            return NULL;
-        i++;
-    }
-
-    printf("Compressing ...\n");
-    compress_ast(root);
-	traverse_and_split(root);
-    return root;
+	compress_ast(root);
+	return (root);
 }
 

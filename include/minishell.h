@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/23 19:50:44 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/24 16:47:12 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void compress_ast(t_ast_node *node);
 // EXEC
 int		heredoc_logic(char *delimiter);
 void	exec_ast(t_ast_node *node, t_data *data);
+void	reset_stream(int saved_stdin, int saved_stdout);
 void	handle_redirection(t_ast_node *node);
 int		exec_builtin(t_ast_node *node, t_data *data);
 int		is_builtin(t_ast_node *node);
@@ -114,7 +115,7 @@ void	redirect_output(t_ast_node * node, int fd);
 
 // UTILS
 bool	validate_command(const char *cmd);
-void cleanup_and_exit(t_ast_node *root, char **envp, char **args, char *cmd_path, int status);
+void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status);
 
 //TEST SUITE
 int ft_exit_test(void);

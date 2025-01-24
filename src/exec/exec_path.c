@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:49:12 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/22 21:14:06 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/24 16:49:23 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	handle_redirection(t_ast_node *node)
 
 	if (!node || !node->right || !node->right->value)
 	{
-		write(2, "Invalid redirection structure\n", 31);
+		write(2, "Syntax error near unexpected token ", 35);
+		write(2, node->value, ft_strlen(node->value));
+		write(2, "\n", 1);
 		exit(1);
 	}
 	if (node->type == TRUNCATE)
@@ -67,22 +69,27 @@ int is_builtin(t_ast_node *node)
 // Function to execute a builtin command
 int exec_builtin(t_ast_node *node, t_data *data)
 {
+	char *arg;
+
 	if (!node || !node->value)
 		return (0);
+	arg = "";
+	if (node->right && node->right->value)
+		arg = node->right->value;
 	if (ft_strncmp(node->value, "echo", 4) == 0)
-		return (ft_echo(node->right->value));
+		return (ft_echo(arg));
 	if (ft_strncmp(node->value, "cd", 2) == 0)
-		return (ft_cd(node->right->value, data));
+		return (ft_cd(arg, data));
 	if (ft_strncmp(node->value, "pwd", 3) == 0)
 		return (ft_pwd(data));
 	if (ft_strncmp(node->value, "export", 6) == 0)	
-		return (ft_export(node->right->value, data));
+		return (ft_export(arg, data));
 	if (ft_strncmp(node->value, "unset", 5) == 0)	
-		return (ft_unset(node->right->value, data));
+		return (ft_unset(arg, data));
 	if (ft_strncmp(node->value, "env", 3) == 0)	
 		return (ft_env(data->envp));
 	if (ft_strncmp(node->value, "exit", 4) == 0)	
-		return (ft_exit(node->right->value));
+		return (ft_exit(arg));
 	if (ft_strncmp(node->value, "ast", 3) == 0)	
 		return (ft_ast(data));
 	return (0);
