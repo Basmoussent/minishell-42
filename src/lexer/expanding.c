@@ -82,19 +82,31 @@ char	*expand_single_variable(char *input, t_data *data)
 	return (result);
 }
 
-char	*expand_all_variables(char *input, t_data *data)
+char *expand_all_variables(char *input, t_data *data)
 {
-	char	*result;
-	char	*temp;
+    char    *result;
+    char    *temp;
+    bool    in_single_quotes;
+    size_t  i;
 
-	result = ft_strdup(input);
-	if (!result)
-		return (NULL);
-	while (ft_strchr(result, '$'))
-	{
-		temp = expand_single_variable(result, data);
-		free(result);
-		result = temp;
-	}
-	return (result);
+    result = ft_strdup(input);
+    if (!result)
+        return (NULL);
+    in_single_quotes = false;
+    i = 0;
+    while (result[i] != '\0')
+    {
+        if (result[i] == '\'')
+            in_single_quotes = !in_single_quotes;
+        if (!in_single_quotes && result[i] == '$')
+        {
+            temp = expand_single_variable(result, data);
+            free(result);
+            result = temp;
+            i = 0;
+        }
+        else
+            i++;
+    }
+    return (result);
 }
