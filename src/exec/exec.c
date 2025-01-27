@@ -102,6 +102,8 @@ static void execute_command(t_ast_node *node, t_data *data)
 	if (pid == 0)
 	{
 		cmd_path = NULL;
+		if (is_builtin(node))
+			exit(exec_builtin(node, data));
 		get_cmd_path(node, data->envp, &cmd_path, args);
 		execve(cmd_path, args, data->envp);
 		perror("execve");

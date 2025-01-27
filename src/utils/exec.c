@@ -37,6 +37,6 @@ int heredoc_logic(char *delimiter)
         write(fd, line, strlen(line));
         free(line);
     }
-    close(fd); // Close the file after writing
-    return (open(HERE_DOC_TMP, O_RDONLY)); // Reopen for reading
+    close(fd);
+    return (open(HERE_DOC_TMP, O_RDONLY));
 }
