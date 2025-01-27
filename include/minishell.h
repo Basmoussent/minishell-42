@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/27 14:52:57 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:19:08 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 #define VALUE_COLOR "\033[1;32m"
 #define INDENT_COLOR "\033[0;33m"
 #define HERE_DOC_TMP ".heredoc_tmp"
+
+extern volatile int g_signal_received;
 
 enum
 {
@@ -116,6 +118,7 @@ void	redirect_output(t_ast_node * node, int fd);
 // UTILS
 bool	validate_command(const char *cmd);
 void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status);
+void    handle_signals(int signum);
 
 //TEST SUITE
 int ft_exit_test(void);
