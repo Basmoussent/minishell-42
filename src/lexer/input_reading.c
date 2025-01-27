@@ -3,30 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   input_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/01/24 15:59:44 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:34:46 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int is_special_char(char *input)
+{
+	return (*input == '|' || *input == '<' || *input == '>' || (*input == '>' && *(input + 1) == '>') || (*input == '<' && *(input + 1) == '<'));
+}
+
 static char	*find_token_end(char *start)
 {
-	char	*end;
-
-	if (*start == '"')
-		end = get_next_quote(start + 1, 1);
-	else if (*start == '\'')
-		end = get_next_quote(start + 1, 0);
-	else
-	{
-		end = start;
-		while (*end && !is_space(*end) && *end != '"' && *end != '\'')
-			end++;
-	}
-	return (end);
+	while (*start && !is_space(*start) && !is_special_char(start))
+		start++;
+	return (start);
 }
 
 char	**allocate_tokens(char *input)
@@ -45,29 +40,45 @@ void	skip_whitespace(char **start)
 		(*start)++;
 }
 
-char	**split_whitespace(char *input)
-{
-	char	**tokens;
-	char	*start;
-	char	*end;
-	int		i;
+char **split_whitespace(char *input) {
+    char 	**tokens;
+    char 	*start;
+    char 	*end;
+    int		i;
 
-	tokens = allocate_tokens(input);
-	start = input;
 	i = 0;
-	if (!tokens)
-		return (NULL);
-	while (*start)
+    tokens = allocate_tokens(input);
+    if (!tokens)
+        return (NULL);
+    start = input;
+    while (*start)
 	{
-		skip_whitespace(&start);
-		if (*start == '\0')
-			break ;
-		end = find_token_end(start);
-		tokens[i++] = ft_strndup(start, end - start);
-		if (!tokens[i - 1])
-			return (free_tokens(tokens));
-		start = is_quote(end);
-	}
-	tokens[i] = NULL;
-	return (tokens);
+        skip_whitespace(&start);
+        if (*start == '\0')
+            break ;
+        if (is_special_char(start))
+		{
+            end = start + 1;
+            if (*start == '>' && *(start + 1) == '>')
+                end = start + 2;
+			else if (*start == '<' && *(start + 1) == '<')
+                end = start + 2;
+            tokens[i++] = ft_strndup(start, end - start);
+            if (!tokens[i - 1])
+                return (free_tokens(tokens));
+            start = end;
+        }
+        else if (*start == '"' || *start == '\'')
+            start = is_quote(start);
+		else 
+		{
+            end = find_token_end(start);
+            tokens[i++] = ft_strndup(start, end - start);
+            if (!tokens[i - 1])
+                return free_tokens(tokens);
+            start = end;
+        }
+    }
+    tokens[i] = NULL;
+    return (tokens);
 }

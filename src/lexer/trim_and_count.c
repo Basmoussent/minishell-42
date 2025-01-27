@@ -3,23 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   trim_and_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:35:30 by amine             #+#    #+#             */
-/*   Updated: 2025/01/24 16:00:00 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:06:47 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_next_quote(char *input, int double_qte)
+int	is_spe(char **input, int *token_count)
+{
+    if ((*input)[0] == '>' && (*input)[1] == '>')
+	{
+        *input += 2;
+        (*token_count)++;
+        return (1);
+    }
+    if ((*input)[0] == '<' && (*input)[1] == '<')
+	{
+        *input += 2;
+        (*token_count)++;
+        return (1);
+    }
+    if ((*input)[0] == '|' || (*input)[0] == '<' || (*input)[0] == '>')
+	{
+        (*input)++;
+        (*token_count)++;
+        return (1);
+    }
+    return (0);
+}
+
+char *get_next_quote(char *input, int is_double_qte)
 {
 	char	sep;
 
-	if (!double_qte)
-		sep = '\'';
-	else
+	if (is_double_qte)
 		sep = '"';
+	else
+		sep = '\'';
 	while (*input && *input != sep)
 		input++;
 	if (*input == sep)
@@ -27,31 +50,34 @@ char	*get_next_quote(char *input, int double_qte)
 	return (input);
 }
 
-int	count_tokens(char *input)
+int count_tokens(char *input) 
 {
-	char	*start;
-	int		token_count;
+    int token_count;
 
-	start = input;
 	token_count = 0;
-	while (*start)
+    while (*input && is_space(*input))
+        input++;
+    while (*input) 
 	{
-		while (is_space(*start))
-			start++;
-		if (*start == '\0')
-			break ;
-		token_count++;
-		if (*start == '\'')
-			start = get_next_quote(start, 1);
-		else if (*start == '"')
-			start = get_next_quote(start, 0);
+        while (*input && is_space(*input))
+            input++;
+        if (*input == '\0')
+			break;
+        if (is_spe(&input, &token_count))
+            continue ;
+        if (*input == '\'')
+            input = get_next_quote(input, 0);
+        else if (*input == '"')
+            input = get_next_quote(input, 1);
 		else
 		{
-			while (*start && !is_space(*start))
-				start++;
-		}
-	}
-	return (token_count);
+            while (*input && !isspace(*input) && !is_spe(&input, &token_count))
+                input++;
+        }
+        token_count++;
+    }
+    printf("Token count: %d\n", token_count);
+    return token_count;
 }
 
 char	*trim_input(char *input)
