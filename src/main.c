@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-volatile int g_signal_received = 0;
+volatile int signal_received = 0;
 
 char *read_input()
 {

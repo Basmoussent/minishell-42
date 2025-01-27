@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 20:21:27 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/27 18:23:33 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:08:13 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,16 @@ int heredoc_logic(char *delimiter)
     {
         write(1, "> ", 2);
         line = get_next_line(STDIN_FILENO);
-        if (!line)
+        if (!line) // quand ya ctrl d mais ya error
+        {
+            printf("\n");
             break;
-        if (signal_received)
+        }
+        if (signal_received) // quand ya ctrl c mais ya error
         {
             free(line);
-            break ;
+            close(fd);
+            return (open(HERE_DOC_TMP, O_WRONLY | O_CREAT | O_TRUNC, 0644));
         }
         if (strncmp(line, delimiter, strlen(delimiter)) == 0 && line[strlen(delimiter)] == '\n')
         {

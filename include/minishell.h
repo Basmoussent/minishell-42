@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/27 18:19:08 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:42:20 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 #define INDENT_COLOR "\033[0;33m"
 #define HERE_DOC_TMP ".heredoc_tmp"
 
-extern volatile int g_signal_received;
+extern volatile int signal_received;
 
 enum
 {
