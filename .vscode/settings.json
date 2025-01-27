@@ -21,6 +21,7 @@
 		"cmath": "c",
 		"numeric": "c",
 		"streambuf": "c",
-		"utility": "c"
+		"utility": "c",
+		"history.h": "c"
 	}
 }

@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+void disable_terminal_echo()
+{
+    struct termios term;
+
+	tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
 char *read_input()
 {
 	char *input;
@@ -19,13 +28,28 @@ char *read_input()
 	input = readline(COLOR_CYAN_BOLD "Minishell> " COLOR_RESET);
 	if (!input)
 	{
-		// Exit gracefully without printing error for EOF
 		printf(COLOR_RED "exit\n" COLOR_RESET);
-		exit(EXIT_SUCCESS);
+		return (NULL);
 	}
 	printf(COLOR_RESET);
 	return input;
 }
+
+void	sigintHandler(int signum)
+{
+	(void)	signum;
+
+	printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void	sigquitHandler(int signum)
+{
+	(void)	signum;
+}
+// AFIX PSK C PAS NORMAL QUE CA FASSE QQCHOSE
 
 int main(int argc, char **argv, char **envp)
 {
@@ -38,9 +62,13 @@ int main(int argc, char **argv, char **envp)
 		return (0);
 	data.envp = copy_envp(envp);
 	data.ast = 1;
+	disable_terminal_echo();
+	signal(SIGINT, sigintHandler);
+	signal(SIGQUIT, sigquitHandler);
 	while (1)
 	{
 		input = read_input();
+		add_history(input);
 		if (!input)
 			break ;
 		tokens = split_whitespace(input);
