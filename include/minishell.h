@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/27 14:52:57 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/27 17:14:01 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ char		*get_env_value(char *name, t_data *data);
 void		free_ast(t_ast_node *node);
 void print_ast(t_ast_node *node, const char *prefix, int is_left);
 void compress_ast(t_ast_node *node);
+void split_ast(t_ast_node *node);
+
 
 // EXEC
 int		heredoc_logic(char *delimiter);
