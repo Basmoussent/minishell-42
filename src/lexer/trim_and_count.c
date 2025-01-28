@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_and_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:35:30 by amine             #+#    #+#             */
-/*   Updated: 2025/01/27 13:06:47 by akassous         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:11:11 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int count_tokens(char *input)
         }
         token_count++;
     }
-    printf("Token count: %d\n", token_count);
     return token_count;
 }
 

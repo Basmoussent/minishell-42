@@ -22,6 +22,7 @@
 		"numeric": "c",
 		"streambuf": "c",
 		"utility": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"signal.h": "c"
 	}
 }

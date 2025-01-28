@@ -15,7 +15,7 @@ build/%.o: src/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-libft/libft.a:
+$(LIBFT):
 	make -C libft
 
 clean:
@@ -30,4 +30,4 @@ re: fclean all
 norm:
 	@bash ./utils/norm_it.sh
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm

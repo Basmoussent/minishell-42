@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/27 17:14:01 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:08:19 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <signal.h>
 
 #define COLOR_RESET   "\033[0m"
 #define COLOR_GREEN   "\033[32m"
@@ -36,8 +37,13 @@
 #define COLOR_YELLOW_BOLD  "\033[1;33m"
 #define TYPE_COLOR "\033[1;34m"
 #define VALUE_COLOR "\033[1;32m"
-#define INDENT_COLOR "\033[0;33m"
+#define INDENT_COLOR "\033[0;33m"\
+
 #define HERE_DOC_TMP ".heredoc_tmp"
+#define BLANK_FILE ".blank_tmp"
+
+
+extern volatile int signal_received;
 
 enum
 {
@@ -118,6 +124,7 @@ void	redirect_output(t_ast_node * node, int fd);
 // UTILS
 bool	validate_command(const char *cmd);
 void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status);
+void    handle_signals(int signum);
 
 //TEST SUITE
 int ft_exit_test(void);

@@ -82,10 +82,8 @@ int ft_exit(char *input)
 	char		*arg;
 	long long   exit_status;
 
+	arg = input;
 	exit_status = 0;
-	arg = input + 4;
-	while (*arg == ' ')
-		arg++;
 	if (*arg == '\0')
 		exit(0);
 	if (ft_strchr(arg, ' '))

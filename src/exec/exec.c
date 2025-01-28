@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/24 16:49:57 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:15:11 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void execute_command(t_ast_node *node, t_data *data)
 	{
 		cmd_path = NULL;
 		if (is_builtin(node))
-			exit(exec_builtin(node, data));
+			exit(0);
 		get_cmd_path(node, data->envp, &cmd_path, args);
 		execve(cmd_path, args, data->envp);
 		perror("execve");
@@ -112,6 +112,8 @@ static void execute_command(t_ast_node *node, t_data *data)
 	else
 	{
 		free_args(args);
+		if (is_builtin(node))
+			exec_builtin(node, data);
 		waitpid(pid, NULL, 0);
 	}
 }
@@ -194,24 +196,18 @@ void exec_ast(t_ast_node *node, t_data *data)
 
     if (!node || !data)
         return;
-
-    // Save the original file descriptors
     saved_stdin = dup(STDIN_FILENO);
     saved_stdout = dup(STDOUT_FILENO);
-
-    if (node->type == PIPE)
+    if (signal_received == SIGINT)
+		return reset_stream(saved_stdin, saved_stdout);
+	if (node->type == PIPE)
         execute_pipe(node, data);
     else if (node->type == TRUNCATE || node->type == APPEND
              || node->type == REDIRECT_INPUT || node->type == HEREDOC)
     {
         handle_redirection(node);
         exec_ast(node->left, data);
-
-        // Restore the original file descriptors
-        dup2(saved_stdin, STDIN_FILENO);
-        dup2(saved_stdout, STDOUT_FILENO);
-        close(saved_stdin);
-        close(saved_stdout);
+		reset_stream(saved_stdin, saved_stdout);
     }
     else
         execute_command(node, data);
