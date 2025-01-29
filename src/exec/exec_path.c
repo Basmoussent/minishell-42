@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:49:12 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/24 16:49:23 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:22:00 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Function to handle heredoc
-void	handle_redirection(t_ast_node *node)
+void	handle_redirection(t_ast_node *node, t_data *data)
 {
 	int	fd;
 
@@ -31,7 +31,7 @@ void	handle_redirection(t_ast_node *node)
 	else if (node->type == REDIRECT_INPUT)
 		fd = open(node->right->value, O_RDONLY);
 	else if (node->type == HEREDOC)
-		fd = heredoc_logic(node->right->value);
+		fd = heredoc_logic(node->right->value, data);
 	else
 		return ;
 	if (fd == -1)

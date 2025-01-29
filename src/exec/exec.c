@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/28 20:15:11 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/29 15:21:22 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,14 +198,12 @@ void exec_ast(t_ast_node *node, t_data *data)
         return;
     saved_stdin = dup(STDIN_FILENO);
     saved_stdout = dup(STDOUT_FILENO);
-    if (signal_received == SIGINT)
-		return reset_stream(saved_stdin, saved_stdout);
 	if (node->type == PIPE)
         execute_pipe(node, data);
     else if (node->type == TRUNCATE || node->type == APPEND
              || node->type == REDIRECT_INPUT || node->type == HEREDOC)
     {
-        handle_redirection(node);
+        handle_redirection(node, data);
         exec_ast(node->left, data);
 		reset_stream(saved_stdin, saved_stdout);
     }

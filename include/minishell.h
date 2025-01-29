@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/28 20:08:19 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:07:04 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_data
 {
 	char	**envp;
 	int		ast;
+	char	*hd_file;
 }	t_data;
 
 // Builtins
@@ -110,13 +111,13 @@ void		free_ast(t_ast_node *node);
 void print_ast(t_ast_node *node, const char *prefix, int is_left);
 void compress_ast(t_ast_node *node);
 void split_ast(t_ast_node *node);
-
+void clean_redirections(t_ast_node *node) ;
 
 // EXEC
-int		heredoc_logic(char *delimiter);
+int		heredoc_logic(char *delimiter, t_data *data);
 void	exec_ast(t_ast_node *node, t_data *data);
 void	reset_stream(int saved_stdin, int saved_stdout);
-void	handle_redirection(t_ast_node *node);
+void	handle_redirection(t_ast_node *node, t_data *data);
 int		exec_builtin(t_ast_node *node, t_data *data);
 int		is_builtin(t_ast_node *node);
 void	redirect_output(t_ast_node * node, int fd);

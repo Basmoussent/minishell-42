@@ -10,13 +10,17 @@
 /*									  */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
+#include <readline/readline.h>
+
 
 volatile int signal_received = 0;
 
 char *read_input()
 {
-    char *input = readline(COLOR_CYAN_BOLD "Minishell> " COLOR_RESET);
+    char *input;
+    
+    input = readline(COLOR_CYAN_BOLD "Minishell> " COLOR_RESET);
     if (!input)
     {
         printf(COLOR_RED "exit\n" COLOR_RESET);
@@ -30,26 +34,21 @@ int main(int argc, char **argv, char **envp)
     t_data data;
     char *input;
     t_ast_node *ast;
-    char **tokens;
 
     if (argc != 1 || !argv[0])
         return (0);
-
     data.envp = copy_envp(envp);
     data.ast = 1;
     while (1)
     {
+        data.hd_file = ft_strdup("");
+        unlink(data.hd_file);
+        free(data.hd_file);
         signal(SIGINT, handle_signals);
     	signal(SIGQUIT, SIG_IGN);
         input = read_input();
         add_history(input);
-        tokens = split_whitespace(input);
-        if (!tokens)
-        {
-            free(input);
-            continue;
-        }
-        ast = parse_tokens(tokens, &data);
+        ast = lexing(input, &data);
         if (ast)
         {
             if (data.ast)
@@ -57,8 +56,6 @@ int main(int argc, char **argv, char **envp)
             exec_ast(ast, &data);
             free_ast(ast);
         }
-        free_tokens(tokens);
-        free(input);
     }
     free_args(data.envp);
     return 0;

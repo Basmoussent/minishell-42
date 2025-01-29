@@ -79,3 +79,11 @@ void compress_ast(t_ast_node *node)
         free(temp);
     }
 }
+
+void	free_ast_node(t_ast_node *node)
+{
+	if (!node)
+		return ;
+	free(node->value);
+	free(node);
+}
