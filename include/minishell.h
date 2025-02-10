@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/29 16:07:04 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/10 16:09:42 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void print_ast(t_ast_node *node, const char *prefix, int is_left);
 void compress_ast(t_ast_node *node);
 void split_ast(t_ast_node *node);
 void clean_redirections(t_ast_node *node) ;
+char **filter_tokens(char **tokens);
 
 // EXEC
 int		heredoc_logic(char *delimiter, t_data *data);
