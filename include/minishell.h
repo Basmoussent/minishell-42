@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/10 16:09:42 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/11 21:49:16 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,18 @@ typedef struct s_ast_node
 	struct s_ast_node *right;
 }	t_ast_node;
 
+typedef struct s_token_processing
+{
+    char 	**tokens;
+    char 	**filtered_tokens;
+	char	**ignored_tokens;
+    int 	i;
+    int 	j;
+	int		k;
+    char 	*last_redirection;
+    char 	*last_target;
+} t_token_processing;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -113,6 +125,11 @@ void compress_ast(t_ast_node *node);
 void split_ast(t_ast_node *node);
 void clean_redirections(t_ast_node *node) ;
 char **filter_tokens(char **tokens);
+int	is_speci(char *token);
+int	count_tokens_array(char **tokens);
+char	**allocate_filtered_tokens(char **tokens);
+
+char	**allocate_ignored_tokens(char **tokens);
 
 // EXEC
 int		heredoc_logic(char *delimiter, t_data *data);

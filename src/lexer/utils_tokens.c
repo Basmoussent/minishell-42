@@ -1,0 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_tokens.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 21:47:19 by amine             #+#    #+#             */
+/*   Updated: 2025/02/11 21:47:30 by amine            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	is_speci(char *token)
+{
+	return (token[0] == '>');
+}
+
+int	count_tokens_array(char **tokens)
+{
+	int	count;
+
+	count = 0;
+	while (tokens[count])
+		count++;
+	return (count);
+}
+
+char **allocate_filtered_tokens(char **tokens)
+{
+    char **filtered_tokens;
+
+    filtered_tokens = malloc(sizeof(char *) * (count_tokens_array(tokens) + 1));
+    if (!filtered_tokens)
+        return NULL;
+    return filtered_tokens;
+}
+
+char **allocate_ignored_tokens(char **tokens)
+{
+    char **ignored_tokens;
+
+    ignored_tokens = malloc(sizeof(char *) * (count_tokens_array(tokens) + 1));
+    if (!ignored_tokens)
+        return NULL;
+    return ignored_tokens;
+}
