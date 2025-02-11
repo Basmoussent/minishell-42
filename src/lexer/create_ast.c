@@ -99,4 +99,3 @@ t_ast_node	*parse_tokens(char **tokens, t_data *data)
 	split_ast(root);
 	return (root);
 }
-

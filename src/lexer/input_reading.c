@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   input_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/01/27 13:34:46 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/11 22:42:28 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_special_char(char *input)
+int	is_special_char(char *input)
 {
-	return (*input == '|' || *input == '<' || *input == '>' || (*input == '>' && *(input + 1) == '>') || (*input == '<' && *(input + 1) == '<'));
+	return (*input == '|' || *input == '<' || *input == '>'
+		|| (*input == '>' && *(input + 1) == '>')
+		|| (*input == '<' && *(input + 1) == '<'));
 }
 
 static char	*find_token_end(char *start)

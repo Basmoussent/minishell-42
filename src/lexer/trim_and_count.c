@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_and_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:35:30 by amine             #+#    #+#             */
-/*   Updated: 2025/01/28 20:11:11 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/11 22:45:49 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 int	is_spe(char **input, int *token_count)
 {
-    if ((*input)[0] == '>' && (*input)[1] == '>')
+	if ((*input)[0] == '>' && (*input)[1] == '>')
 	{
-        *input += 2;
-        (*token_count)++;
-        return (1);
-    }
-    if ((*input)[0] == '<' && (*input)[1] == '<')
+		*input += 2;
+		(*token_count)++;
+		return (1);
+	}
+	if ((*input)[0] == '<' && (*input)[1] == '<')
 	{
-        *input += 2;
-        (*token_count)++;
-        return (1);
-    }
-    if ((*input)[0] == '|' || (*input)[0] == '<' || (*input)[0] == '>')
+		*input += 2;
+		(*token_count)++;
+		return (1);
+	}
+	if ((*input)[0] == '|' || (*input)[0] == '<' || (*input)[0] == '>')
 	{
-        (*input)++;
-        (*token_count)++;
-        return (1);
-    }
-    return (0);
+		(*input)++;
+		(*token_count)++;
+		return (1);
+	}
+	return (0);
 }
 
-char *get_next_quote(char *input, int is_double_qte)
+char	*get_next_quote(char *input, int is_double_qte)
 {
 	char	sep;
 
@@ -50,33 +50,33 @@ char *get_next_quote(char *input, int is_double_qte)
 	return (input);
 }
 
-int count_tokens(char *input) 
+int	count_tokens(char *input)
 {
-    int token_count;
+	int	token_count;
 
 	token_count = 0;
-    while (*input && is_space(*input))
-        input++;
-    while (*input) 
+	while (*input && is_space(*input))
+		input++;
+	while (*input)
 	{
-        while (*input && is_space(*input))
-            input++;
-        if (*input == '\0')
-			break;
-        if (is_spe(&input, &token_count))
-            continue ;
-        if (*input == '\'')
-            input = get_next_quote(input, 0);
-        else if (*input == '"')
-            input = get_next_quote(input, 1);
+		while (*input && is_space(*input))
+			input++;
+		if (*input == '\0')
+			break ;
+		if (is_spe(&input, &token_count))
+			continue ;
+		if (*input == '\'')
+			input = get_next_quote(input, 0);
+		else if (*input == '"')
+			input = get_next_quote(input, 1);
 		else
 		{
-            while (*input && !isspace(*input) && !is_spe(&input, &token_count))
-                input++;
-        }
-        token_count++;
-    }
-    return token_count;
+			while (*input && !isspace(*input) && !is_spe(&input, &token_count))
+				input++;
+		}
+		token_count++;
+	}
+	return (token_count);
 }
 
 char	*trim_input(char *input)

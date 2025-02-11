@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 02:10:34 by amine             #+#    #+#             */
-/*   Updated: 2025/01/27 15:02:37 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/11 22:41:04 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,31 @@ char	*expand_single_variable(char *input, t_data *data)
 	return (result);
 }
 
-char *expand_all_variables(char *input, t_data *data)
+char	*expand_all_variables(char *input, t_data *data)
 {
-    char    *result;
-    char    *temp;
-    bool    in_single_quotes;
-    size_t  i;
+	char	*result;
+	char	*temp;
+	bool	in_single_quotes;
+	size_t	i;
 
-    result = ft_strdup(input);
-    if (!result)
-        return (NULL);
-    in_single_quotes = false;
-    i = 0;
-    while (result[i] != '\0')
-    {
-        if (result[i] == '\'')
-            in_single_quotes = !in_single_quotes;
-        if (!in_single_quotes && result[i] == '$')
-        {
-            temp = expand_single_variable(result, data);
-            free(result);
-            result = temp;
-            i = 0;
-        }
-        else
-            i++;
-    }
-    return (result);
+	result = ft_strdup(input);
+	if (!result)
+		return (NULL);
+	in_single_quotes = false;
+	i = 0;
+	while (result[i] != '\0')
+	{
+		if (result[i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		if (!in_single_quotes && result[i] == '$')
+		{
+			temp = expand_single_variable(result, data);
+			free(result);
+			result = temp;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	return (result);
 }

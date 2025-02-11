@@ -6,40 +6,41 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:04:11 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 21:51:39 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/11 22:35:31 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void create_files_from_ignored_tokens(char **ignored_tokens)
+void	create_files_from_ignored_tokens(char **ignored_tokens)
 {
-    int i = 0;
-    int fd;
+	int	i;
+	int	fd;
 
-    while (ignored_tokens[i])
-    {
+	i = 0;
+	while (ignored_tokens[i])
+	{
 		if (ignored_tokens[i][0] != '>')
 		{
-        	fd = open(ignored_tokens[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        	if (fd == -1)
-            perror("Error creating file");
-        	else
-            	close(fd);
+			fd = open(ignored_tokens[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd == -1)
+				perror("Error creating file");
+			else
+				close(fd);
 		}
-        i++;
-    }
+		i++;
+	}
 }
 
-void add_last_redirection(t_token_processing *tp)
+void	add_last_redirection(t_token_processing *tp)
 {
-    if (tp->last_redirection && tp->last_target)
-    {
-        tp->filtered_tokens[tp->j++] = tp->last_redirection;
-        tp->filtered_tokens[tp->j++] = tp->last_target;
-        tp->last_redirection = NULL;
-        tp->last_target = NULL;
-    }
+	if (tp->last_redirection && tp->last_target)
+	{
+		tp->filtered_tokens[tp->j++] = tp->last_redirection;
+		tp->filtered_tokens[tp->j++] = tp->last_target;
+		tp->last_redirection = NULL;
+		tp->last_target = NULL;
+	}
 }
 
 void	process_tokens(t_token_processing *tp)
@@ -66,15 +67,15 @@ void	process_tokens(t_token_processing *tp)
 	}
 }
 
-char **filter_tokens(char **tokens)
+char	**filter_tokens(char **tokens)
 {
-    t_token_processing	tp;
+	t_token_processing	tp;
 
 	tp.tokens = tokens;
 	tp.filtered_tokens = allocate_filtered_tokens(tokens);
 	tp.ignored_tokens = allocate_ignored_tokens(tokens);
 	if (!tp.filtered_tokens || !tp.ignored_tokens)
-        return (NULL);
+		return (NULL);
 	tp.i = 0;
 	tp.j = 0;
 	tp.k = 0;
