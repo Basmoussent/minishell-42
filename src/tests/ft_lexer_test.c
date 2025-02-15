@@ -22,7 +22,6 @@ enum s_token classify_token(char *token);
 t_ast_node *parse_tokens(char **tokens, t_data *data);
 char *expand_variable(char *input, t_data *data);
 char **copy_envp(char **envp);
-void free_args(char **args);
 
 void print_branch(const char *prefix, int is_left) {
     printf("%s", prefix);

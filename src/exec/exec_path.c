@@ -89,7 +89,7 @@ int exec_builtin(t_ast_node *node, t_data *data)
 	if (ft_strncmp(node->value, "env", 3) == 0)	
 		return (ft_env(data->envp));
 	if (ft_strncmp(node->value, "exit", 4) == 0)	
-		return (ft_exit(arg));
+		return (ft_exit(arg, data));
 	if (ft_strncmp(node->value, "ast", 3) == 0)	
 		return (ft_ast(data));
 	return (0);

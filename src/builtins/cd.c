@@ -13,40 +13,48 @@
 #include "minishell.h"
 
 // Function to print error messages
-static void print_error(char *path, int code)
+static void	print_error(int code)
 {
 	if (code == -1)
-		printf(COLOR_RED "cd: %s: No such file or directory\n" COLOR_RESET, path);
+		ft_putstr_fd("cd: No such file or directory\n", 2);
 	else if (code == -2)
-		printf(COLOR_RED "cd: %s: Not a directory\n" COLOR_RESET, path);
+		ft_putstr_fd("cd: Not a directory\n", 2);
 	else if (code == -3)
-		printf(COLOR_RED "cd: Failed to get current working directory\n" COLOR_RESET);
-	else if (code == -4)
-		printf(COLOR_RED "cd: Failed to export new PWD" COLOR_RESET);
+		ft_putstr_fd("cd: Failed to get working directory\n", 2);
 }
 
-// Function to change the current working directory
+static int	update_pwd(char *old_pwd, t_data *data)
+{
+	char	*new_pwd;
+	int		ret;
+
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
+		return (free(old_pwd), KO);
+	if (ft_set_env("PWD", new_pwd, data) != OK)
+	{
+		free(new_pwd);
+		return (KO);
+	}
+	ret = ft_set_env("OLDPWD", old_pwd, data);
+	free(new_pwd);
+	if (ret != OK)
+		return (KO);
+	return (OK);
+}
+
 int	ft_cd(char *path, t_data *data)
 {
 	char	*old_pwd;
-	char	*pwd;
-	char	*str;
+	int		ret;
 
-	if (!validate_command(path) || !path)
-		return (KO);
+	if (!path || chdir(path) == -1)
+		return (print_error(-1), KO);
 	old_pwd = getcwd(NULL, 0);
 	if (!old_pwd)
-		return (print_error(path, -3), KO);
-	if (chdir(path) == -1)
-		return (print_error(path, -1), free(old_pwd), KO);
-	pwd = ft_strjoin("PWD=", path);
-	if (!pwd || ft_export(pwd, data) != OK)
-		return (print_error(path, -4), free(pwd), free(old_pwd), KO);
-	str = ft_strjoin("OLDPWD=", old_pwd);
-	if (!str || ft_export(str, data) != OK)
-		return (print_error(path, -4),free(old_pwd), free(str), free(pwd), KO);
-	free(pwd);
+		return (print_error(-3), KO);
+	ret = update_pwd(old_pwd, data);
 	free(old_pwd);
-	free(str);
-	return (OK);
+	return (ret);
 }
+

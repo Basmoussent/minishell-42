@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/11 21:49:16 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/12 14:41:21 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 #define BLANK_FILE ".blank_tmp"
 
 
-extern volatile int signal_received;
+extern volatile int g_signal_received;
 
 enum
 {
@@ -83,15 +83,19 @@ typedef struct s_token_processing
 typedef struct s_data
 {
 	char	**envp;
+	char	**export;
 	int		ast;
 	char	*hd_file;
+	t_ast_node  *current_ast;  // Track current AST
+	char 	**tokens;      // Track current tokens
+	char 	*input;        // Track current input
 }	t_data;
 
 // Builtins
 int		ft_echo(char *str);
 int		ft_pwd(t_data *data);
 int		ft_env(char **envp);
-int		ft_exit(char *input);
+int		ft_exit(char *input, t_data *data);
 int		ft_unset(char *input, t_data *data);
 int		ft_export(char *str, t_data *data);
 int		ft_cd(char *path, t_data *data);
@@ -102,6 +106,7 @@ int		is_valid_varname(char *var);
 void	ft_process_input(char *input, char *buffer);
 char	**copy_envp(char **envp);
 int		ft_set_env(char *var, char *value, t_data *data);
+char	**copy_export_list(char **envp);
 
 // LEXER
 int			is_space(char c);
@@ -129,6 +134,7 @@ int	is_speci(char *token);
 int	count_tokens_array(char **tokens);
 char	**allocate_filtered_tokens(char **tokens);
 
+
 char	**allocate_ignored_tokens(char **tokens);
 
 // EXEC
@@ -149,5 +155,7 @@ void    handle_signals(int signum);
 int ft_exit_test(void);
 int ft_echo_test(void);
 int ft_lexer_test(int argc, char **argv, char **envp);
+
+void	cleanup_shell(t_data *data);
 
 #endif

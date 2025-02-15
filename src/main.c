@@ -13,50 +13,114 @@
 #include "../include/minishell.h"
 #include <readline/readline.h>
 
+volatile int	g_signal_received = 0;
 
-volatile int signal_received = 0;
-
-char *read_input()
+void	cleanup_shell(t_data *data)
 {
-    char *input;
-    
-    input = readline(COLOR_CYAN_BOLD "Minishell> " COLOR_RESET);
-    if (!input)
-    {
-        printf(COLOR_RED "exit\n" COLOR_RESET);
-        exit(EXIT_SUCCESS);
-    }
-    return input;
+	if (!data)
+		return;
+	if (data->current_ast)
+	{
+		free_ast(data->current_ast);
+		data->current_ast = NULL;
+	}
+	if (data->tokens)
+	{
+		free_args(data->tokens);
+		data->tokens = NULL;
+	}
+	if (data->input)
+	{
+		free(data->input);
+		data->input = NULL;
+	}
+	if (data->hd_file)
+	{
+		unlink(data->hd_file);
+		free(data->hd_file);
+		data->hd_file = NULL;
+	}
+	if (data->envp)
+	{
+		free_args(data->envp);
+		data->envp = NULL;
+	}
+	if (data->export)
+	{
+		free_args(data->export);
+		data->export = NULL;
+	}
+	rl_clear_history();
 }
 
-int main(int argc, char **argv, char **envp)
+static char	*read_input(void)
 {
-    t_data data;
-    char *input;
-    t_ast_node *ast;
+	char	*input;
 
-    if (argc != 1 || !argv[0])
-        return (0);
-    data.envp = copy_envp(envp);
-    data.ast = 1;
-    while (1)
-    {
-        data.hd_file = ft_strdup("");
-        unlink(data.hd_file);
-        free(data.hd_file);
-        signal(SIGINT, handle_signals);
-    	signal(SIGQUIT, SIG_IGN);
-        input = read_input();
-        add_history(input);
-        ast = lexing(input, &data);
-        if (ast)
-        {
-            if (data.ast)
-                print_ast(ast, "", 0);
-            exec_ast(ast, &data);
-            free_ast(ast);
-        }
-    }
-    free_args(data.envp);
-    return 0;
+	input = readline(COLOR_CYAN_BOLD "Minishell> " COLOR_RESET);
+	if (!input)
+	{
+		ft_putstr_fd(COLOR_RED "exit\n" COLOR_RESET, 1);
+		return (NULL);
+	}
+	return (input);
+}
+
+static void	init_shell(t_data *data, char **envp)
+{
+	data->envp = copy_envp(envp);
+	data->export = copy_export_list(envp);
+	data->ast = 1;
+	data->current_ast = NULL;
+	data->tokens = NULL;
+	data->input = NULL;
+	data->hd_file = NULL;
+	if (!data->envp || !data->export)
+	{
+		cleanup_shell(data);
+		exit(1);
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data		data;
+
+	(void)argc;
+	(void)argv;
+	init_shell(&data, envp);
+	while (1)
+	{
+		data.hd_file = ft_strdup("");
+		signal(SIGINT, handle_signals);
+		signal(SIGQUIT, SIG_IGN);
+		data.input = read_input();
+		if (!data.input)
+			break;
+		add_history(data.input);
+		if (data.current_ast)
+		{
+			free_ast(data.current_ast);
+			data.current_ast = NULL;
+		}
+		data.current_ast = lexing(data.input, &data);
+		if (data.current_ast && data.ast)
+			print_ast(data.current_ast, "", 0);
+		if (data.current_ast)
+			exec_ast(data.current_ast, &data);
+		// Cleanup for this iteration
+		if (data.input)
+		{
+			free(data.input);
+			data.input = NULL;
+		}
+		if (data.hd_file)
+		{
+			unlink(data.hd_file);
+			free(data.hd_file);
+			data.hd_file = NULL;
+		}
+	}
+	cleanup_shell(&data);
+	return (0);
 }

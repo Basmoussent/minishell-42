@@ -40,12 +40,12 @@ void	split_command_arg(t_ast_node *node)
 	space = ft_strchr(node->value, ' ');
 	if (!space)
 		return ;
-	arg = ft_strdup(space);
-	ft_strchr(node->value, ' ')[0] = '\0';
+	arg = ft_strdup(space + 1);
+	*space = '\0';
 	if (arg)
 	{
-		*arg = '\0';
-		node->right = create_ast_node(0, arg + 1);
+		node->right = create_ast_node(0, arg);
+		free(arg);
 	}
 }
 

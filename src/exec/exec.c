@@ -89,21 +89,25 @@ void get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
 
 static void execute_command(t_ast_node *node, t_data *data)
 {
-	pid_t pid;
-	char *cmd_path;
-	char **args;
+	pid_t	pid;
+	char	*cmd_path;
+	char	**args;
 
 	if (!node || !node->value)
 		handle_error("Invalid command structure");
 	args = prepare_args(node);
+	if (is_builtin(node))
+	{
+		exec_builtin(node, data);
+		free_args(args);
+		return;
+	}
 	pid = fork();
 	if (pid == -1)
 		handle_error("fork");
 	if (pid == 0)
 	{
 		cmd_path = NULL;
-		if (is_builtin(node))
-			exit(0);
 		get_cmd_path(node, data->envp, &cmd_path, args);
 		execve(cmd_path, args, data->envp);
 		perror("execve");
@@ -112,8 +116,6 @@ static void execute_command(t_ast_node *node, t_data *data)
 	else
 	{
 		free_args(args);
-		if (is_builtin(node))
-			exec_builtin(node, data);
 		waitpid(pid, NULL, 0);
 	}
 }
@@ -224,9 +226,3 @@ void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_pat
 		free(cmd_path);
 	exit(status);
 }
-
-//
-// memory leak - rendr le code lisible
-// unlink le fichier tmp
-//
-

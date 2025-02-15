@@ -42,45 +42,51 @@ void	skip_whitespace(char **start)
 		(*start)++;
 }
 
-char **split_whitespace(char *input) {
-    char 	**tokens;
-    char 	*start;
-    char 	*end;
-    int		i;
+char **split_whitespace(char *input)
+{
+	char 	**tokens;
+	char 	*start;
+	char 	*end;
+	int		i;
 
 	i = 0;
-    tokens = allocate_tokens(input);
-    if (!tokens)
-        return (NULL);
-    start = input;
-    while (*start)
+	tokens = allocate_tokens(input);
+	if (!tokens)
+		return (NULL);
+	start = input;
+	while (*start)
 	{
-        skip_whitespace(&start);
-        if (*start == '\0')
-            break ;
-        if (is_special_char(start))
+		skip_whitespace(&start);
+		if (*start == '\0')
+			break;
+		if (is_special_char(start))
 		{
-            end = start + 1;
-            if (*start == '>' && *(start + 1) == '>')
-                end = start + 2;
-			else if (*start == '<' && *(start + 1) == '<')
-                end = start + 2;
-            tokens[i++] = ft_strndup(start, end - start);
-            if (!tokens[i - 1])
-                return (free_tokens(tokens));
-            start = end;
-        }
-        else if (*start == '"' || *start == '\'')
-            start = is_quote(start);
-		else 
+			end = start + 1;
+			if ((*start == '>' && *(start + 1) == '>') ||
+				(*start == '<' && *(start + 1) == '<'))
+				end = start + 2;
+			tokens[i] = ft_strndup(start, end - start);
+			if (!tokens[i++])
+				return (free_args(tokens), NULL);
+			start = end;
+		}
+		else if (*start == '"' || *start == '\'')
 		{
-            end = find_token_end(start);
-            tokens[i++] = ft_strndup(start, end - start);
-            if (!tokens[i - 1])
-                return free_tokens(tokens);
-            start = end;
-        }
-    }
-    tokens[i] = NULL;
-    return (tokens);
+			end = is_quote(start);
+			tokens[i] = ft_strndup(start, end - start);
+			if (!tokens[i++])
+				return (free_args(tokens), NULL);
+			start = end;
+		}
+		else
+		{
+			end = find_token_end(start);
+			tokens[i] = ft_strndup(start, end - start);
+			if (!tokens[i++])
+				return (free_args(tokens), NULL);
+			start = end;
+		}
+	}
+	tokens[i] = NULL;
+	return (tokens);
 }

@@ -64,3 +64,4 @@ int	heredoc_logic(char *delimiter, t_data *data)
 	fd = open(data->hd_file, O_RDONLY);
 	return (fd);
 }
+

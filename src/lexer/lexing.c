@@ -14,21 +14,31 @@
 
 t_ast_node	*lexing(char *input, t_data *data)
 {
-	int			count;
 	char		**lexed_input;
 	char		**true_input;
 	t_ast_node	*ast;
 
 	input = trim_input(input);
-	count = count_tokens(input);
-	if (!count)
+	if (!count_tokens(input))
 		return (NULL);
 	lexed_input = split_whitespace(input);
 	if (!lexed_input)
 		return (NULL);
 	true_input = filter_tokens(lexed_input);
 	if (!true_input)
+	{
+		free_args(lexed_input);
 		return (NULL);
+	}
 	ast = parse_tokens(true_input, data);
+	free_args(true_input);
+	if (!ast)
+	{
+		free_args(lexed_input);
+		return (NULL);
+	}
+	if (data->tokens)
+		free_args(data->tokens);
+	data->tokens = lexed_input;
 	return (ast);
 }

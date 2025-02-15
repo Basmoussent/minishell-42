@@ -70,12 +70,17 @@ void	process_tokens(t_token_processing *tp)
 char	**filter_tokens(char **tokens)
 {
 	t_token_processing	tp;
+	char				**result;
 
 	tp.tokens = tokens;
 	tp.filtered_tokens = allocate_filtered_tokens(tokens);
 	tp.ignored_tokens = allocate_ignored_tokens(tokens);
 	if (!tp.filtered_tokens || !tp.ignored_tokens)
+	{
+		free(tp.filtered_tokens);
+		free(tp.ignored_tokens);
 		return (NULL);
+	}
 	tp.i = 0;
 	tp.j = 0;
 	tp.k = 0;
@@ -86,5 +91,7 @@ char	**filter_tokens(char **tokens)
 	tp.filtered_tokens[tp.j] = NULL;
 	tp.ignored_tokens[tp.k] = NULL;
 	create_files_from_ignored_tokens(tp.ignored_tokens);
-	return (tp.filtered_tokens);
+	result = tp.filtered_tokens;
+	free_args(tp.ignored_tokens);
+	return (result);
 }

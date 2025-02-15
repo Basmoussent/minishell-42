@@ -75,8 +75,10 @@ void	free_args(char **args)
 
 	i = -1;
 	while (args[++i])
-		free(args[i]);
-	free(args);
+		if (args[i])
+			free(args[i]);
+	if (args)
+		free(args);
 }
 
 void free_ast(t_ast_node *node)

@@ -77,29 +77,32 @@ static int handle_exit_error(char *arg)
 	return (0);
 }
 
-int ft_exit(char *input)
+int	ft_exit(char *input, t_data *data)
 {
 	char		*arg;
-	long long   exit_status;
+	long long	exit_status;
 
 	arg = input;
 	exit_status = 0;
+	write(STDERR_FILENO, "exit\n", 5);
 	if (*arg == '\0')
+	{
+		cleanup_shell(data);
 		exit(0);
+	}
 	if (ft_strchr(arg, ' '))
 	{
 		print_error("minishell: exit: too many arguments", NULL);
 		return (1);
 	}
 	if (handle_exit_error(arg))
-		return (2);
-	if (*arg)
 	{
-		exit_status = ft_atol(arg);
-		if (exit_status < 0)
-			exit_status = 256 + exit_status % 256;
-		write(STDERR_FILENO, "exit\n", 5);
-		exit(exit_status);
+		cleanup_shell(data);
+		exit(2);
 	}
-	return (exit_status);
+	exit_status = ft_atol(arg);
+	if (exit_status < 0)
+		exit_status = 256 + exit_status % 256;
+	cleanup_shell(data);
+	exit(exit_status);
 }
