@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <readline/readline.h>
 
 volatile int	g_signal_received = 0;
 
@@ -70,7 +69,7 @@ static void	init_shell(t_data *data, char **envp)
 {
 	data->envp = copy_envp(envp);
 	data->export = copy_export_list(envp);
-	data->ast = 0;
+	data->ast = 1;
 	data->current_ast = NULL;
 	data->tokens = NULL;
 	data->input = NULL;
