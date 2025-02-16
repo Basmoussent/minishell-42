@@ -96,7 +96,7 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		data.input = read_input();
 		if (!data.input)
-			break;
+			break ;
 		add_history(data.input);
 		if (data.current_ast)
 		{
@@ -104,9 +104,9 @@ int	main(int argc, char **argv, char **envp)
 			data.current_ast = NULL;
 		}
 		data.current_ast = lexing(data.input, &data);
-		if (data.current_ast && data.ast)
-			print_ast(data.current_ast, "", 0);
 		if (data.current_ast)
+    	    print_ast(data.current_ast, "", 0);
+        if (data.current_ast)
 			exec_ast(data.current_ast, &data);
 		if (data.input)
 		{
