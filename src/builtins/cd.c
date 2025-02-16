@@ -57,4 +57,3 @@ int	ft_cd(char *path, t_data *data)
 	free(old_pwd);
 	return (ret);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/11 22:42:28 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/16 19:17:55 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**allocate_tokens(char *input)
 {
 	char	**tokens;
 
-	tokens = malloc(sizeof(char *) * (count_tokens(input) + 1));
+	tokens = ft_calloc(sizeof(char *) , (count_tokens(input) + 1));
 	if (!tokens)
 		return (NULL);
 	return (tokens);

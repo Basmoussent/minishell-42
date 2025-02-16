@@ -66,6 +66,7 @@ int	occur(const char *str, char c);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 long	ft_atol(const char *str);
 char	*ft_strcpy(char *dest, char *src);
+void	ft_free(void **ptr);
 
 // OTHER FUNCTIONS //
 char	*ft_substr(char const *s, unsigned int start, size_t len);

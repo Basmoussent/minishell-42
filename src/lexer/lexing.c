@@ -37,8 +37,6 @@ t_ast_node	*lexing(char *input, t_data *data)
 		free_args(lexed_input);
 		return (NULL);
 	}
-	if (data->tokens)
-		free_args(data->tokens);
 	data->tokens = lexed_input;
 	return (ast);
 }

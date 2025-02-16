@@ -69,16 +69,20 @@ void	ft_process_input(char *input, char *buffer)
 	buffer[buffer_index] = '\0';
 }
 
-void	free_args(char **args)
+void free_args(char **args)
 {
-	int	i;
+    int i;
 
-	i = -1;
-	while (args[++i])
-		if (args[i])
-			free(args[i]);
-	if (args)
-		free(args);
+    if (!args)
+        return;
+    i = 0;
+    while (args[i])
+    {
+        ft_free((void **)&args[i]);
+        i++;
+    }
+    ft_free((void **)&args);
+	args = NULL;
 }
 
 void free_ast(t_ast_node *node)
@@ -87,6 +91,6 @@ void free_ast(t_ast_node *node)
 		return;
 	free_ast(node->left);
 	free_ast(node->right);
-	free(node->value);
-	free(node);
+	ft_free((void **)&node->value);
+	ft_free((void **)&node);
 }

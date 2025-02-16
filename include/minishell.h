@@ -86,9 +86,10 @@ typedef struct s_data
 	char	**export;
 	int		ast;
 	char	*hd_file;
-	t_ast_node  *current_ast;  // Track current AST
-	char 	**tokens;      // Track current tokens
-	char 	*input;        // Track current input
+	t_ast_node  *current_ast;
+	char 	**tokens;
+	char 	*input;
+	int 	status;
 }	t_data;
 
 // Builtins

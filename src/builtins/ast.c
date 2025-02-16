@@ -17,12 +17,12 @@ int	ft_ast(t_data *data)
 	if (!data)
 		return (KO);
 	if (data->ast == 1)
-	{	
+	{
 		printf(COLOR_YELLOW_BOLD "AST is disabled\n" COLOR_RESET);
 		data->ast = 0;
 	}
 	else
-	{	
+	{
 		printf(COLOR_YELLOW_BOLD "AST is enabled\n" COLOR_RESET);
 		data->ast = 1;
 	}

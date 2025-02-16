@@ -15,42 +15,42 @@
 
 volatile int	g_signal_received = 0;
 
-void	cleanup_shell(t_data *data)
+void cleanup_shell(t_data *data)
 {
-	if (!data)
-		return;
-	if (data->current_ast)
-	{
-		free_ast(data->current_ast);
-		data->current_ast = NULL;
-	}
-	if (data->tokens)
-	{
-		free_args(data->tokens);
-		data->tokens = NULL;
-	}
-	if (data->input)
-	{
-		free(data->input);
-		data->input = NULL;
-	}
-	if (data->hd_file)
-	{
-		unlink(data->hd_file);
-		free(data->hd_file);
-		data->hd_file = NULL;
-	}
-	if (data->envp)
-	{
-		free_args(data->envp);
-		data->envp = NULL;
-	}
-	if (data->export)
-	{
-		free_args(data->export);
-		data->export = NULL;
-	}
-	rl_clear_history();
+    if (!data)
+        return;
+    if (data->current_ast)
+    {
+        free_ast(data->current_ast);
+        data->current_ast = NULL;
+    }
+    if (data->tokens)
+    {
+        free_args(data->tokens);
+        data->tokens = NULL;
+    }
+    if (data->input)
+    {
+        ft_free((void **)&data->input);
+        data->input = NULL;
+    }
+    if (data->hd_file)
+    {
+        unlink(data->hd_file);
+        ft_free((void **)&data->hd_file);
+        data->hd_file = NULL;
+    }
+    if (data->envp)
+    {
+        free_args(data->envp);
+        data->envp = NULL;
+    }
+    if (data->export)
+    {
+        free_args(data->export);
+        data->export = NULL;
+    }
+    clear_history();
 }
 
 static char	*read_input(void)
@@ -70,11 +70,12 @@ static void	init_shell(t_data *data, char **envp)
 {
 	data->envp = copy_envp(envp);
 	data->export = copy_export_list(envp);
-	data->ast = 1;
+	data->ast = 0;
 	data->current_ast = NULL;
 	data->tokens = NULL;
 	data->input = NULL;
 	data->hd_file = NULL;
+	data->status = 0;
 	if (!data->envp || !data->export)
 	{
 		cleanup_shell(data);
@@ -108,7 +109,6 @@ int	main(int argc, char **argv, char **envp)
 			print_ast(data.current_ast, "", 0);
 		if (data.current_ast)
 			exec_ast(data.current_ast, &data);
-		// Cleanup for this iteration
 		if (data.input)
 		{
 			free(data.input);

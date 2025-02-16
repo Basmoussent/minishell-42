@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/29 15:21:22 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   exec.c											 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: bdenfir <bdenfir@42.fr>					+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/24 16:45:47 by bdenfir		   #+#	#+#			 */
+/*   Updated: 2025/01/29 15:21:22 by bdenfir		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -113,10 +113,13 @@ static void execute_command(t_ast_node *node, t_data *data)
 		perror("execve");
 		cleanup_and_exit(node, data, args, cmd_path, 1);
 	}
-	else
 	{
 		free_args(args);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &data->status, 0);
+		if ((data->status & 0x7f) == 0)
+			data->status = (data->status & 0xff00) >> 8;
+		else
+			data->status = 128 + (data->status & 0x7f);
 	}
 }
 
@@ -133,42 +136,46 @@ void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
 // Function to execute a pipe
 static void execute_pipe(t_ast_node *node, t_data *data)
 {
-    int pipe_fds[2];
-    pid_t left_pid, right_pid;
+	int pipe_fds[2];
+	pid_t left_pid, right_pid;
 
-    if (!node || !node->left || !node->right)
-    {
-        write(2, "Invalid pipe structure\n", 23);
-        cleanup_and_exit(node, data, NULL, NULL, 1);
-    }
-    if (pipe(pipe_fds) == -1)
-        handle_error("pipe");
-    left_pid = fork();
-    if (left_pid == -1)
-        handle_error("fork");
-    if (left_pid == 0)
-    {
-        close(pipe_fds[0]);
-        dup2(pipe_fds[1], STDOUT_FILENO);
-        close(pipe_fds[1]);
-        exec_ast(node->left, data);
-        exit(1);
-    }
-    right_pid = fork();
-    if (right_pid == -1)
-        handle_error("fork");
-    if (right_pid == 0)
-    {
-        close(pipe_fds[1]);
-        dup2(pipe_fds[0], STDIN_FILENO);
-        close(pipe_fds[0]);
-        exec_ast(node->right, data);
-        exit(1);
-    }
-    close(pipe_fds[0]);
-    close(pipe_fds[1]);
-    waitpid(left_pid, NULL, 0);
-    waitpid(right_pid, NULL, 0);
+	if (!node || !node->left || !node->right)
+	{
+		write(2, "Invalid pipe structure\n", 23);
+		cleanup_and_exit(node, data, NULL, NULL, 1);
+	}
+	if (pipe(pipe_fds) == -1)
+		handle_error("pipe");
+	left_pid = fork();
+	if (left_pid == -1)
+		handle_error("fork");
+	if (left_pid == 0)
+	{
+		close(pipe_fds[0]);
+		dup2(pipe_fds[1], STDOUT_FILENO);
+		close(pipe_fds[1]);
+		exec_ast(node->left, data);
+		exit(1);
+	}
+	right_pid = fork();
+	if (right_pid == -1)
+		handle_error("fork");
+	if (right_pid == 0)
+	{
+		close(pipe_fds[1]);
+		dup2(pipe_fds[0], STDIN_FILENO);
+		close(pipe_fds[0]);
+		exec_ast(node->right, data);
+		exit(1);
+	}
+	close(pipe_fds[0]);
+	close(pipe_fds[1]);
+	waitpid(left_pid, NULL, 0);
+	waitpid(right_pid, &data->status, 0);
+	if ((data->status & 0x7f) == 0)
+		data->status = (data->status & 0xff00) >> 8;
+	else
+		data->status = 128 + (data->status & 0x7f);
 }
 
 
@@ -193,24 +200,24 @@ void reset_stream(int saved_stdin, int saved_stdout)
 // Function to execute the abstract syntax tree
 void exec_ast(t_ast_node *node, t_data *data)
 {
-    int saved_stdin;
-    int saved_stdout;
+	int saved_stdin;
+	int saved_stdout;
 
-    if (!node || !data)
-        return;
-    saved_stdin = dup(STDIN_FILENO);
-    saved_stdout = dup(STDOUT_FILENO);
+	if (!node || !data)
+		return;
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	if (node->type == PIPE)
-        execute_pipe(node, data);
-    else if (node->type == TRUNCATE || node->type == APPEND
-             || node->type == REDIRECT_INPUT || node->type == HEREDOC)
-    {
-        handle_redirection(node, data);
-        exec_ast(node->left, data);
+		execute_pipe(node, data);
+	else if (node->type == TRUNCATE || node->type == APPEND
+			 || node->type == REDIRECT_INPUT || node->type == HEREDOC)
+	{
+		handle_redirection(node, data);
+		exec_ast(node->left, data);
 		reset_stream(saved_stdin, saved_stdout);
-    }
-    else
-        execute_command(node, data);
+	}
+	else
+		execute_command(node, data);
 }
 
 // Function to handle cleanup and exit

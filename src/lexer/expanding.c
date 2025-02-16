@@ -71,8 +71,8 @@ char	*expand_single_variable(char *input, t_data *data)
 	if (!start)
 		return (ft_strdup(input));
 	end = start + 1;
-	/*if (end == '?')
-		return (get_return_value(prev));*/
+	if (*end == '?')
+		return (ft_itoa(data->status));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
 	var_name = extract_var_name(start);
