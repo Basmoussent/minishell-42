@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:04:11 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 22:35:31 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 01:39:16 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	add_last_redirection(t_token_processing *tp)
 {
 	if (tp->last_redirection && tp->last_target)
 	{
-		tp->filtered_tokens[tp->j++] = tp->last_redirection;
-		tp->filtered_tokens[tp->j++] = tp->last_target;
+		tp->filtered_tokens[tp->j++] = ft_strdup(tp->last_redirection);
+		tp->filtered_tokens[tp->j++] = ft_strdup(tp->last_target);
 		tp->last_redirection = NULL;
 		tp->last_target = NULL;
 	}
@@ -51,8 +51,8 @@ void	process_tokens(t_token_processing *tp)
 		{
 			if (tp->last_redirection && tp->last_target)
 			{
-				tp->ignored_tokens[tp->k++] = tp->last_redirection;
-				tp->ignored_tokens[tp->k++] = tp->last_target;
+				tp->ignored_tokens[tp->k++] = ft_strdup(tp->last_redirection);
+				tp->ignored_tokens[tp->k++] = ft_strdup(tp->last_target);
 			}
 			tp->last_redirection = tp->tokens[tp->i];
 			if (tp->tokens[tp->i + 1])
@@ -62,7 +62,7 @@ void	process_tokens(t_token_processing *tp)
 		else
 		{
 			add_last_redirection(tp);
-			tp->filtered_tokens[tp->j++] = tp->tokens[tp->i++];
+			tp->filtered_tokens[tp->j++] = ft_strdup(tp->tokens[tp->i++]);
 		}
 	}
 }
@@ -70,17 +70,12 @@ void	process_tokens(t_token_processing *tp)
 char	**filter_tokens(char **tokens)
 {
 	t_token_processing	tp;
-	char				**result;
 
 	tp.tokens = tokens;
 	tp.filtered_tokens = allocate_filtered_tokens(tokens);
 	tp.ignored_tokens = allocate_ignored_tokens(tokens);
 	if (!tp.filtered_tokens || !tp.ignored_tokens)
-	{
-		free(tp.filtered_tokens);
-		free(tp.ignored_tokens);
 		return (NULL);
-	}
 	tp.i = 0;
 	tp.j = 0;
 	tp.k = 0;
@@ -91,7 +86,6 @@ char	**filter_tokens(char **tokens)
 	tp.filtered_tokens[tp.j] = NULL;
 	tp.ignored_tokens[tp.k] = NULL;
 	create_files_from_ignored_tokens(tp.ignored_tokens);
-	result = tp.filtered_tokens;
 	free_args(tp.ignored_tokens);
-	return (result);
+	return (tp.filtered_tokens);
 }
