@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:23:43 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:49:49 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_error(const char *msg)
+void	handle_error(const char *msg, int status)
 {
 	perror(msg);
-	exit(1);
+	exit(status);
 }
 
 char	*find_executable(char *cmd, char **envp)
@@ -64,7 +64,7 @@ char	**prepare_args(t_ast_node *node)
 	{
 		args = malloc(2 * sizeof(char *));
 		if (!args)
-			handle_error("Error allocating memory for arguments");
+			handle_error("Error allocating memory for arguments", 1);
 		args[0] = ft_strdup(node->value);
 		args[1] = NULL;
 	}

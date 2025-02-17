@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 11:44:12 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:50:42 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	execute_command(t_ast_node *node, t_data *data)
 	char	**args;
 
 	if (!node || !node->value)
-		handle_error("Invalid command structure");
+		handle_error("Invalid command structure", 1);
 	args = prepare_args(node);
 	if (is_builtin(node))
 	{
@@ -28,7 +28,7 @@ static void	execute_command(t_ast_node *node, t_data *data)
 	}
 	pid = fork();
 	if (pid == -1)
-		handle_error("fork");
+		handle_error("fork", 1);
 	if (pid == 0)
 		handle_command_child(node, data, args);
 	handle_command_parent(data, pid, args);
@@ -46,15 +46,15 @@ static void	execute_pipe(t_ast_node *node, t_data *data)
 		cleanup_and_exit(node, data, NULL, NULL);
 	}
 	if (pipe(pipe_fds) == -1)
-		handle_error("pipe");
+		handle_error("pipe", 1);
 	left_pid = fork();
 	if (left_pid == -1)
-		handle_error("fork");
+		handle_error("fork", 1);
 	if (left_pid == 0)
 		execute_child(node, data, pipe_fds);
 	right_pid = fork();
 	if (right_pid == -1)
-		handle_error("fork");
+		handle_error("fork", 1);
 	if (right_pid == 0)
 		handle_right_child(node, data, pipe_fds);
 	handle_pipe_parent(data, pipe_fds, left_pid, right_pid);

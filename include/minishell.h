@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 12:30:13 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:49:32 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int			ft_set_env(char *var, char *value, t_data *data);
 char		**copy_existing_env(char **envp);
 
 // Exec utils
-void		handle_error(const char *msg);
+void		handle_error(const char *msg, int status);
 void		handle_command_child(t_ast_node *node, t_data *data, char **args);
 void		handle_command_parent(t_data *data, pid_t pid, char **args);
 char		**prepare_args(t_ast_node *node);

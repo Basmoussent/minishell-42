@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 11:45:35 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:50:57 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void
 	if (!*cmd_path)
 	{
 		free_args(args);
-		handle_error("Command not found");
+		handle_error("Command not found", 127);
 	}
 }
 
