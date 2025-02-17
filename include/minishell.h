@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 21:24:10 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 21:25:33 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ void		handle_signals(int signum);
 void    	handle_signals_child(void);
 void		cleanup_shell(t_data *data);
 char		*remove_quotes(char *input);
+int			can_expand(char *rslt);
+char		*expand_status(int status, char *input);
 
 
 // Export utils
