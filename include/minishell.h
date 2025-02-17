@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 12:30:13 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:52:30 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,6 @@ bool		validate_command(const char *cmd);
 void		cleanup_and_exit(t_ast_node *root, t_data *data,
 				char **args, char *cmd_path);
 void		handle_signals(int signum);
-
-//TEST SUITE
-int			ft_exit_test(void);
-int			ft_echo_test(void);
-int 		ft_lexer_test(int argc, char **argv, char **envp);
 
 void		cleanup_shell(t_data *data);
 
