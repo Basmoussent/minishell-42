@@ -24,11 +24,6 @@ void cleanup_shell(t_data *data)
         free_ast(data->current_ast);
         data->current_ast = NULL;
     }
-    if (data->tokens)
-    {
-        free_args(data->tokens);
-        data->tokens = NULL;
-    }
     if (data->input)
     {
         ft_free((void **)&data->input);

@@ -74,7 +74,7 @@ void free_args(char **args)
     int i;
 
     if (!args)
-        return;
+        return ;
     i = 0;
     while (args[i])
     {
