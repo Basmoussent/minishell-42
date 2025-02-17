@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 11:18:47 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:57:22 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,29 @@ t_ast_node	*double_free_input(char	**args)
 	return (NULL);
 }
 
+int	check_doubles(char **lexed_input)
+{
+	int	i;
+
+	i = 0;
+	while (lexed_input[i + 1])
+	{
+		if (is_special_char(lexed_input[i])
+			&& is_special_char(lexed_input[i + 1]))
+		{
+			printf("minishell: syntax error near unexpected token `newline'\n");
+			return (0);
+		}
+		i++;
+	}
+	if (is_special_char(lexed_input[i]))
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return (0);
+	}
+	return (1);
+}
+
 t_ast_node	*lexing(char *input, t_data *data)
 {
 	char		**lexed_input;
@@ -73,8 +96,8 @@ t_ast_node	*lexing(char *input, t_data *data)
 	if (!count_tokens(input))
 		return (NULL);
 	lexed_input = split_whitespace(input);
-	if (!lexed_input)
-		return (NULL);
+	if (!lexed_input || !check_doubles(lexed_input))
+		return (double_free_input(lexed_input));
 	true_input = filter_tokens(lexed_input);
 	if (!true_input)
 	{
