@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 void	handle_signals(int signum)
 {
 	if (signum == SIGINT)
@@ -21,4 +25,20 @@ void	handle_signals(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+void    sigquit_handler(int signum)
+{
+    (void)signum;
+    printf("Quit (core dumped)\n");
+    exit(131);
+}
+
+void    handle_signals_child(void)
+{
+    struct sigaction sa;
+
+    sa.sa_handler = sigquit_handler;
+    sa.sa_flags = SA_RESTART;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGQUIT, &sa, NULL);
 }

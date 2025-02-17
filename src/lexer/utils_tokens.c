@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 21:47:19 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 22:43:47 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 15:19:24 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	is_speci(char *token)
 {
-	return (token[0] == '>');
+	if (*token)
+		return (token[0] == '>');
+	return (KO);
 }
 
 int	count_tokens_array(char **tokens)

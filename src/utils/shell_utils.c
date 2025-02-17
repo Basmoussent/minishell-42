@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:50:54 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:59:02 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	process_input(t_data *data)
 		data->current_ast = NULL;
 	}
 	data->current_ast = lexing(data->input, data);
-	if (data->current_ast)
-		print_ast(data->current_ast, "", 0);
 	if (data->current_ast)
 		exec_ast(data->current_ast, data);
 }

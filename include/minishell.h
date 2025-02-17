@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 13:49:32 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:37:31 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 
 # define HERE_DOC_TMP ".heredoc_tmp"
 # define BLANK_FILE ".blank_tmp"
+
+#define _GNU_SOURCE
 
 extern volatile int	g_signal_received;
 
@@ -94,7 +96,7 @@ typedef struct s_data
 // Builtins
 int			ft_echo(char *str);
 int			ft_pwd(t_data *data);
-int			ft_env(char **envp);
+int			ft_env(char **envp, char *arg);
 int			ft_exit(char *input, t_data *data);
 int			ft_unset(char *input, t_data *data);
 int			ft_export(char *str, t_data *data);
@@ -154,12 +156,7 @@ bool		validate_command(const char *cmd);
 void		cleanup_and_exit(t_ast_node *root, t_data *data,
 				char **args, char *cmd_path);
 void		handle_signals(int signum);
-
-//TEST SUITE
-int			ft_exit_test(void);
-int			ft_echo_test(void);
-int 		ft_lexer_test(int argc, char **argv, char **envp);
-
+void    	handle_signals_child(void);
 void		cleanup_shell(t_data *data);
 
 // Export utils

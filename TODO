@@ -1,3 +1,6 @@
 Changer le makeFile en elnver la wildcard
-verifier le status code des builtins
 fais des test reussite et echec pour les builtins et checkl   le code de retour avec bash --posix
+131 quiit core dumped pour ctr+\
+130 pour ctrl + c
+gere les signaux independemmant dans les child
+FDS encore ouvert
