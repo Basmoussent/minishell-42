@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 15:37:31 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:56:28 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ void		cleanup_and_exit(t_ast_node *root, t_data *data,
 void		handle_signals(int signum);
 void    	handle_signals_child(void);
 void		cleanup_shell(t_data *data);
+char		*remove_quotes(char *input);
+
 
 // Export utils
 int			add_to_export(char *var, t_data *data);

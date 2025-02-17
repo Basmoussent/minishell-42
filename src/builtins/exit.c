@@ -14,17 +14,30 @@
 
 static int	is_number(char *str)
 {
-	if (*str == '-' || *str == '+')
-		str++;
-	if (*str == '\0')
-		return (0);
+	int	single_q;
+	int	double_q;
+	int	plus_minus_count;
+
+	single_q = 0;
+	double_q = 0;
+	plus_minus_count = 0;
 	while (*str)
 	{
-		if (!ft_isdigit(*str))
+		if (*str == '"' && double_q == 0)
+			double_q++;
+		else if (*str == '"' && double_q != 0)
+			double_q--;
+		else if (*str == '\'' && single_q == 0)
+			single_q++;
+		else if (*str == '\'' && single_q != 0)
+			single_q--;
+		else if ((*str == '+' || *str == '-'))
+			plus_minus_count++;
+		else if (!ft_isdigit(*str))
 			return (0);
 		str++;
 	}
-	return (1);
+	return (double_q == 0 && single_q == 0 && plus_minus_count < 2);
 }
 
 static void	print_error(char *msg, char *arg)
@@ -97,6 +110,7 @@ int	ft_exit(char *input, t_data *data)
 		cleanup_shell(data);
 		exit(2);
 	}
+	arg = remove_quotes(arg);
 	exit_status = ft_atol(arg);
 	if (exit_status < 0)
 		exit_status = 256 + exit_status % 256;
