@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-int	is_type(enum s_token type)
+int	is_type(enum e_token type)
 {
 	return (type == PIPE || type == TRUNCATE || type == APPEND
 		|| type == REDIRECT_INPUT || type == HEREDOC);
 }
 
-enum	s_token	classify_token(char *token)
+enum	e_token	classify_token(char *token)
 {
 	if (ft_strncmp(token, ">>", 2) == 0)
 		return (APPEND);
@@ -33,7 +33,7 @@ enum	s_token	classify_token(char *token)
 	return (NONE);
 }
 
-t_ast_node	*create_ast_node(enum s_token type, char *value)
+t_ast_node	*create_ast_node(enum e_token type, char *value)
 {
 	t_ast_node	*node;
 

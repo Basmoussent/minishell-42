@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:52:03 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 11:45:35 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	is_builtin(t_ast_node *node)
 	if (ft_strncmp(node->value, "export", 7) == 0)
 		return (1);
 	if (ft_strncmp(node->value, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(node->value, "exit", 5) == 0)
 		return (1);
 	return (0);
 }

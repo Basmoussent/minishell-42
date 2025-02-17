@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 01:47:18 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 11:18:47 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,48 +48,44 @@ char	*get_last_token(char **tokens)
 
 t_ast_node	*double_free_input(char	**args)
 {
-    int i;
+	int	i;
 
-    if (!args)
-        return (NULL);
-    i = 0;
-    while (args[i])
-    {
-        ft_free((void **)&args[i]);
-        i++;
-    }
-    ft_free((void **)&args);
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (args[i])
+	{
+		ft_free((void **)&args[i]);
+		i++;
+	}
+	ft_free((void **)&args);
 	args = NULL;
 	return (NULL);
 }
 
-t_ast_node *lexing(char *input, t_data *data)
+t_ast_node	*lexing(char *input, t_data *data)
 {
-    char **lexed_input;
-    char **true_input;
-    t_ast_node *ast;
+	char		**lexed_input;
+	char		**true_input;
+	t_ast_node	*ast;
 
-    input = trim_input(input);
-    if (!count_tokens(input))
-        return (NULL);
-    lexed_input = split_whitespace(input);
-    if (!lexed_input)
+	input = trim_input(input);
+	if (!count_tokens(input))
 		return (NULL);
-    true_input = filter_tokens(lexed_input);
-    if (!true_input)
-    {
-        free_args(lexed_input);
-        return (NULL);
-    }
+	lexed_input = split_whitespace(input);
+	if (!lexed_input)
+		return (NULL);
+	true_input = filter_tokens(lexed_input);
+	if (!true_input)
+	{
+		return (double_free_input(lexed_input));
+	}
 	free_args(lexed_input);
 	if (has_unclosed_quote(get_last_token(true_input)))
 		return (double_free_input(true_input));
-    ast = parse_tokens(true_input, data);
-    free_args(true_input);
-    if (!ast)
-    {
-        free_args(lexed_input);
-        return (NULL);
-    }
-    return (ast);
+	ast = parse_tokens(true_input, data);
+	free_args(true_input);
+	if (!ast)
+		return (double_free_input(lexed_input));
+	return (ast);
 }
