@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 16:56:28 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:24:10 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@
 
 # define HERE_DOC_TMP ".heredoc_tmp"
 # define BLANK_FILE ".blank_tmp"
-
-#define _GNU_SOURCE
 
 extern volatile int	g_signal_received;
 
@@ -91,6 +89,8 @@ typedef struct s_data
 	char		**tokens;
 	char		*input;
 	int			status;
+	int			saved_stdin;
+	int			saved_stdout;
 }	t_data;
 
 // Builtins
@@ -146,7 +146,7 @@ char		**allocate_ignored_tokens(char **tokens);
 int			heredoc_logic(char *delimiter, t_data *data);
 void		exec_ast(t_ast_node *node, t_data *data);
 void		reset_stream(int saved_stdin, int saved_stdout);
-void		handle_redirection(t_ast_node *node, t_data *data);
+int		handle_redirection(t_ast_node *node, t_data *data);
 int			exec_builtin(t_ast_node *node, t_data *data);
 int			is_builtin(t_ast_node *node);
 void		redirect_output(t_ast_node *node, int fd);
@@ -176,7 +176,7 @@ char		**copy_existing_env(char **envp);
 // Exec utils
 void		handle_error(const char *msg, int status);
 void		handle_command_child(t_ast_node *node, t_data *data, char **args);
-void		handle_command_parent(t_data *data, pid_t pid, char **args);
+void		handle_command_parent(pid_t pid, char **args);
 char		**prepare_args(t_ast_node *node);
 void		get_cmd_path(t_ast_node *node, char **envp,
 				char **cmd_path, char **args);

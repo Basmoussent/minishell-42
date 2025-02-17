@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:40:12 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 21:14:20 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ void	cleanup_shell(t_data *data)
 	{
 		free_args(data->tokens);
 		data->tokens = NULL;
+	}
+	if (data->saved_stdin != -1)
+	{
+		close(data->saved_stdin);
+		data->saved_stdin = -1;
+	}
+	if (data->saved_stdout != -1)
+	{
+		close(data->saved_stdout);
+		data->saved_stdout = -1;
 	}
 	cleanup_data_strings(data);
 	cleanup_data_arrays(data);

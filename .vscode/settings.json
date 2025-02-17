@@ -23,6 +23,8 @@
 		"streambuf": "c",
 		"utility": "c",
 		"history.h": "c",
-		"signal.h": "c"
-	}
+		"signal.h": "c",
+		"signal-defs.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

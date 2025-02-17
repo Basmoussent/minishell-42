@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 15:37:01 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:49:46 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 	cleanup_and_exit(node, data, args, cmd_path);
 }
 
-void	handle_command_parent(t_data *data, pid_t pid, char **args)
+void	handle_command_parent(pid_t pid, char **args)
 {
+	int	status;
+	
 	free_args(args);
-	waitpid(pid, &data->status, 0);
-	if ((data->status & 0x7f) == 0)
-		data->status = (data->status & 0xff00) >> 8;
+	waitpid(pid, &status, 0);
+	if ((status & 0x7f) == 0)
+		g_signal_received = (status & 0xff00) >> 8;
 	else
-		data->status = 128 + (data->status & 0x7f);
+		g_signal_received = 128 + (status & 0x7f);
 }

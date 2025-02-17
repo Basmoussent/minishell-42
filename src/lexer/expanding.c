@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 02:10:34 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 22:41:04 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 18:58:09 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*expand_single_variable(char *input, t_data *data)
 		return (ft_strdup(input));
 	end = start + 1;
 	if (*end == '?')
-		return (ft_itoa(data->status));
+		return (ft_itoa(g_signal_received));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
 	var_name = extract_var_name(start);

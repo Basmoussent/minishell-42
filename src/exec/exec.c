@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 13:50:42 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 21:16:15 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@ static void	execute_command(t_ast_node *node, t_data *data)
 
 	if (!node || !node->value)
 		handle_error("Invalid command structure", 1);
-	args = prepare_args(node);
 	if (is_builtin(node))
 	{
 		data->status = exec_builtin(node, data);
-		free_args(args);
 		return ;
 	}
+	args = prepare_args(node);
 	pid = fork();
 	if (pid == -1)
 		handle_error("fork", 1);
 	if (pid == 0)
 		handle_command_child(node, data, args);
-	handle_command_parent(data, pid, args);
+	handle_command_parent(pid, args);
 }
 
 static void	execute_pipe(t_ast_node *node, t_data *data)
@@ -62,21 +61,19 @@ static void	execute_pipe(t_ast_node *node, t_data *data)
 
 void	exec_ast(t_ast_node *node, t_data *data)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-
 	if (!node || !data)
 		return ;
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
+	data->saved_stdin = dup(STDIN_FILENO);
+	data->saved_stdout = dup(STDOUT_FILENO);
 	if (node->type == PIPE)
 		execute_pipe(node, data);
 	else if (node->type == TRUNCATE || node->type == APPEND
 		|| node->type == REDIRECT_INPUT || node->type == HEREDOC)
 	{
-		handle_redirection(node, data);
+		if (handle_redirection(node, data) == -1)
+			return ;
 		exec_ast(node->left, data);
-		reset_stream(saved_stdin, saved_stdout);
+		reset_stream(data->saved_stdin, data->saved_stdout);
 	}
 	else
 		execute_command(node, data);

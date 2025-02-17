@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:57:54 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 21:14:43 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ static void	init_shell(t_data *data, char **envp)
 	data->tokens = NULL;
 	data->input = NULL;
 	data->hd_file = NULL;
-	data->status = 0;
+	data->status = g_signal_received;
+	data->saved_stdin = -1;
+	data->saved_stdout = -1;
 	if (!data->envp || !data->export)
 	{
 		cleanup_shell(data);

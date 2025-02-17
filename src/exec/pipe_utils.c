@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/29 15:21:22 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:23:42 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
 	dup2(pipe_fds[1], STDOUT_FILENO);
 	close(pipe_fds[1]);
 	exec_ast(node->left, data);
-	exit(1);
+	exit(data->status);
 }
 
 void	handle_right_child(t_ast_node *node, t_data *data, int *pipe_fds)
@@ -27,7 +27,7 @@ void	handle_right_child(t_ast_node *node, t_data *data, int *pipe_fds)
 	dup2(pipe_fds[0], STDIN_FILENO);
 	close(pipe_fds[0]);
 	exec_ast(node->right, data);
-	exit(1);
+	exit(data->status);
 }
 
 void	handle_pipe_parent(t_data *data, int *pipe_fds,

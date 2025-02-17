@@ -6,14 +6,13 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 15:18:22 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:43:09 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Function to handle heredoc
-void	handle_redirection(t_ast_node *node, t_data *data)
+int	handle_redirection(t_ast_node *node, t_data *data)
 {
 	int	fd;
 
@@ -23,6 +22,7 @@ void	handle_redirection(t_ast_node *node, t_data *data)
 		write(2, node->value, ft_strlen(node->value));
 		write(2, "\n", 1);
 		g_signal_received = 2;
+		return (-1);
 	}
 	if (node->type == TRUNCATE && node->right->value)
 		fd = open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -33,16 +33,22 @@ void	handle_redirection(t_ast_node *node, t_data *data)
 	else if (node->type == HEREDOC && node->right->value)
 		fd = heredoc_logic(node->right->value, data);
 	else
-		return ;
+		return (-1);
 	if (fd == -1)
 	{
 		perror("Error opening file");
-		exit(1);
+		g_signal_received = 1;
+		return (-1);
 	}
-	redirect_output(node, fd);
+	if (node->type == REDIRECT_INPUT)
+		dup2(fd, STDIN_FILENO);
+	else
+		dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (1);
 }
 
-// Function to cehck if a cmd is a builtin
+// Function to check if a cmd is a builtin
 int	is_builtin(t_ast_node *node)
 {
 	if (!node || !node->value)
@@ -84,12 +90,10 @@ int	exec_builtin(t_ast_node *node, t_data *data)
 		return (ft_export(arg, data));
 	if (ft_strncmp(node->value, "unset", 5) == 0)
 		return (ft_unset(arg, data));
-	if (ft_strncmp(node->value, "env", 3) == 0)
-		return (ft_env(data->envp, arg));
 	if (ft_strncmp(node->value, "exit", 4) == 0)
 		return (ft_exit(arg, data));
-	if (ft_strncmp(node->value, "ast", 3) == 0)
-		return (ft_ast(data));
+	if (ft_strncmp(node->value, "env", 3) == 0)
+		return (ft_env(data->envp, arg));
 	return (0);
 }
 

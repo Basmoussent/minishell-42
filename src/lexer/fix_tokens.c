@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fix_tokens.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:04:11 by amine             #+#    #+#             */
-/*   Updated: 2025/02/17 01:39:16 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 20:28:58 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	create_files_from_ignored_tokens(char **ignored_tokens)
 		{
 			fd = open(ignored_tokens[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
-				perror("Error creating file");
+				;
 			else
 				close(fd);
 		}

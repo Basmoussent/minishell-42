@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 15:57:22 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:59:24 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	check_doubles(char **lexed_input)
 			&& is_special_char(lexed_input[i + 1]))
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
+			g_signal_received = 2;
 			return (0);
 		}
 		i++;
@@ -81,6 +82,7 @@ int	check_doubles(char **lexed_input)
 	if (is_special_char(lexed_input[i]))
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
+		g_signal_received = 2;
 		return (0);
 	}
 	return (1);
