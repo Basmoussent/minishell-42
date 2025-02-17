@@ -73,15 +73,15 @@ void	free_args(char **args)
 {
 	int	i;
 
-    if (!args)
-        return ;
-    i = 0;
-    while (args[i])
-    {
-        ft_free((void **)&args[i]);
-        i++;
-    }
-    ft_free((void **)&args);
+	if (!args)
+		return ;
+	i = 0;
+	while (args[i])
+	{
+		ft_free((void **)&args[i]);
+		i++;
+	}
+	ft_free((void **)&args);
 	if (!args)
 		return ;
 	i = 0;

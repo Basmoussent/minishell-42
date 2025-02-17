@@ -6,11 +6,13 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:49:44 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 02:57:54 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
+
+volatile int	g_signal_received = 0;
 
 static void	init_shell(t_data *data, char **envp)
 {
@@ -22,7 +24,6 @@ static void	init_shell(t_data *data, char **envp)
 	data->input = NULL;
 	data->hd_file = NULL;
 	data->status = 0;
-	g_signal_received = 0;
 	if (!data->envp || !data->export)
 	{
 		cleanup_shell(data);

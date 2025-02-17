@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:37:30 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 02:56:28 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@
 #define HERE_DOC_TMP ".heredoc_tmp"
 #define BLANK_FILE ".blank_tmp"
 
-// Global variable declaration
 extern volatile int	g_signal_received;
 
 enum
@@ -177,6 +176,10 @@ void	handle_error(const char *msg);
 void	handle_command_child(t_ast_node *node, t_data *data, char **args);
 void	handle_command_parent(t_data *data, pid_t pid, char **args);
 char	**prepare_args(t_ast_node *node);
+void
+	get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args);
+char	*find_executable(char *cmd, char **envp);
+
 
 // Pipe utils
 void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds);
@@ -194,7 +197,7 @@ int	handle_heredoc_input(int fd, char *delimiter, t_data *data,
 				int should_expand);
 
 // Shell utils
-static char	*read_input(void);
+char	*read_input(void);
 void	process_input(t_data *data);
 void	cleanup_current_iteration(t_data *data);
 void	shell_loop(t_data *data);
