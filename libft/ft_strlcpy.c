@@ -17,9 +17,9 @@ strlcat will copy the first n_bytes of the source memory area
 to the dest memory area, and will return the number of copied
 character.
 */
-size_t ft_strlcpy(char *dst, const char *src, size_t size)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	size_t count;
+	size_t	count;
 
 	count = 0;
 	if (size)

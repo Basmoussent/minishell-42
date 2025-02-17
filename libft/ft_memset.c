@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:33 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/08 12:12:03 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:22:56 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ The memset funciton is used to set the  first n_bytes of the s
 memory area, to a constant (c) byte.
 */
 
-void *ft_memset(void *s, int c, size_t n)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned long int i;
-	char			 *str;
+	unsigned long int	i;
+	char				*str;
 
 	str = (char *)s;
-	i	= -1;
+	i = -1;
 	while (++i < n)
 		str[i] = c;
 	return (s);

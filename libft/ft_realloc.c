@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:35:32 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/12/26 23:16:25 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:22:06 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void *ft_realloc(void *ptr, size_t old_size, size_t new_size)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	void *new_ptr;
+	void	*new_ptr;
 
 	if (!ptr)
 		return (malloc(new_size));

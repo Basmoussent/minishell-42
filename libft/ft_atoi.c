@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:16 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/12 14:57:12 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:27:37 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ ex ; -42born2code -> -42
 ex : ThisWillReturn0 -> 0
 */
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int i;
-	int min;
-	int rslt;
+	int	i;
+	int	min;
+	int	rslt;
 
-	i	 = 0;
-	min	 = 1;
+	i = 0;
+	min = 1;
 	rslt = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;

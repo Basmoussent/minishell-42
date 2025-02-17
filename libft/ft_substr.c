@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:14:11 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/06 16:38:01 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:17:35 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ substr will extract a substring starting from start and
 at max of lenght len, from the s string.
 */
 
-char *ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char *substr;
+	char	*substr;
 
 	if (!ft_strlen(s) || ft_strlen(s) < start)
 		return (ft_strdup(""));

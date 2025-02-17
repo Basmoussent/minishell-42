@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 22:48:54 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/16 10:33:15 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:23:04 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ This ensures that we correctly copy each byte in sequence, regardless of the
 original data type of src and dst.
 */
 
-void *ft_memmove(void *dst, const void *src, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	if ((dst == src) || n == 0)
 		return (dst);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 19:59:25 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/16 16:14:51 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:24:52 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ list resulting from successive applications of
 content of an element if necessary
 */
 
-t_list *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list *new_lst;
-	t_list *new_elem;
-	void	 *content;
+	t_list	*new_lst;
+	t_list	*new_elem;
+	void	*content;
 
 	if (!f || !del || !lst)
 		return (NULL);
 	new_lst = NULL;
 	while (lst)
 	{
-		content	 = f(lst->content);
+		content = f(lst->content);
 		new_elem = ft_lstnew(content);
 		if (!new_elem)
 		{

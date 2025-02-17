@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:45 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/14 20:42:13 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:13:40 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ strjoin will converge s1 and s2 together.
 ex ft_strjoin("s1", "s2") -> "s1ss2"
 */
 
-char *ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char		 *ptr;
-	unsigned int i;
+	char			*ptr;
+	unsigned int	i;
 
 	i = 0;
 	if (!s1)

@@ -16,7 +16,7 @@
 Returns the last elemet of the list.
 */
 
-t_list *ft_lstlast(t_list *lst)
+t_list	*ft_lstlast(t_list *lst)
 {
 	if (lst == NULL)
 		return (NULL);

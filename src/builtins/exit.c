@@ -69,8 +69,8 @@ static int	handle_exit_error(char *arg)
 {
 	if (!is_within_long_long_range(arg) || !is_number(arg))
 	{
-			write(STDERR_FILENO,
-				"minishell: exit: ok: numeric argument required\n", 47);
+		write(STDERR_FILENO,
+			"minishell: exit: ok: numeric argument required\n", 47);
 		return (2);
 	}
 	return (0);

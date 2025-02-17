@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:27:38 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/12 20:20:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:14:20 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long ft_atol(const char *str)
+long	ft_atol(const char *str)
 {
-	long i;
-	int	 min;
-	long rslt;
+	long	i;
+	int		min;
+	long	rslt;
 
-	i	 = 0;
-	min	 = 1;
+	i = 0;
+	min = 1;
 	rslt = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;

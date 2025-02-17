@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:34 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/16 15:26:48 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:22:29 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ linked to any file so we can specifyt it in the fd parameter of
 the write function adn write to it.
 */
 
-void ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
 	if (ft_isascii(c) && fd != -1)
 		write(fd, &c, 1);

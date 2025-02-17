@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:45:53 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/04 14:38:45 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:17:17 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char *clear(char *buffer, char *buf)
+char	*clear(char *buffer, char *buf)
 {
 	free(buffer);
 	free(buf);
 	return (NULL);
 }
 
-char *get_file(int fd, char *resultat)
+char	*get_file(int fd, char *resultat)
 {
-	char *temp_buff;
-	char *new_resultat;
-	int	  bytes;
+	char	*temp_buff;
+	char	*new_resultat;
+	int		bytes;
 
 	if (!resultat)
 		resultat = ft_calloc(1, 1);
@@ -37,20 +37,20 @@ char *get_file(int fd, char *resultat)
 		if (bytes < 0)
 			return (clear(temp_buff, resultat));
 		temp_buff[bytes] = '\0';
-		new_resultat	 = ft_strjoin(resultat, temp_buff);
+		new_resultat = ft_strjoin(resultat, temp_buff);
 		free(resultat);
 		resultat = new_resultat;
 		if (ft_strchr(resultat, '\n'))
-			break;
+			break ;
 	}
 	free(temp_buff);
 	return (resultat);
 }
 
-static char *get_line(char *buffer)
+static char	*get_line(char *buffer)
 {
-	char *line;
-	int	  i;
+	char	*line;
+	int		i;
 
 	i = 0;
 	if (!buffer[i])
@@ -74,11 +74,11 @@ static char *get_line(char *buffer)
 	return (line);
 }
 
-char *get_next(char *buffer)
+char	*get_next(char *buffer)
 {
-	int	  i;
-	int	  j;
-	char *new_buffer;
+	int		i;
+	int		j;
+	char	*new_buffer;
 
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -99,17 +99,17 @@ char *get_next(char *buffer)
 	return (new_buffer);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char		 *line;
-	static char *buffer[1024];
+	char			*line;
+	static char		*buffer[1024];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer[fd] = get_file(fd, buffer[fd]);
 	if (!buffer[fd])
 		return (NULL);
-	line	   = get_line(buffer[fd]);
+	line = get_line(buffer[fd]);
 	buffer[fd] = get_next(buffer[fd]);
 	return (line);
 }

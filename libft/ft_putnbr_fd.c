@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:33:01 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/17 15:02:15 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:22:20 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ to the standard output (1) we will write to a specific
 file descriptor
 */
 
-void ft_putnbr_fd(int nb, int fd)
+void	ft_putnbr_fd(int nb, int fd)
 {
-	unsigned int  n;
-	unsigned char c;
+	unsigned int	n;
+	unsigned char	c;
 
 	if (fd == -1)
-		return;
+		return ;
 	if (nb < 0)
 	{
 		write(fd, "-", 1);

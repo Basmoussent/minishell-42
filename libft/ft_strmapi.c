@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:14:00 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/06 16:30:20 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:18:59 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ the f function and return the result
 of the concatenation of every result,
 */
 
-char *ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char *ret_str;
-	int	  i;
+	char	*ret_str;
+	int		i;
 
 	if (!s || !f)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:30 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/07 10:52:46 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:23:48 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 s2` strings and returns the difference at the first encountered mismatch.
 */
 
-int ft_memcmp(const void *s1, const void *s2, size_t n)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	size_t				 i;
-	const unsigned char *str1;
-	const unsigned char *str2;
+	size_t				i;
+	const unsigned char	*str1;
+	const unsigned char	*str2;
 
 	str1 = (const unsigned char *)s1;
 	str2 = (const unsigned char *)s2;
-	i	 = 0;
+	i = 0;
 	if (n == 0)
 		return (0);
 	while (i < n)

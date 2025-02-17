@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 19:29:23 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/16 10:32:14 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:25:07 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ go to the list 'lst' and apply the function
 'f' to the content of each element.
 */
 
-void ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	t_list *node;
+	t_list	*node;
 
 	node = lst;
 	if (!lst || !f)
-		return;
+		return ;
 	while (node->next != NULL)
 	{
 		f(node->content);

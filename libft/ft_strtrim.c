@@ -17,9 +17,9 @@ The strtrim function will eliminate every
 occurence of any character in the set from s1.
 */
 
-static int ft_char_in_strn(char c, char const *strn)
+static int	ft_char_in_strn(char c, char const *strn)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (strn[i])
@@ -31,18 +31,16 @@ static int ft_char_in_strn(char c, char const *strn)
 	return (0);
 }
 
-char *ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	char	 *strn;
-	size_t i;
-	size_t begin;
-	size_t finish;
+	char	*strn;
+	size_t	i;
+	size_t	begin;
+	size_t	finish;
 
 	begin = 0;
 	while (s1[begin] && ft_char_in_strn(s1[begin], set))
-	{
 		begin++;
-	}
 	finish = ft_strlen(s1);
 	while (finish > begin && ft_char_in_strn(s1[finish - 1], set))
 	{

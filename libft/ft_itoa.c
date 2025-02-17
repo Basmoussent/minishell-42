@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 19:13:27 by bdenfir           #+#    #+#             */
-/*   Updated: 2024/11/06 14:08:33 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:26:36 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ ex : 1234 -> "1234"
 ex ; -999 -> "-999"
 */
 
-int ft_int_length(int n)
+int	ft_int_length(int n)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	if (n <= 0)
@@ -34,32 +34,32 @@ int ft_int_length(int n)
 	return (len);
 }
 
-char *reverse_str(char *str, int len)
+char	*reverse_str(char *str, int len)
 {
-	int	 start;
-	int	 end;
-	char tmp;
+	int		start;
+	int		end;
+	char	tmp;
 
 	start = 0;
-	end	  = len - 1;
+	end = len - 1;
 	while (start < end)
 	{
-		tmp			 = str[start];
+		tmp = str[start];
 		str[start++] = str[end];
-		str[end--]	 = tmp;
+		str[end--] = tmp;
 	}
 	return (str);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
-	char *str;
-	int	  i;
-	long  nb;
-	int	  is_negative;
+	char	*str;
+	int		i;
+	long	nb;
+	int		is_negative;
 
-	i			= 0;
-	nb			= n;
+	i = 0;
+	nb = n;
 	is_negative = (nb < 0);
 	if (nb < 0)
 		nb = -nb;
