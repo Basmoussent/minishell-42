@@ -6,7 +6,7 @@
 /*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 15:57:22 by akassous         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:08:30 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,27 @@
 
 int	has_unclosed_quote(char *token)
 {
-	char	quote_char;
-
-	quote_char = '\0';
+	int	single_quotes;
+	int	double_quotes;
+	
+	single_quotes = 0;
+	double_quotes = 0;
 	while (*token)
 	{
-		if (*token == '\'' || *token == '"')
-		{
-			if (quote_char == '\0')
-				quote_char = *token;
-			else if (quote_char == *token)
-				quote_char = '\0';
-		}
+		if (*token == '\'')
+			single_quotes++;
+		else if (*token == '"')
+			double_quotes++;
 		token++;
 	}
-	if (quote_char != '\0')
+	/*if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
 		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
 		return (1);
-	}
+	}*/
 	return (0);
 }
+
 
 char	*get_last_token(char **tokens)
 {
@@ -85,6 +85,19 @@ int	check_doubles(char **lexed_input)
 	}
 	return (1);
 }
+#include <stdio.h>
+
+void print_char_array(char **arr)
+{
+    int i = 0;
+
+    // Loop through the array until a NULL pointer is encountered
+    while (arr[i] != NULL)
+    {
+        printf("%s\n", arr[i]);  // Print each string followed by a newline
+        i++;
+    }
+}
 
 t_ast_node	*lexing(char *input, t_data *data)
 {
@@ -96,6 +109,7 @@ t_ast_node	*lexing(char *input, t_data *data)
 	if (!count_tokens(input))
 		return (NULL);
 	lexed_input = split_whitespace(input);
+	print_char_array(lexed_input);
 	if (!lexed_input || !check_doubles(lexed_input))
 		return (double_free_input(lexed_input));
 	true_input = filter_tokens(lexed_input);

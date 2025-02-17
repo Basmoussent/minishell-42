@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 02:10:34 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 22:41:04 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/17 17:41:57 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*expand_single_variable(char *input, t_data *data)
 		return (ft_strdup(input));
 	end = start + 1;
 	if (*end == '?')
-		return (ft_itoa(data->status));
+		return (expand_status(data->status, end + 1));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
 	var_name = extract_var_name(start);
@@ -100,7 +100,7 @@ char	*expand_all_variables(char *input, t_data *data)
 	{
 		if (result[i] == '\'')
 			in_single_quotes = !in_single_quotes;
-		if (!in_single_quotes && result[i] == '$')
+		if (!in_single_quotes && result[i] == '$' && can_expand(&result[i]))
 		{
 			temp = expand_single_variable(result, data);
 			free(result);

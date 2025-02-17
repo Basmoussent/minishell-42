@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akassous <akassous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 22:20:44 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:02:24 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:32:33 by akassous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	check_args(char *arg, int *ret, t_data *data)
 			printf(COLOR_RED "unset: Failed to unset '%s'\n" COLOR_RESET, arg);
 			*ret = KO;
 		}
-		else
-			printf(COLOR_GREEN "Unsetting '%s'\n" COLOR_RESET, arg);
 	}
 	else
 	{
