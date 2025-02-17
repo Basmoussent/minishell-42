@@ -1,2 +1,3 @@
 Changer le makeFile en elnver la wildcard
-expand dans le heredoc aussi
+verifier le status code des builtins
+fais des test reussite et echec pour les builtins et checkl   le code de retour avec bash --posix

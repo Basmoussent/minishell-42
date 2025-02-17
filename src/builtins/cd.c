@@ -13,14 +13,12 @@
 #include "minishell.h"
 
 // Function to print error messages
-static void	print_error(int code)
+static void	print_cd_error(int code)
 {
-	if (code == -1)
-		ft_putstr_fd("cd: No such file or directory\n", 2);
-	else if (code == -2)
-		ft_putstr_fd("cd: Not a directory\n", 2);
-	else if (code == -3)
-		ft_putstr_fd("cd: Failed to get working directory\n", 2);
+	if (code == 1)
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+	else if (code == 2)
+		ft_putstr_fd("cd: no such file or directory\n", STDERR_FILENO);
 }
 
 static int	update_pwd(char *old_pwd, t_data *data)
@@ -49,10 +47,10 @@ int	ft_cd(char *path, t_data *data)
 	int		ret;
 
 	if (!path || chdir(path) == -1)
-		return (print_error(-1), KO);
+		return (print_cd_error(2), KO);
 	old_pwd = getcwd(NULL, 0);
 	if (!old_pwd)
-		return (print_error(-3), KO);
+		return (print_cd_error(3), KO);
 	ret = update_pwd(old_pwd, data);
 	free(old_pwd);
 	return (ret);

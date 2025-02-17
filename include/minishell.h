@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/12 14:41:21 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 02:37:30 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@
 #define HERE_DOC_TMP ".heredoc_tmp"
 #define BLANK_FILE ".blank_tmp"
 
-
-extern volatile int g_signal_received;
+// Global variable declaration
+extern volatile int	g_signal_received;
 
 enum
 {
@@ -149,7 +149,7 @@ void	redirect_output(t_ast_node * node, int fd);
 
 // UTILS
 bool	validate_command(const char *cmd);
-void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status);
+void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path);
 void    handle_signals(int signum);
 
 //TEST SUITE
@@ -158,5 +158,49 @@ int ft_echo_test(void);
 int ft_lexer_test(int argc, char **argv, char **envp);
 
 void	cleanup_shell(t_data *data);
+
+// Export utils
+int     add_to_export(char *var, t_data *data);
+void    print_export_list(char **export_list);
+char    **copy_export_list(char **envp);
+int     print_export_error(int error, char *arg);
+char    *join_var_value(char *var, char *value);
+
+
+// Env utils
+int		add_new_var_to_env(char *full_entry, t_data *data);
+int     ft_set_env(char *var, char *value, t_data *data);
+char	**copy_existing_env(char **envp);
+
+// Exec utils
+void	handle_error(const char *msg);
+void	handle_command_child(t_ast_node *node, t_data *data, char **args);
+void	handle_command_parent(t_data *data, pid_t pid, char **args);
+char	**prepare_args(t_ast_node *node);
+
+// Pipe utils
+void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds);
+void	handle_right_child(t_ast_node *node, t_data *data, int *pipe_fds);
+void	handle_pipe_parent(t_data *data, int *pipe_fds,
+			pid_t left_pid, pid_t right_pid);
+
+// Redirect utils
+void	redirect_output(t_ast_node *node, int fd);
+void	reset_stream(int saved_stdin, int saved_stdout);
+
+// Heredoc utils
+void	process_heredoc_line(char *line, int fd, t_data *data, int expand);
+int	handle_heredoc_input(int fd, char *delimiter, t_data *data,
+				int should_expand);
+
+// Shell utils
+static char	*read_input(void);
+void	process_input(t_data *data);
+void	cleanup_current_iteration(t_data *data);
+void	shell_loop(t_data *data);
+
+// Cleanup utils
+void	cleanup_data_strings(t_data *data);
+void	cleanup_data_arrays(t_data *data);
 
 #endif

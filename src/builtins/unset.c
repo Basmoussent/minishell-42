@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 22:20:44 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/20 15:54:02 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 02:02:24 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	unset_it(const char *var, t_data *data)
 	j = 0;
 	while (data->envp[++i])
 	{
-		if (ft_strncmp(data->envp[i], var, len) == 0 && data->envp[i][len] == '=')
+		if (ft_strncmp(data->envp[i], var, len) == 0
+			&& data->envp[i][len] == '=')
 			free(data->envp[i]);
 		else
 			new_envp[j++] = data->envp[i];
@@ -79,6 +80,7 @@ int	ft_unset_process_args(char **args, t_data *data)
 		check_args(args[i], &ret, data);
 	return (ret);
 }
+
 // Function to unset a variable
 int	ft_unset(char *input, t_data *data)
 {

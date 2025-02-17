@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 20:21:27 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/29 15:23:22 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 02:37:36 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern volatile int signal_received;
 
 char	*generate_unique_filename(void)
 {
@@ -37,31 +35,73 @@ char	*generate_unique_filename(void)
 	return (filename);
 }
 
-int	heredoc_logic(char *delimiter, t_data *data)
+static int	should_expand_vars(char *delimiter)
 {
-	int		fd;
+	char	*processed;
+	int		expand;
+
+	processed = ft_strdup(delimiter);
+	ft_process_input(delimiter, processed);
+	expand = (ft_strncmp(delimiter, processed, ft_strlen(delimiter)) == 0);
+	free(processed);
+	return (expand);
+}
+
+void	process_heredoc_line(char *line, int fd, t_data *data, int expand)
+{
+	char	*expanded_line;
+
+	if (expand)
+		expanded_line = expand_all_variables(line, data);
+	else
+		expanded_line = ft_strdup(line);
+	write(fd, expanded_line, ft_strlen(expanded_line));
+	write(fd, "\n", 1);
+	free(expanded_line);
+	free(line);
+}
+
+int	handle_heredoc_input(int fd, char *delimiter, t_data *data,
+	int should_expand)
+{
 	char	*line;
 
-	data->hd_file = generate_unique_filename();
-	fd = open(data->hd_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		return (perror("open"), free(data->hd_file), -1);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strnstr(line, delimiter, ft_strlen(line)) != NULL)
+		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
+		process_heredoc_line(line, fd, data, should_expand);
 	}
-	close(fd);
-	fd = open(data->hd_file, O_RDONLY);
 	return (fd);
 }
 
+int	heredoc_logic(char *delimiter, t_data *data)
+{
+	int		fd;
+	char	*new_delimiter;
+	int		should_expand;
+
+	new_delimiter = ft_strdup(delimiter);
+	ft_process_input(delimiter, new_delimiter);
+	should_expand = should_expand_vars(delimiter);
+	data->hd_file = generate_unique_filename();
+	fd = open(data->hd_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("open");
+		free(data->hd_file);
+		free(new_delimiter);
+		return (-1);
+	}
+	fd = handle_heredoc_input(fd, new_delimiter, data, should_expand);
+	close(fd);
+	free(new_delimiter);
+	fd = open(data->hd_file, O_RDONLY);
+	return (fd);
+}

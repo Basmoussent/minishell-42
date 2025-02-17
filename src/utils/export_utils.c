@@ -1,0 +1,120 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 01:39:48 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/02/17 02:30:53 by bdenfir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	add_to_export(char *var, t_data *data)
+{
+	size_t	i;
+	size_t	export_len;
+	char	**new_export;
+
+	export_len = 0;
+	while (data->export && data->export[export_len])
+		export_len++;
+	new_export = malloc((export_len + 2) * sizeof(char *));
+	if (!new_export)
+		return (-1);
+	i = -1;
+	while (++i < export_len)
+		new_export[i] = data->export[i];
+	new_export[i] = ft_strdup(var);
+	if (!new_export[i])
+	{
+		free(new_export);
+		return (-1);
+	}
+	new_export[i + 1] = NULL;
+	free(data->export);
+	data->export = new_export;
+	return (0);
+}
+
+int	ft_set_env(char *var, char *value, t_data *data)
+{
+	size_t	i;
+	char	*full_entry;
+
+	if (!var || !value || !data || !data->envp)
+		return (-1);
+	if (!is_valid_varname(var))
+		return (print_export_error(-1, var));
+	full_entry = join_var_value(var, value);
+	if (!full_entry)
+		return (-1);
+	i = 0;
+	while (data->envp[i])
+	{
+		if (ft_strncmp(data->envp[i], var, ft_strlen(var)) == 0
+			&& data->envp[i][ft_strlen(var)] == '=')
+		{
+			free(data->envp[i]);
+			data->envp[i] = full_entry;
+			return (0);
+		}
+		i++;
+	}
+	return (add_new_var_to_env(full_entry, data));
+}
+
+void	print_export_list(char **export_list)
+{
+	int		i;
+	char	*equal_sign;
+	char	*var;
+	char	*value;
+
+	if (!export_list)
+		return ;
+	i = -1;
+	while (export_list[++i])
+	{
+		equal_sign = ft_strchr(export_list[i], '=');
+		if (equal_sign)
+		{
+			var = ft_strndup(export_list[i], equal_sign - export_list[i]);
+			value = equal_sign + 1;
+			printf("export %s=\"%s\"\n", var, value);
+			free(var);
+		}
+		else
+			printf("export %s\n", export_list[i]);
+	}
+}
+
+static char	**init_minimal_export(void)
+{
+	char	**export_copy;
+	char	*cwd;
+
+	export_copy = malloc(4 * sizeof(char *));
+	if (!export_copy)
+		return (NULL);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (free(export_copy), NULL);
+	export_copy[0] = ft_strjoin("PWD=", cwd);
+	export_copy[1] = ft_strdup("SHLVL=1");
+	export_copy[2] = ft_strdup("OLDPWD");
+	export_copy[3] = NULL;
+	free(cwd);
+	if (!export_copy[0] || !export_copy[1] || !export_copy[2])
+		return (free_args(export_copy), NULL);
+	return (export_copy);
+}
+
+char	**copy_export_list(char **envp)
+{
+	if (!envp || !*envp)
+		return (init_minimal_export());
+	return (copy_existing_env(envp));
+}

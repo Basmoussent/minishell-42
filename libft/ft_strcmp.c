@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 16:17:00 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 01:31:05 by bdenfir          ###   ########.fr       */
+/*   Created: 2025/01/20 20:21:27 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/01/29 15:23:22 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	ft_env(char **envp)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	i;
+	size_t	i;
 
-	if (!envp || !*envp)
-		return (KO);
-	i = -1;
-	while (envp[++i])
-		printf("%s\n", envp[i]);
-	return (OK);
-}
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+} 

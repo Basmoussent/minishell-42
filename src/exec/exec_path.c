@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 19:49:12 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/29 15:22:00 by bdenfir          ###   ########.fr       */
+/*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/02/17 02:25:17 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,33 +43,27 @@ void	handle_redirection(t_ast_node *node, t_data *data)
 }
 
 // Function to cehck if a cmd is a builtin
-int is_builtin(t_ast_node *node)
+int	is_builtin(t_ast_node *node)
 {
 	if (!node || !node->value)
 		return (0);
-	if (ft_strncmp(node->value, "echo", 4) == 0)
+	if (ft_strncmp(node->value, "echo", 5) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "cd", 2) == 0)
+	if (ft_strncmp(node->value, "cd", 3) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "pwd", 3) == 0)
+	if (ft_strncmp(node->value, "pwd", 4) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "export", 6) == 0)	
+	if (ft_strncmp(node->value, "export", 7) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "unset", 5) == 0)	
-		return (1);
-	if (ft_strncmp(node->value, "env", 3) == 0)	
-		return (1);
-	if (ft_strncmp(node->value, "exit", 4) == 0)	
-		return (1);
-	if (ft_strncmp(node->value, "ast", 3) == 0)	
+	if (ft_strncmp(node->value, "unset", 6) == 0)
 		return (1);
 	return (0);
 }
 
 // Function to execute a builtin command
-int exec_builtin(t_ast_node *node, t_data *data)
+int	exec_builtin(t_ast_node *node, t_data *data)
 {
-	char *arg;
+	char	*arg;
 
 	if (!node || !node->value)
 		return (0);
@@ -82,15 +76,43 @@ int exec_builtin(t_ast_node *node, t_data *data)
 		return (ft_cd(arg, data));
 	if (ft_strncmp(node->value, "pwd", 3) == 0)
 		return (ft_pwd(data));
-	if (ft_strncmp(node->value, "export", 6) == 0)	
+	if (ft_strncmp(node->value, "export", 6) == 0)
 		return (ft_export(arg, data));
-	if (ft_strncmp(node->value, "unset", 5) == 0)	
+	if (ft_strncmp(node->value, "unset", 5) == 0)
 		return (ft_unset(arg, data));
-	if (ft_strncmp(node->value, "env", 3) == 0)	
+	if (ft_strncmp(node->value, "env", 3) == 0)
 		return (ft_env(data->envp));
-	if (ft_strncmp(node->value, "exit", 4) == 0)	
+	if (ft_strncmp(node->value, "exit", 4) == 0)
 		return (ft_exit(arg, data));
-	if (ft_strncmp(node->value, "ast", 3) == 0)	
+	if (ft_strncmp(node->value, "ast", 3) == 0)
 		return (ft_ast(data));
 	return (0);
+}
+
+void
+	get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
+{
+	if (access(node->value, X_OK) == 0)
+		*cmd_path = ft_strdup(node->value);
+	else
+		*cmd_path = find_executable(node->value, envp);
+	if (!*cmd_path)
+	{
+		free_args(args);
+		handle_error("Command not found");
+	}
+}
+
+void	cleanup_and_exit(t_ast_node *root, t_data *data
+, char **args, char *cmd_path)
+{
+	if (root)
+		free_ast(root);
+	if (data->envp)
+		free_args(data->envp);
+	if (args)
+		free_args(args);
+	if (cmd_path)
+		free(cmd_path);
+	exit(1);
 }

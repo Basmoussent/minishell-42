@@ -1,96 +1,20 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   exec.c											 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: bdenfir <bdenfir@42.fr>					+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/01/24 16:45:47 by bdenfir		   #+#	#+#			 */
-/*   Updated: 2025/01/29 15:21:22 by bdenfir		  ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/01/29 15:21:22 by bdenfir          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Function to handle error
-static void	handle_error(const char *msg)
-{
-	perror(msg);
-	exit(1);
-}
-
-// Function to find the executable
-char	*find_executable(char *cmd, char **envp)
-{
-	char	**paths;
-	char	*path;
-	int		i;
-	char	*part_path;
-
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = -1;
-	while (paths[++i])
-	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, F_OK) == 0)
-		{
-			free_args(paths);
-			return (path);
-		}
-		free(path);
-	}
-	free_args(paths);
-	return (0);
-}
-
-// Function to prepare argument list for execve
-static char **prepare_args(t_ast_node *node)
-{
-	char **args;
-	char *temp;
-	char *str;
-
-	if (node->right && node->right->value)
-	{
-		temp = ft_strjoin(node->value, " ");
-		str = ft_strjoin(temp, node->right->value);
-		args = ft_split(str, ' ');
-		free(str);
-		free(temp);
-	}
-	else
-	{
-		args = malloc(2 * sizeof(char *));
-		if (!args)
-			handle_error("Error allocating memory for arguments");
-		args[0] = ft_strdup(node->value);
-		args[1] = NULL;
-	}
-	return (args);
-}
-
-void get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
-{
-	if (access(node->value, X_OK) == 0)
-		*cmd_path = ft_strdup(node->value);
-	else
-		*cmd_path = find_executable(node->value, envp);
-	if (!*cmd_path)
-	{
-		free_args(args);
-		handle_error("Command not found");
-	}
-}
-
-static void execute_command(t_ast_node *node, t_data *data)
+static void	execute_command(t_ast_node *node, t_data *data)
 {
 	pid_t	pid;
-	char	*cmd_path;
 	char	**args;
 
 	if (!node || !node->value)
@@ -98,51 +22,28 @@ static void execute_command(t_ast_node *node, t_data *data)
 	args = prepare_args(node);
 	if (is_builtin(node))
 	{
-		exec_builtin(node, data);
+		data->status = exec_builtin(node, data);
 		free_args(args);
-		return;
+		return ;
 	}
 	pid = fork();
 	if (pid == -1)
 		handle_error("fork");
 	if (pid == 0)
-	{
-		cmd_path = NULL;
-		get_cmd_path(node, data->envp, &cmd_path, args);
-		execve(cmd_path, args, data->envp);
-		perror("execve");
-		cleanup_and_exit(node, data, args, cmd_path, 1);
-	}
-	{
-		free_args(args);
-		waitpid(pid, &data->status, 0);
-		if ((data->status & 0x7f) == 0)
-			data->status = (data->status & 0xff00) >> 8;
-		else
-			data->status = 128 + (data->status & 0x7f);
-	}
+		handle_command_child(node, data, args);
+	handle_command_parent(data, pid, args);
 }
 
-// Function to execute a pipe
-void	execute_child(t_ast_node *node, t_data *data, int *pipe_fds)
+static void	execute_pipe(t_ast_node *node, t_data *data)
 {
-	close(pipe_fds[0]);
-	dup2(pipe_fds[1], STDOUT_FILENO);
-	close(pipe_fds[1]);
-	exec_ast(node->left, data);
-	exit(1);
-}
-
-// Function to execute a pipe
-static void execute_pipe(t_ast_node *node, t_data *data)
-{
-	int pipe_fds[2];
-	pid_t left_pid, right_pid;
+	int		pipe_fds[2];
+	pid_t	left_pid;
+	pid_t	right_pid;
 
 	if (!node || !node->left || !node->right)
 	{
 		write(2, "Invalid pipe structure\n", 23);
-		cleanup_and_exit(node, data, NULL, NULL, 1);
+		cleanup_and_exit(node, data, NULL, NULL);
 	}
 	if (pipe(pipe_fds) == -1)
 		handle_error("pipe");
@@ -150,67 +51,28 @@ static void execute_pipe(t_ast_node *node, t_data *data)
 	if (left_pid == -1)
 		handle_error("fork");
 	if (left_pid == 0)
-	{
-		close(pipe_fds[0]);
-		dup2(pipe_fds[1], STDOUT_FILENO);
-		close(pipe_fds[1]);
-		exec_ast(node->left, data);
-		exit(1);
-	}
+		execute_child(node, data, pipe_fds);
 	right_pid = fork();
 	if (right_pid == -1)
 		handle_error("fork");
 	if (right_pid == 0)
-	{
-		close(pipe_fds[1]);
-		dup2(pipe_fds[0], STDIN_FILENO);
-		close(pipe_fds[0]);
-		exec_ast(node->right, data);
-		exit(1);
-	}
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	waitpid(left_pid, NULL, 0);
-	waitpid(right_pid, &data->status, 0);
-	if ((data->status & 0x7f) == 0)
-		data->status = (data->status & 0xff00) >> 8;
-	else
-		data->status = 128 + (data->status & 0x7f);
+		handle_right_child(node, data, pipe_fds);
+	handle_pipe_parent(data, pipe_fds, left_pid, right_pid);
 }
 
-
-// Function to redirect output
-void	redirect_output(t_ast_node * node, int fd)
+void	exec_ast(t_ast_node *node, t_data *data)
 {
-	if (node->type == REDIRECT_INPUT || node->type == HEREDOC)
-		dup2(fd, STDIN_FILENO);
-	else
-		dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
-
-void reset_stream(int saved_stdin, int saved_stdout)
-{
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-}
-
-// Function to execute the abstract syntax tree
-void exec_ast(t_ast_node *node, t_data *data)
-{
-	int saved_stdin;
-	int saved_stdout;
+	int	saved_stdin;
+	int	saved_stdout;
 
 	if (!node || !data)
-		return;
+		return ;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (node->type == PIPE)
 		execute_pipe(node, data);
 	else if (node->type == TRUNCATE || node->type == APPEND
-			 || node->type == REDIRECT_INPUT || node->type == HEREDOC)
+		|| node->type == REDIRECT_INPUT || node->type == HEREDOC)
 	{
 		handle_redirection(node, data);
 		exec_ast(node->left, data);
@@ -218,18 +80,4 @@ void exec_ast(t_ast_node *node, t_data *data)
 	}
 	else
 		execute_command(node, data);
-}
-
-// Function to handle cleanup and exit
-void	cleanup_and_exit(t_ast_node *root, t_data *data, char **args, char *cmd_path, int status)
-{
-	if (root)
-		free_ast(root);
-	if (data->envp)
-		free_args(data->envp);
-	if (args)
-		free_args(args);
-	if (cmd_path)
-		free(cmd_path);
-	exit(status);
 }

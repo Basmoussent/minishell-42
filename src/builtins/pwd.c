@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 16:09:22 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/01/20 15:08:48 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/17 01:57:44 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,3 @@ int	ft_pwd(t_data *data)
 	printf("%s\n", ft_strchr(data->envp[i], '/'));
 	return (OK);
 }
-

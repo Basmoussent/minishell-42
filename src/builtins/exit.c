@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int is_number(char *str)
+static int	is_number(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;
@@ -27,7 +27,7 @@ static int is_number(char *str)
 	return (1);
 }
 
-static void print_error(char *msg, char *arg)
+static void	print_error(char *msg, char *arg)
 {
 	write(STDERR_FILENO, "exit\n", 5);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
@@ -41,12 +41,12 @@ static void print_error(char *msg, char *arg)
 
 int	is_within_long_long_range(const char *str)
 {
-	int		len;
+	int			len;
 	const char	*limit;
 
 	limit = "9223372036854775807";
 	if (str[0] == '-')
-		limit ="9223372036854775808";
+		limit = "9223372036854775808";
 	str = str +(str[0] == '-');
 	len = 0;
 	while (str[len])
@@ -65,8 +65,7 @@ int	is_within_long_long_range(const char *str)
 	return (1);
 }
 
-
-static int handle_exit_error(char *arg)
+static int	handle_exit_error(char *arg)
 {
 	if (!is_within_long_long_range(arg) || !is_number(arg))
 	{
@@ -91,10 +90,7 @@ int	ft_exit(char *input, t_data *data)
 		exit(0);
 	}
 	if (ft_strchr(arg, ' '))
-	{
-		print_error("minishell: exit: too many arguments", NULL);
-		return (1);
-	}
+		return (print_error("minishell: exit: too many arguments", NULL), 1);
 	if (handle_exit_error(arg))
 	{
 		cleanup_shell(data);
