@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 21:26:15 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:15:05 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ int	check_doubles(char **lexed_input)
 
 void print_char_array(char **arr)
 {
-    int i = 0;
-
-    // Loop through the array until a NULL pointer is encountered
+    int i;
+	
+	i = 0;
     while (arr[i] != NULL)
     {
-        printf("%s\n", arr[i]);  // Print each string followed by a newline
+        printf("%s\n", arr[i]);
         i++;
     }
 }
@@ -111,7 +111,6 @@ t_ast_node	*lexing(char *input, t_data *data)
 	if (!count_tokens(input))
 		return (NULL);
 	lexed_input = split_whitespace(input);
-	print_char_array(lexed_input);
 	if (!lexed_input || !check_doubles(lexed_input))
 		return (double_free_input(lexed_input));
 	true_input = filter_tokens(lexed_input);

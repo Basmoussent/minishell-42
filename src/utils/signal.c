@@ -22,21 +22,25 @@ void	handle_signals(int signum)
 		rl_redisplay();
         g_signal_received = 130;
 	}
+	else if (signum == SIGQUIT)
+		signal(SIGQUIT, SIG_IGN);
 }
-void    sigquit_handler(int signum)
+
+void sigquit_handler(int signum)
 {
     (void)signum;
     write(1, "Quit (core dumped)\n", 19);
-    g_signal_received = 131;
-    exit(131);
+	g_signal_received = 131;
+    signal(SIGQUIT, SIG_DFL);
+    kill(getpid(), SIGQUIT);
 }
 
-void    handle_signals_child(void)
+void	handle_signals_child(void)
 {
-    struct sigaction sa;
+	struct sigaction sa;
 
-    sa.sa_handler = sigquit_handler;
-    sa.sa_flags = SA_RESTART;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGQUIT, &sa, NULL);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGQUIT, &sa, NULL);
 }

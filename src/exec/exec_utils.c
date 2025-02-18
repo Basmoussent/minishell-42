@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 18:49:46 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:39:20 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,27 @@ char	*find_executable(char *cmd, char **envp)
 	char	**paths;
 	char	*path;
 	int		i;
-	char	*part_path;
+	char	*tmp;
 
 	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
+	if (!envp[i])
+		return (NULL);
 	paths = ft_split(envp[i] + 5, ':');
+	if (!paths)
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, F_OK) == 0)
-		{
-			free_args(paths);
-			return (path);
-		}
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (path && access(path, X_OK) == 0)
+			return (free_args(paths), path);
 		free(path);
 	}
-	free_args(paths);
-	return (0);
+	return (free_args(paths), NULL);
 }
 
 char	**prepare_args(t_ast_node *node)

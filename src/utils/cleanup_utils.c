@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 21:14:20 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:41:57 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	cleanup_shell(t_data *data)
 		free_args(data->tokens);
 		data->tokens = NULL;
 	}
+	printf("stdin = %d\nstdout = %d\n", data->saved_stdin, data->saved_stdout);
 	if (data->saved_stdin != -1)
 	{
 		close(data->saved_stdin);
@@ -36,6 +37,7 @@ void	cleanup_shell(t_data *data)
 		close(data->saved_stdout);
 		data->saved_stdout = -1;
 	}
+	printf("stdin = %d\nstdout = %d\n", data->saved_stdin, data->saved_stdout);
 	cleanup_data_strings(data);
 	cleanup_data_arrays(data);
 	clear_history();

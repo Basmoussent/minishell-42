@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 18:43:09 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:38:26 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	exec_builtin(t_ast_node *node, t_data *data)
 void
 	get_cmd_path(t_ast_node *node, char **envp, char **cmd_path, char **args)
 {
+	if (!envp || !envp[0])
+		return ;
 	if (access(node->value, X_OK) == 0)
 		*cmd_path = ft_strdup(node->value);
 	else
