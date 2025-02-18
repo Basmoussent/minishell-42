@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:19:33 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 11:34:52 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:14:56 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	if (!ft_strlen(little))
 		return ((char *)big);
 	if (!ft_strlen(big))
-		return ((char *)NULL);
+		return ((char *) NULL);
 	while (big[i] && i < len)
 	{
 		j = 0;

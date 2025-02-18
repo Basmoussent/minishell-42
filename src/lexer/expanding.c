@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/17 21:26:07 by bdenfir          ###   ########.fr       */
+/*   Created: 2025/02/18 13:13:56 by bdenfir           #+#    #+#             */
+/*   Updated: 2025/02/18 13:13:58 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -74,7 +72,7 @@ char	*expand_single_variable(char *input, t_data *data)
 		return (ft_strdup(input));
 	end = start + 1;
 	if (*end == '?')
-		return (expand_status(data->status, end + 1));
+		return (expand_status(g_signal_received, end + 1));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
 	var_name = extract_var_name(start);

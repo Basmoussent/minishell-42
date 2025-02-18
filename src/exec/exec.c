@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 21:16:15 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:14:34 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	execute_command(t_ast_node *node, t_data *data)
 	}
 	args = prepare_args(node);
 	pid = fork();
+	handle_signals_child();
 	if (pid == -1)
 		handle_error("fork", 1);
 	if (pid == 0)

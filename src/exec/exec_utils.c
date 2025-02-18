@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 11:39:20 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:14:09 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 {
 	char	*cmd_path;
 
-	handle_signals_child();
 	cmd_path = NULL;
 	get_cmd_path(node, data->envp, &cmd_path, args);
 	execve(cmd_path, args, data->envp);
@@ -86,7 +85,7 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 void	handle_command_parent(pid_t pid, char **args)
 {
 	int	status;
-	
+
 	free_args(args);
 	waitpid(pid, &status, 0);
 	if ((status & 0x7f) == 0)

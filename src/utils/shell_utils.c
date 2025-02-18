@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 21:19:08 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:54:41 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	process_input(t_data *data)
 	data->current_ast = lexing(data->input, data);
 	if (data->current_ast)
 		exec_ast(data->current_ast, data);
+	if (data->saved_stdin != -1)
+		close(data->saved_stdin);
+	if (data->saved_stdout != -1)
+		close(data->saved_stdout);
 }
 
 void	cleanup_current_iteration(t_data *data)

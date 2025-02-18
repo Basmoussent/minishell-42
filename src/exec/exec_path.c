@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 11:38:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:19:26 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,11 @@ int	handle_redirection(t_ast_node *node, t_data *data)
 {
 	int	fd;
 
-	if (!node || !node->right || !node->right->value)
-	{
-		write(2, "Syntax error near unexpected token ", 35);
-		write(2, node->value, ft_strlen(node->value));
-		write(2, "\n", 1);
-		g_signal_received = 2;
+	if (!node)
 		return (-1);
-	}
-	if (node->type == TRUNCATE && node->right->value)
-		fd = open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (node->type == APPEND && node->right->value)
-		fd = open(node->right->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (node->type == REDIRECT_INPUT && node->right->value)
-		fd = open(node->right->value, O_RDONLY);
-	else if (node->type == HEREDOC && node->right->value)
-		fd = heredoc_logic(node->right->value, data);
-	else
-		return (-1);
+	fd = open_redirection_file(node, data);
 	if (fd == -1)
-	{
-		perror("Error opening file");
-		g_signal_received = 1;
-		return (-1);
-	}
+		return (perror("Error opening file"), g_signal_received = 1, -1);
 	if (node->type == REDIRECT_INPUT)
 		dup2(fd, STDIN_FILENO);
 	else

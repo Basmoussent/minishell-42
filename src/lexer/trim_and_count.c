@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*	                                                                    */
 /*                                                        :::      ::::::::   */
 /*   trim_and_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:35:30 by amine             #+#    #+#             */
-/*   Updated: 2025/02/11 22:45:49 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/18 13:24:08 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ int	count_tokens(char *input)
 		if (is_spe(&input, &token_count))
 			continue ;
 		if (*input == '\'')
-			input = get_next_quote(input, 0);
+			input = get_next_quote(input + 1, 0);
 		else if (*input == '"')
-			input = get_next_quote(input, 1);
+			input = get_next_quote(input + 1, 1);
 		else
 		{
 			while (*input && !isspace(*input) && !is_spe(&input, &token_count))

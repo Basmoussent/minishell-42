@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/18 11:15:05 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:24:56 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	has_unclosed_quote(char *token)
 {
 	int	single_quotes;
 	int	double_quotes;
-	
+
 	single_quotes = 0;
 	double_quotes = 0;
 	while (*token)
@@ -27,14 +27,13 @@ int	has_unclosed_quote(char *token)
 			double_quotes++;
 		token++;
 	}
-	/*if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
+	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
 		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
 		return (1);
-	}*/
+	}
 	return (0);
 }
-
 
 char	*get_last_token(char **tokens)
 {
@@ -86,19 +85,6 @@ int	check_doubles(char **lexed_input)
 		return (0);
 	}
 	return (1);
-}
-#include <stdio.h>
-
-void print_char_array(char **arr)
-{
-    int i;
-	
-	i = 0;
-    while (arr[i] != NULL)
-    {
-        printf("%s\n", arr[i]);
-        i++;
-    }
 }
 
 t_ast_node	*lexing(char *input, t_data *data)

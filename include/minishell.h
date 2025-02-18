@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 11:32:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:19:07 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ char		**allocate_ignored_tokens(char **tokens);
 int			heredoc_logic(char *delimiter, t_data *data);
 void		exec_ast(t_ast_node *node, t_data *data);
 void		reset_stream(int saved_stdin, int saved_stdout);
-int		handle_redirection(t_ast_node *node, t_data *data);
+int			handle_redirection(t_ast_node *node, t_data *data);
 int			exec_builtin(t_ast_node *node, t_data *data);
 int			is_builtin(t_ast_node *node);
 void		redirect_output(t_ast_node *node, int fd);
@@ -156,12 +156,11 @@ bool		validate_command(const char *cmd);
 void		cleanup_and_exit(t_ast_node *root, t_data *data,
 				char **args, char *cmd_path);
 void		handle_signals(int signum);
-void    	handle_signals_child(void);
+void		handle_signals_child(void);
 void		cleanup_shell(t_data *data);
 char		*remove_quotes(char *input);
 int			can_expand(char *rslt);
 char		*expand_status(int status, char *input);
-
 
 // Export utils
 int			add_to_export(char *var, t_data *data);
@@ -193,6 +192,7 @@ void		handle_pipe_parent(t_data *data, int *pipe_fds,
 // Redirect utils
 void		redirect_output(t_ast_node *node, int fd);
 void		reset_stream(int saved_stdin, int saved_stdout);
+int			open_redirection_file(t_ast_node *node, t_data *data);
 
 // Heredoc utils
 void		process_heredoc_line(char *line, int fd, t_data *data, int expand);
