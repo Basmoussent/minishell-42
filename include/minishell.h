@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/24 19:10:15 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/24 20:10:42 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,12 @@ void		skip_whitespace(char **start);
 char		**allocate_tokens(char *input);
 char		*find_token_end(char *start);
 int			is_special_char(char *input);
-
 char		**allocate_ignored_tokens(char **tokens);
+void		handle_double_quote(bool *in_quotes, size_t *i);
+void		skip_single_quotes(char *result, size_t *i);
+char		*handle_expansion(char *result, t_data *data, size_t *i);
+char		*process_variables(char *result, t_data *data);
+char		*expand_single_variable(char *input, t_data *data);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);

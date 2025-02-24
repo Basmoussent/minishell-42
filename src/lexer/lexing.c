@@ -27,8 +27,6 @@ int	has_unclosed_quote(char *token)
 			double_quotes++;
 		token++;
 	}
-	printf("single_quotes : %d\n", single_quotes);
-	printf("double_quotes : %d\n", double_quotes);
 	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
 		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);

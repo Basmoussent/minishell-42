@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:13:56 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:13:58 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/24 20:07:56 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,29 +86,10 @@ char	*expand_single_variable(char *input, t_data *data)
 
 char	*expand_all_variables(char *input, t_data *data)
 {
-	char	*result;
-	char	*temp;
-	bool	in_single_quotes;
-	size_t	i;
+    char	*result;
 
-	result = ft_strdup(input);
-	if (!result)
-		return (NULL);
-	in_single_quotes = false;
-	i = 0;
-	while (result[i] != '\0')
-	{
-		if (result[i] == '\'')
-			in_single_quotes = !in_single_quotes;
-		if (!in_single_quotes && result[i] == '$' && can_expand(&result[i]))
-		{
-			temp = expand_single_variable(result, data);
-			free(result);
-			result = temp;
-			i = 0;
-		}
-		else
-			i++;
-	}
-	return (result);
+    result = ft_strdup(input);
+    if (!result)
+        return (NULL);
+    return (process_variables(result, data));
 }

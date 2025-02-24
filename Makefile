@@ -29,7 +29,8 @@ SRCS = src/main.c \
        src/lexer/fix_tokens.c src/lexer/input_reading.c src/lexer/lexer_utils.c src/lexer/lexing.c \
        src/lexer/trim_and_count.c src/lexer/utils_tokens.c \
        src/utils/cleanup_utils.c src/utils/env_utils.c src/utils/exec.c src/utils/export_utils.c \
-       src/utils/shell_loop.c src/utils/shell_utils.c src/utils/signal.c src/utils/string.c src/utils/additional_utils.c
+       src/utils/shell_loop.c src/utils/shell_utils.c src/utils/signal.c src/utils/string.c src/utils/additional_utils.c \
+	   src/utils/expander.c
 
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 
