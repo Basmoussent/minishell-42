@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 15:17:30 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/18 13:24:56 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/24 19:13:52 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	has_unclosed_quote(char *token)
 	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
 		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
+		g_signal_received = 2;
 		return (1);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 11:54:41 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/24 19:11:31 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	process_input(t_data *data)
 		close(data->saved_stdin);
 	if (data->saved_stdout != -1)
 		close(data->saved_stdout);
+	reset_stream(data->original_stdin, data->original_stdout);
 }
 
 void	cleanup_current_iteration(t_data *data)

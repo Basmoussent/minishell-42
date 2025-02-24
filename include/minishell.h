@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:19:07 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/24 19:10:15 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_data
 	int			status;
 	int			saved_stdin;
 	int			saved_stdout;
+	int			original_stdin;
+	int			original_stdout;
 }	t_data;
 
 // Builtins
@@ -157,7 +159,8 @@ void		cleanup_and_exit(t_ast_node *root, t_data *data,
 				char **args, char *cmd_path);
 void		handle_signals(int signum);
 void		handle_signals_child(void);
-void		cleanup_shell(t_data *data);
+void cleanup_shell(t_data *data);
+void close_fds(t_data *data);
 char		*remove_quotes(char *input);
 int			can_expand(char *rslt);
 char		*expand_status(int status, char *input);

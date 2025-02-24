@@ -15,22 +15,26 @@
 // Function to skip spaces in the input
 char	*ft_skip_spaces(char *input)
 {
-	while (*input == ' ')
+	while (*input == ' ' || *input == '\t' || *input == '\n' || *input == '\r' || *input == '\v' || *input == '\f')
 		input++;
 	return (input);
 }
 
-//Function to check if the -n flag is present
+// Function to check if the -n flag is present
 bool	ft_check_n_flag(char **input)
 {
 	bool	n_flag;
 
 	n_flag = false;
-	while (strncmp(*input, "-n", 2) == 0 && ((*input)[2] == '\0'
-		|| (*input)[2] == ' '))
+	while (**input == '-')
 	{
+		char *temp = *input + 1;
+		while (*temp == 'n')
+			temp++;
+		if (*temp != ' ' && *temp != '\0')
+			break;
 		n_flag = true;
-		*input = ft_skip_spaces(*input + 2);
+		*input = ft_skip_spaces(temp);
 	}
 	return (n_flag);
 }
