@@ -63,3 +63,15 @@ char	*process_variables(char *result, t_data *data)
 	}
 	return (result);
 }
+
+char	*expand_pid(t_data *data)
+{
+	pid_t	pgrp;
+
+	if (ioctl(data->original_stdin, TIOCGPGRP, &pgrp) == -1)
+	{
+		perror("ioctl TIOCGPGRP failed");
+		return (NULL);
+	}
+	return (ft_itoa(pgrp));
+}

@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 14:33:06 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:37:41 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	shell_loop(t_data *data)
 		data->hd_file = ft_strdup("");
 		signal(SIGINT, handle_signals);
 		signal(SIGQUIT, SIG_IGN);
+		data->original_stdin = dup(STDIN_FILENO);
+		data->original_stdout = dup(STDOUT_FILENO);
 		data->input = read_input();
 		if (!data->input)
 			break ;

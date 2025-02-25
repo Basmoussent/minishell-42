@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 14:26:47 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:39:28 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <readline/history.h>
 # include <termios.h>
 # include <signal.h>
+#include <sys/ioctl.h>
+
 
 # define COLOR_RESET   "\033[0m"
 # define COLOR_GREEN   "\033[32m"
@@ -131,7 +133,6 @@ t_ast_node	*create_ast_node(enum e_token type, char *value);
 char		*expand_all_variables(char *input, t_data *data);
 char		*get_env_value(char *name, t_data *data);
 void		free_ast(t_ast_node *node);
-void		print_ast(t_ast_node *node, const char *prefix, int is_left);
 void		compress_ast(t_ast_node *node);
 void		split_ast(t_ast_node *node);
 void		clean_redirections(t_ast_node *node);
@@ -149,6 +150,8 @@ void		skip_single_quotes(char *result, size_t *i);
 char		*handle_expansion(char *result, t_data *data, size_t *i);
 char		*process_variables(char *result, t_data *data);
 char		*expand_single_variable(char *input, t_data *data);
+void		print_ast(t_ast_node *node, char *prefix, int is_left);
+char		*expand_pid(t_data *data);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);

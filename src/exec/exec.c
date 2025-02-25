@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:14:34 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:40:22 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	execute_command(t_ast_node *node, t_data *data)
 	args = prepare_args(node);
 	pid = fork();
 	handle_signals_child();
+	signal(SIGINT, SIG_IGN);
 	if (pid == -1)
 		handle_error("fork", 1);
 	if (pid == 0)

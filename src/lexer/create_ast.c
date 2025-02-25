@@ -97,5 +97,6 @@ t_ast_node	*parse_tokens(char **tokens, t_data *data)
 	}
 	compress_ast(root);
 	split_ast(root);
+	print_ast(root, "", 0);
 	return (root);
 }
