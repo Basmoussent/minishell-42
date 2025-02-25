@@ -43,18 +43,20 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR) $(dir $(OBJS))
 
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(INCLUDE) -lreadline
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(INCLUDE) -lreadline
+	@echo "\n\033[0;32mDone !"
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)
-	rm -rf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)
 
 fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR)
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
