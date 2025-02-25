@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 12:21:47 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:33:06 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	shell_loop(t_data *data)
 		data->input = read_input();
 		if (!data->input)
 			break ;
-		add_history(data->input);
+		if (data->input[0] != '\0')
+			add_history(data->input);
 		process_input(data);
 		cleanup_current_iteration(data);
 	}

@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/24 20:10:42 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:26:47 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void		ft_process_input(char *input, char *buffer);
 char		**copy_envp(char **envp);
 int			ft_set_env(char *var, char *value, t_data *data);
 char		**copy_export_list(char **envp);
+char		*get_current_pwd(t_data *data);
+int			is_in_export_list(char *var, char **export_list);
 
 // LEXER
 int			is_space(char c);

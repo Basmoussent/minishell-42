@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 01:39:48 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 01:57:31 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:26:31 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,35 @@ int	ft_export(char *str, t_data *data)
 	char	*equal_sign;
 	char	*var;
 	char	*value;
+	char	**vars;
+	int		i;
 
 	if (!str || !*str)
 	{
 		print_export_list(data->export);
 		return (0);
 	}
-	equal_sign = ft_strchr(str, '=');
-	if (equal_sign)
+	vars = ft_split(str, ' ');
+	i = 0;
+	while (vars[i])
 	{
-		var = ft_substr(str, 0, equal_sign - str);
-		value = equal_sign + 1;
-		ft_set_env(var, value, data);
-		add_to_export(str, data);
-		free(var);
+		equal_sign = ft_strchr(vars[i], '=');
+		if (equal_sign)
+		{
+			var = ft_substr(vars[i], 0, equal_sign - vars[i]);
+			value = equal_sign + 1;
+			ft_set_env(var, value, data);
+			if (!is_in_export_list(var, data->export))
+				add_to_export(vars[i], data);
+			free(var);
+		}
+		else
+		{
+			if (!is_in_export_list(vars[i], data->export))
+				add_to_export(vars[i], data);
+		}
+		i++;
 	}
-	else
-	{
-		add_to_export(str, data);
-	}
+	free_args(vars);
 	return (0);
 }

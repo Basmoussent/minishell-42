@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:13:56 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/24 20:07:56 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:31:24 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,29 @@ char	*expand_single_variable(char *input, t_data *data)
 	char	*var_name;
 	char	*var_value;
 	char	*result;
+	char	*temp;
 
 	start = ft_strchr(input, '$');
 	if (!start)
 		return (ft_strdup(input));
-	end = start + 1;
-	if (*end == '?')
-		return (expand_status(g_signal_received, end + 1));
-	while (*end && (ft_isalnum(*end) || *end == '_'))
-		end++;
-	var_name = extract_var_name(start);
-	var_value = get_env_value(var_name, data);
-	free(var_name);
-	if (!var_value)
-		var_value = "";
-	result = replace_variable(input, start, var_value, end);
+	result = ft_strdup(input);
+	while (start)
+	{
+		end = start + 1;
+		if (*end == '?')
+			return (expand_status(g_signal_received, end + 1));
+		while (*end && (ft_isalnum(*end) || *end == '_'))
+			end++;
+		var_name = extract_var_name(start);
+		var_value = get_env_value(var_name, data);
+		free(var_name);
+		if (!var_value)
+			var_value = "";
+		temp = replace_variable(result, start, var_value, end);
+		free(result);
+		result = temp;
+		start = ft_strchr(result, '$');
+	}
 	return (result);
 }
 

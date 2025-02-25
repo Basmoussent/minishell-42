@@ -73,7 +73,7 @@ int	check_doubles(char **lexed_input)
 		if (is_special_char(lexed_input[i])
 			&& is_special_char(lexed_input[i + 1]))
 		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
+			printf("minishell: syntax error near unexpected token %s\n", lexed_input[i + 1]);
 			g_signal_received = 2;
 			return (0);
 		}
@@ -81,7 +81,7 @@ int	check_doubles(char **lexed_input)
 	}
 	if (is_special_char(lexed_input[i]))
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		printf("minishell: syntax error near unexpected token %s\n", lexed_input[i]);
 		g_signal_received = 2;
 		return (0);
 	}

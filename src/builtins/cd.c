@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 // Function to print error messages
-static void	print_cd_error(int code)
+static	void	print_cd_error(int code)
 {
 	if (code == 1)
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
@@ -21,14 +21,24 @@ static void	print_cd_error(int code)
 		ft_putstr_fd("cd: no such file or directory\n", STDERR_FILENO);
 }
 
+char	*get_current_pwd(t_data *data)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		pwd = ft_strdup(get_env_value("PWD", data));
+	return (pwd);
+}
+
 static int	update_pwd(char *old_pwd, t_data *data)
 {
 	char	*new_pwd;
 	int		ret;
 
-	new_pwd = getcwd(NULL, 0);
+	new_pwd = get_current_pwd(data);
 	if (!new_pwd)
-		return (free(old_pwd), KO);
+		return (KO);
 	if (ft_set_env("PWD", new_pwd, data) != OK)
 	{
 		free(new_pwd);
@@ -46,11 +56,14 @@ int	ft_cd(char *path, t_data *data)
 	char	*old_pwd;
 	int		ret;
 
-	if (!path || chdir(path) == -1)
-		return (print_cd_error(2), KO);
-	old_pwd = getcwd(NULL, 0);
+	old_pwd = get_current_pwd(data);
 	if (!old_pwd)
 		return (print_cd_error(3), KO);
+	if (!path || chdir(path) == -1)
+	{
+		free(old_pwd);
+		return (print_cd_error(2), KO);
+	}
 	ret = update_pwd(old_pwd, data);
 	free(old_pwd);
 	return (ret);

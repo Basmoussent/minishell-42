@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 21:47:19 by amine             #+#    #+#             */
-/*   Updated: 2025/02/17 15:19:24 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:10:00 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_speci(char *token)
 {
 	if (*token)
-		return (token[0] == '>');
+		return (token[0] == '>' || token[0] == '<' || ft_strncmp(token, ">>", 2) == 0);	
 	return (KO);
 }
 

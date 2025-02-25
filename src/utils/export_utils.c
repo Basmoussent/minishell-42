@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 01:39:48 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 02:30:53 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:26:17 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,25 @@ void	print_export_list(char **export_list)
 		else
 			printf("export %s\n", export_list[i]);
 	}
+}
+
+int	is_in_export_list(char *var, char **export_list)
+{
+	int		i;
+	size_t	var_len;
+
+	if (!var || !export_list)
+		return (0);
+	var_len = ft_strlen(var);
+	i = 0;
+	while (export_list[i])
+	{
+		if (ft_strncmp(export_list[i], var, var_len) == 0
+			&& (export_list[i][var_len] == '=' || export_list[i][var_len] == '\0'))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 static char	**init_minimal_export(void)
