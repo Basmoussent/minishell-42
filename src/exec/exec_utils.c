@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:14:09 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:15:52 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 
 	cmd_path = NULL;
 	get_cmd_path(node, data->envp, &cmd_path, args);
+	if (ft_strncmp(args[0], "./minishell", 12) != 0)
+		signal(SIGQUIT, SIG_DFL);
 	execve(cmd_path, args, data->envp);
 	perror("execve");
 	cleanup_and_exit(node, data, args, cmd_path);
