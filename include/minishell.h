@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/26 14:42:21 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/26 22:56:16 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ char		*process_variables(char *result, t_data *data);
 char		*expand_single_variable(char *input, t_data *data);
 void		print_ast(t_ast_node *node, char *prefix, int is_left);
 char		*expand_pid(t_data *data);
+char		**fix_order(char **tokens);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);

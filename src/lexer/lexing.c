@@ -100,6 +100,7 @@ t_ast_node	*lexing(char *input, t_data *data)
 	if (has_unclosed_quote(input))
 		return (NULL);
 	lexed_input = split_whitespace(input);
+	lexed_input = fix_order(lexed_input);
 	if (!lexed_input || !check_doubles(lexed_input))
 		return (double_free_input(lexed_input));
 	true_input = filter_tokens(lexed_input);
