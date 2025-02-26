@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 18:15:52 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   exec_utils.c									   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: bdenfir <bdenfir@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/24 16:45:47 by bdenfir		   #+#	#+#			 */
+/*   Updated: 2025/02/26 14:52:47 by bdenfir		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -77,8 +77,10 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 
 	cmd_path = NULL;
 	get_cmd_path(node, data->envp, &cmd_path, args);
-	if (ft_strncmp(args[0], "./minishell", 12) != 0)
-		signal(SIGQUIT, SIG_DFL);
+	if (ft_strnstr(cmd_path, "minishell", ft_strlen(cmd_path)) || ft_strnstr(args[0], "minishell", ft_strlen(args[0])))
+	{
+		signal(SIGQUIT, SIG_IGN);
+	}
 	execve(cmd_path, args, data->envp);
 	perror("execve");
 	cleanup_and_exit(node, data, args, cmd_path);
@@ -90,8 +92,13 @@ void	handle_command_parent(pid_t pid, char **args)
 
 	free_args(args);
 	waitpid(pid, &status, 0);
-	if ((status & 0x7f) == 0)
-		g_signal_received = (status & 0xff00) >> 8;
-	else
-		g_signal_received = 128 + (status & 0x7f);
+	if (((status) & 0x7F) != 0) {
+		if (((status) & 0x7F) == SIGQUIT) {
+			write(2, "Quit (Core dumped)\n", 19);
+		}
+		g_signal_received = 128 + ((status) & 0x7F);
+	} 
+	else if (((status) & 0x7F) == 0) {
+		g_signal_received = ((status) >> 8) & 0xFF;
+	}
 }

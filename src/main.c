@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 17:36:18 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:42:39 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	init_shell(t_data *data, char **envp)
 	data->saved_stdout = -1;
 	data->original_stdin = -1;
 	data->original_stdout = -1;
+	data->in_shell = 0;
 	if (!data->envp || !data->export)
 	{
 		cleanup_shell(data);

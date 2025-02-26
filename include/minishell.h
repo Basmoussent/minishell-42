@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 17:39:28 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:42:21 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
 	int			saved_stdout;
 	int			original_stdin;
 	int			original_stdout;
+	int			in_shell;
 }	t_data;
 
 // Builtins

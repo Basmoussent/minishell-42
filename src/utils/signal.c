@@ -27,11 +27,11 @@ void	handle_signals(int signum)
 void	sigquit_handler(int signum)
 {
 	(void)signum;
-	write(2, "\nQuit (Core Dumped)\n\n", 20);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_signal_received = 131;
+	// write(2, "\nQuit (Core Dumped)\n\n", 20);
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
+	// g_signal_received = 131;
 }
 
 void	handle_signals_child(void)
