@@ -74,7 +74,7 @@ char	*expand_single_variable(char *input, t_data *data)
 	if (*end == '?')
 		return (expand_status(g_signal_received, end + 1));
 	if(*end == '$')
-		return (expand_pid(data));
+		return (join_expand_pid(expand_pid(data), end + 1));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;
 	var_name = extract_var_name(start);

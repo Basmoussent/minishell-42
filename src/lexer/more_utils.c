@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:44:55 by amine             #+#    #+#             */
-/*   Updated: 2025/02/26 23:44:36 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/27 00:45:17 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,26 @@ char	**fix_order(char **tokens)
 		return (NULL);
     fixed_tokens[count] = NULL;
     return (fixed_tokens);
+}
+
+char	*join_expand_pid(char *pid, char *input)
+{
+    char	*result;
+    size_t	pid_len;
+    size_t	input_len;
+
+    if (*input == '"' || *input == '\'')
+        return (pid);
+    pid_len = ft_strlen(pid);
+    input_len = ft_strlen(input);
+    result = (char *)malloc(pid_len + input_len + 1);
+    if (!result)
+    {
+        free(pid);
+        return (NULL);
+    }
+    ft_strlcpy(result, pid, pid_len + 1);
+    ft_strlcat(result, input, pid_len + input_len + 1);
+    free(pid);
+    return (result);
 }
