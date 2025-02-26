@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:19:26 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:42:58 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ int	is_builtin(t_ast_node *node)
 {
 	if (!node || !node->value)
 		return (0);
-	if (ft_strncmp(node->value, "echo", 4) == 0)
+	if (ft_strncmp(node->value, "echo", 5) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "cd", 2) == 0)
+	if (ft_strncmp(node->value, "cd", 3) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "pwd", 3) == 0)
+	if (ft_strncmp(node->value, "pwd", 4) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "export", 6) == 0)
+	if (ft_strncmp(node->value, "export", 7) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "unset", 5) == 0)
+	if (ft_strncmp(node->value, "unset", 6) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "exit", 4) == 0)
+	if (ft_strncmp(node->value, "exit", 5) == 0)
 		return (1);
-	if (ft_strncmp(node->value, "env", 3) == 0)
+	if (ft_strncmp(node->value, "env", 4) == 0)
 		return (1);
 	return (0);
 }
@@ -61,19 +61,19 @@ int	exec_builtin(t_ast_node *node, t_data *data)
 	arg = "";
 	if (node->right && node->right->value)
 		arg = node->right->value;
-	if (ft_strncmp(node->value, "echo", 4) == 0)
+	if (ft_strncmp(node->value, "echo", 5) == 0)
 		return (ft_echo(arg));
-	if (ft_strncmp(node->value, "cd", 2) == 0)
+	if (ft_strncmp(node->value, "cd", 3) == 0)
 		return (ft_cd(arg, data));
-	if (ft_strncmp(node->value, "pwd", 3) == 0)
+	if (ft_strncmp(node->value, "pwd", 4) == 0)
 		return (ft_pwd(data));
-	if (ft_strncmp(node->value, "export", 6) == 0)
+	if (ft_strncmp(node->value, "export", 7) == 0)
 		return (ft_export(arg, data));
-	if (ft_strncmp(node->value, "unset", 5) == 0)
+	if (ft_strncmp(node->value, "unset", 6) == 0)
 		return (ft_unset(arg, data));
-	if (ft_strncmp(node->value, "exit", 4) == 0)
+	if (ft_strncmp(node->value, "exit", 5) == 0)
 		return (ft_exit(arg, data));
-	if (ft_strncmp(node->value, "env", 3) == 0)
+	if (ft_strncmp(node->value, "env", 4) == 0)
 		return (ft_env(data->envp, arg));
 	return (0);
 }

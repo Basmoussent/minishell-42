@@ -28,8 +28,7 @@ bool	validate_command(const char *cmd)
 		else if (*cmd == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
 		else if (!in_single_quote && !in_double_quote && (*cmd == ';'
-				|| *cmd == '&' || *cmd == '|' || *cmd == '<' || *cmd == '>'
-				|| *cmd == '\\'))
+				|| *cmd == '&' || *cmd == '|' || *cmd == '<' || *cmd == '>'))
 		{
 			printf(COLOR_RED "unset: syntax error near unexpected token '%c'\n"
 				COLOR_RESET, *cmd);
@@ -64,6 +63,7 @@ void	ft_process_input(char *input, char *buffer)
 			in_double_quotes = !in_double_quotes;
 			continue ;
 		}
+		i+= input[i] == '\\';
 		buffer[buffer_index++] = input[i];
 	}
 	buffer[buffer_index] = '\0';

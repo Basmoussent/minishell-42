@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/17 18:28:34 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:17:40 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,31 @@ char	*handle_special_char(char *start, char **tokens, int *i)
 
 char	*handle_quotes(char *start, char **tokens, int *i)
 {
-	char	*end;
-
-	end = get_next_quote(start + 1, *start == '"');
-	if (*end == *start)
-		end++;
-	tokens[*i] = ft_strndup(start, end - start);
-	if (!tokens[*i])
-		return (NULL);
-	(*i)++;
-	return (end);
+    char	*end;
+    
+    while (*start && (*start == '"' || *start == '\'') && *(start + 1) == *start)
+        start += 2;
+    if (*start && *start != '"' && *start != '\'')
+    {
+        end = find_token_end(start);
+        tokens[*i] = ft_strndup(start, end - start);
+        if (!tokens[*i])
+            return (NULL);
+        (*i)++;
+        return (end);
+    }
+    if (*start == '"' || *start == '\'')
+    {
+        end = get_next_quote(start + 1, *start == '"');
+        if (*end == *start)
+            end++;
+        tokens[*i] = ft_strndup(start, end - start);
+        if (!tokens[*i])
+            return (NULL);
+        (*i)++;
+        return (end);
+    }
+    return (start);
 }
 
 char	*handle_token(char *start, char **tokens, int *i)

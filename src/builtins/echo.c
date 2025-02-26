@@ -21,22 +21,34 @@ char	*ft_skip_spaces(char *input)
 }
 
 // Function to check if the -n flag is present
-bool	ft_check_n_flag(char **input)
+bool    ft_check_n_flag(char **input)
 {
-	bool	n_flag;
+    bool    n_flag;
+    char    *temp;
+    char    quote_char;
 
-	n_flag = false;
-	while (**input == '-')
-	{
-		char *temp = *input + 1;
-		while (*temp == 'n')
-			temp++;
-		if (*temp != ' ' && *temp != '\0')
-			break;
-		n_flag = true;
-		*input = ft_skip_spaces(temp);
-	}
-	return (n_flag);
+    n_flag = false;
+    while (**input == '-' || **input == '\"' || **input == '\'')
+    {
+        quote_char = 0;
+        if (**input == '\"' || **input == '\'')
+        {
+            quote_char = **input;
+            (*input)++;
+            if (**input != '-')
+                break ;
+        }
+        temp = *input + 1;
+        while (*temp == 'n')
+            temp++;
+        if (*temp != ' ' && *temp != '\0' && *temp != quote_char)
+            break;
+        if (quote_char && *temp == quote_char)
+            temp++;
+        n_flag = true;
+        *input = ft_skip_spaces(temp);
+    }
+    return (n_flag);
 }
 
 //Main function to implement the echo command
@@ -49,8 +61,6 @@ int	ft_echo(char *input)
 		return (KO);
 	if (!input)
 		return (printf("\n"));
-	if (strncmp(input, "echo", 4) == 0 && (input[4] == ' ' || input[4] == '\0'))
-		input = ft_skip_spaces(input + 4);
 	input = ft_skip_spaces(input);
 	n_flag = ft_check_n_flag(&input);
 	ft_process_input(input, buffer);
