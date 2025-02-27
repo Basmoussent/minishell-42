@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 18:15:55 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/27 15:22:35 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static void	execute_command(t_ast_node *node, t_data *data)
 		handle_error("Invalid command structure", 1);
 	if (is_builtin(node))
 	{
-		data->status = exec_builtin(node, data);
+		g_signal_received = exec_builtin(node, data);
 		return ;
 	}
 	args = prepare_args(node);
-	pid = fork();
-	handle_signals_child();
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	pid = fork();
 	if (pid == -1)
 		handle_error("fork", 1);
 	if (pid == 0)
@@ -58,7 +58,7 @@ static void	execute_pipe(t_ast_node *node, t_data *data)
 		handle_error("fork", 1);
 	if (right_pid == 0)
 		handle_right_child(node, data, pipe_fds);
-	handle_pipe_parent(data, pipe_fds, left_pid, right_pid);
+	handle_pipe_parent(pipe_fds, left_pid, right_pid);
 }
 
 void	exec_ast(t_ast_node *node, t_data *data)

@@ -14,32 +14,36 @@
 
 void	handle_signals(int signum)
 {
-	if (signum == SIGINT)
+	g_signal_received += signum;
+	if (signum == 2)
 	{
-		write(1, "\n", 1);
+		g_signal_received = 130;
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_signal_received = 130;
+	}
+	if (signum == SIGQUIT)
+	{
+		write(2, "Quit (core dumped)\n", ft_strlen("Quit (core dumped)\n"));
+		exit (1);
 	}
 }
 
 void	sigquit_handler(int signum)
 {
 	(void)signum;
-	// write(2, "\nQuit (Core Dumped)\n\n", 20);
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	// g_signal_received = 131;
 }
 
-void	handle_signals_child(void)
+void	handle_sigint_child(int signum)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = sigquit_handler;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGQUIT, &sa, NULL);
+	g_signal_received += signum;
+	if (signum == 2)
+	{
+		g_signal_received = 130;
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
+

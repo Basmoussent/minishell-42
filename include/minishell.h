@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 10:32:18 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/27 15:15:46 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ void		cleanup_and_exit(t_ast_node *root, t_data *data,
 				char **args, char *cmd_path);
 void		handle_signals(int signum);
 void		handle_signals_child(void);
+void		handle_sigint_child(int signum);
 void cleanup_shell(t_data *data);
 void close_fds(t_data *data);
 char		*remove_quotes(char *input);
@@ -204,13 +205,14 @@ char		*find_executable(char *cmd, char **envp);
 // Pipe utils
 void		execute_child(t_ast_node *node, t_data *data, int *pipe_fds);
 void		handle_right_child(t_ast_node *node, t_data *data, int *pipe_fds);
-void		handle_pipe_parent(t_data *data, int *pipe_fds,
+void		handle_pipe_parent(int *pipe_fds,
 				pid_t left_pid, pid_t right_pid);
 
 // Redirect utils
 void		redirect_output(t_ast_node *node, int fd);
 void		reset_stream(int saved_stdin, int saved_stdout);
 int			open_redirection_file(t_ast_node *node, t_data *data);
+int			can_write_to_file(char *filepath);
 
 // Heredoc utils
 void		process_heredoc_line(char *line, int fd, t_data *data, int expand);
