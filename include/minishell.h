@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 09:03:47 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/27 10:32:18 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ char		**fix_order(char **tokens);
 char		*join_expand_pid(char *pid, char *str);
 char		*join_expanded_status(int status, char *input, char *str);
 char		*join_expanded_pid(char *pid, char *input, char *str);
+int			find_first_dollar(char *input);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);

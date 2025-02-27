@@ -71,19 +71,37 @@ char	*expand_status(int status, char *input)
 	return (result);
 }
 
+int		find_first_dollar(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] != '$')
+		i++;
+	return (i);
+}
+
 char	*join_expanded_status(int status, char *input, char *str)
 {
-	char	*rslt;
-	char	*status_str;
-	char	*cpy;
+    char	*rslt;
+    char	*status_str;
+    char	*cpy;
+    size_t	cpy_len;
 
-	status_str = expand_status(status, str);	
-	cpy = malloc (ft_strlen(input) - ft_strlen(status_str));
-	if (!cpy)
-		return (NULL);
-	ft_strlcpy(cpy, input, ft_strlen(input) - ft_strlen(status_str));
-	rslt = ft_strjoin(cpy, status_str);
-	free(cpy);
-	free(status_str);
-	return (rslt);
+    cpy_len = find_first_dollar(input);
+    status_str = expand_status(status, str);
+    if (!status_str)
+        return (NULL);
+    if (cpy_len > ft_strlen(input))
+        cpy_len = 0;
+    cpy = ft_strndup(input, cpy_len);
+    if (!cpy)
+    {
+        free(status_str);
+        return (NULL);
+    }
+    rslt = ft_strjoin(cpy, status_str);
+    free(cpy);
+    free(status_str);
+    return (rslt);
 }

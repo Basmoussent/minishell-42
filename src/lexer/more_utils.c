@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:44:55 by amine             #+#    #+#             */
-/*   Updated: 2025/02/27 00:45:17 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/27 10:32:26 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,30 @@ char	*join_expand_pid(char *pid, char *input)
     ft_strlcat(result, input, pid_len + input_len + 1);
     free(pid);
     return (result);
+}
+
+
+char		*join_expanded_pid(char *pid, char *input, char *str)
+{
+	char	*rslt;
+	char	*status_str;
+	char	*cpy;
+	size_t	cpy_len;
+
+	cpy_len = find_first_dollar(input);
+	status_str = join_expand_pid(pid, str);	
+	if (!status_str)
+        return (NULL);
+    if (cpy_len > ft_strlen(input))
+        cpy_len = 0;
+    cpy = ft_strndup(input, cpy_len);
+    if (!cpy)
+    {
+        free(status_str);
+        return (NULL);
+    }
+    rslt = ft_strjoin(cpy, status_str);
+    free(cpy);
+    free(status_str);
+    return (rslt);
 }
