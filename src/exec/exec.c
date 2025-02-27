@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 15:15:35 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/27 15:22:35 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	execute_command(t_ast_node *node, t_data *data)
 		handle_error("Invalid command structure", 1);
 	if (is_builtin(node))
 	{
-		data->status = exec_builtin(node, data);
+		g_signal_received = exec_builtin(node, data);
 		return ;
 	}
 	args = prepare_args(node);
