@@ -75,12 +75,14 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 {
 	char	*cmd_path;
 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	cmd_path = NULL;
 	get_cmd_path(node, data->envp, &cmd_path, args);
-	if (ft_strnstr(cmd_path, "minishell", ft_strlen(cmd_path)) || ft_strnstr(args[0], "minishell", ft_strlen(args[0])))
-	{
-		signal(SIGQUIT, SIG_IGN);
-	}
+	// if (ft_strnstr(cmd_path, "minishell", ft_strlen(cmd_path)) || ft_strnstr(args[0], "minishell", ft_strlen(args[0])))
+	// {
+	// 	signal(SIGQUIT, SIG_IGN);
+	// }
 	execve(cmd_path, args, data->envp);
 	perror("execve");
 	cleanup_and_exit(node, data, args, cmd_path);

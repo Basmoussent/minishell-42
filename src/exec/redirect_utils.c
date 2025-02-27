@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/18 13:19:12 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:13:51 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,12 @@ void	reset_stream(int saved_stdin, int saved_stdout)
 
 int	open_redirection_file(t_ast_node *node, t_data *data)
 {
+	
 	if (!node->right || !node->right->value)
-		return (printf("Syntax error near unexpected token %s\n", node->value),
-			g_signal_received = 2, -1);
+	return (printf("Syntax error near unexpected token %s\n", node->value),
+		g_signal_received = 2, -1);
+	if (!can_write_to_file(node->right->value))
+		return (-1);
 	if (node->type == TRUNCATE)
 		return (open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	if (node->type == APPEND)
@@ -43,4 +46,22 @@ int	open_redirection_file(t_ast_node *node, t_data *data)
 	if (node->type == HEREDOC)
 		return (heredoc_logic(node->right->value, data));
 	return (-1);
+}
+
+int	can_write_to_file(char *filepath)
+{
+	int	fd;
+	ssize_t	ret;
+
+	fd = open(filepath, O_WRONLY | O_APPEND);
+	if (fd == -1)
+		return (0);
+	ret = write(fd, "", 0);
+	if (ret == -1)
+	{
+		close(fd);
+		return (0);
+	}
+	close(fd);
+	return (1);
 }
