@@ -70,3 +70,20 @@ char	*expand_status(int status, char *input)
 	free(status_str);
 	return (result);
 }
+
+char	*join_expanded_status(int status, char *input, char *str)
+{
+	char	*rslt;
+	char	*status_str;
+	char	*cpy;
+
+	status_str = expand_status(status, str);	
+	cpy = malloc (ft_strlen(input) - ft_strlen(status_str));
+	if (!cpy)
+		return (NULL);
+	ft_strlcpy(cpy, input, ft_strlen(input) - ft_strlen(status_str));
+	rslt = ft_strjoin(cpy, status_str);
+	free(cpy);
+	free(status_str);
+	return (rslt);
+}

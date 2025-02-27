@@ -6,7 +6,7 @@
 /*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 00:42:03 by amine            ###   ########.fr       */
+/*   Updated: 2025/02/27 09:03:47 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,10 @@ char		*expand_single_variable(char *input, t_data *data);
 void		print_ast(t_ast_node *node, char *prefix, int is_left);
 char		*expand_pid(t_data *data);
 char		**fix_order(char **tokens);
-char		*join_expand_pid(char *pid, char *input);
+char		*join_expand_pid(char *pid, char *str);
 char		*join_expanded_status(int status, char *input, char *str);
 char		*join_expanded_pid(char *pid, char *input, char *str);
+
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);
 void		exec_ast(t_ast_node *node, t_data *data);
