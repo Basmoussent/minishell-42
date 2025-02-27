@@ -89,6 +89,7 @@ int	check_doubles(char **lexed_input)
 
 t_ast_node	*lexing(char *input, t_data *data)
 {
+	char		**first_input;
 	char		**lexed_input;
 	char		**true_input;
 	t_ast_node	*ast;
@@ -98,8 +99,9 @@ t_ast_node	*lexing(char *input, t_data *data)
 		return (NULL);
 	if (has_unclosed_quote(input))
 		return (NULL);
-	lexed_input = split_whitespace(input);
-	lexed_input = fix_order(lexed_input);
+	first_input = split_whitespace(input);
+	lexed_input = fix_order(first_input);
+	free_args(first_input);
 	if (!lexed_input || !check_doubles(lexed_input))
 		return (double_free_input(lexed_input));
 	true_input = filter_tokens(lexed_input);
