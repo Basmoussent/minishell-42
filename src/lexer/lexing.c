@@ -12,28 +12,27 @@
 
 #include "minishell.h"
 
-int	has_unclosed_quote(char *token)
+int has_unclosed_quote(char *token)
 {
-	int	single_quotes;
-	int	double_quotes;
-
-	single_quotes = 0;
-	double_quotes = 0;\
-	while (*token)
-	{
-		if (*token == '\'')
-			single_quotes++;
-		else if (*token == '"')
-			double_quotes++;
-		token++;
-	}
-	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
-	{
-		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
-		g_signal_received = 2;
-		return (1);
-	}
-	return (0);
+    int inside_single_quotes = 0;
+    int inside_double_quotes = 0;
+    
+    while (*token)
+    {
+        if (*token == '\'' && !inside_double_quotes)
+            inside_single_quotes = !inside_single_quotes;
+        else if (*token == '"' && !inside_single_quotes)
+            inside_double_quotes = !inside_double_quotes;
+        token++;
+    }
+    
+    if (inside_single_quotes || inside_double_quotes)
+    {
+        ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
+        g_signal_received = 2;
+        return (1);																																								
+    }
+    return (0);
 }
 
 char	*get_last_token(char **tokens)

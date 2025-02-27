@@ -18,7 +18,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@printf "\n\033[0;32mCréation de la bibliothèque %s... ✅\033[0m\n" $(NAME)
 	@ar rc $(NAME) $(OBJS)
-	echo "\033[0;32mCompliling libft is done !"
+	@echo "\033[0;32mCompliling libft is done !"
 
 %.o: %.c
 	@printf "\033[0;33mCompilation en cours... %-33.33s\r" $@
@@ -32,7 +32,7 @@ clean:
 bonus: $(BONUS_OBJECTS)
 	@printf "\n\033[0;36mAjout des fichiers bonus à %s... 🎁\033[0m\n" $(NAME)
 	@ar r $(NAME) $^
-	echo "\033[0;32mCompliling libft is done !"
+	@echo "\033[0;32mCompliling libft is done !"
 
 fclean: clean
 	@printf "\033[0;31mSuppression de %s...\033[0m\n" $(NAME)
