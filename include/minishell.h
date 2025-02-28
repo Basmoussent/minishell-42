@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 15:15:46 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 00:48:48 by amine            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ char		*join_expand_pid(char *pid, char *str);
 char		*join_expanded_status(int status, char *input, char *str);
 char		*join_expanded_pid(char *pid, char *input, char *str);
 int			find_first_dollar(char *input);
+char		*ft_strdup_without_dollar(char *input, char *start);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);

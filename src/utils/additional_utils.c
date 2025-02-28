@@ -42,7 +42,7 @@ char	*remove_quotes(char *input)
 
 int	can_expand(char *rslt)
 {
-	return (rslt[1] && !is_space(rslt[1]) && rslt[1] != '"' && rslt[1] != '\'');
+	return (rslt[1] && !is_space(rslt[1]));
 }
 
 char	*expand_status(int status, char *input)
