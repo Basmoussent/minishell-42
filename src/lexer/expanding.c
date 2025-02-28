@@ -71,9 +71,11 @@ char	*expand_single_variable(char *input, t_data *data)
 	if (!start)
 		return (ft_strdup(input));
 	end = start + 1;
+	if (*end == '\'' || *end == '"')
+		return (ft_strdup(input + 1));
 	if (*end == '?')
 		return (join_expanded_status(g_signal_received, input, end + 1));
-	if(*end == '$')
+	if (*end == '$')
 		return (join_expanded_pid(expand_pid(data), input, end + 1));
 	while (*end && (ft_isalnum(*end) || *end == '_'))
 		end++;

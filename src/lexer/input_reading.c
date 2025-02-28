@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/26 15:17:40 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:26:04 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,31 @@ char	*handle_token(char *start, char **tokens, int *i)
 
 char	*process_token(char *start, char **tokens, int *i)
 {
+	char	*end;
+	char	*next_start;
+	int		curr;
+
 	if (is_special_char(start))
 		return (handle_special_char(start, tokens, i));
-	else if (*start == '"' || *start == '\'')
+	if (*start == '"' || *start == '\'')
 		return (handle_quotes(start, tokens, i));
-	else
-		return (handle_token(start, tokens, i));
+	end = handle_token(start, tokens, i);
+	if (!end)
+		return (NULL);
+	next_start = end;
+	if (*next_start && (*next_start == '\'' || *next_start == '"'))
+	{
+		curr = *i - 1;
+		next_start = handle_quotes(next_start, tokens, i);
+		if (!next_start)
+			return (NULL);
+		tokens[curr] = ft_strjoin(tokens[curr], tokens[*i - 1]);
+		if (!tokens[curr])
+			return (NULL);
+		free(tokens[*i - 1]);
+		(*i)--;
+	}
+	return (next_start);
 }
 
 char	**split_whitespace(char *input)
