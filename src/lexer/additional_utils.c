@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   additional_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 10:57:43 by akassous          #+#    #+#             */
-/*   Updated: 2025/03/01 07:57:18 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   additional_utils.c								 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: bdenfir <bdenfir@42.fr>					+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/02/17 10:57:43 by akassous		  #+#	#+#			 */
+/*   Updated: 2025/03/01 07:57:18 by bdenfir		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -44,16 +44,16 @@ char	*find_token_end(char *start)
 
 char	*ft_strdup_without_dollar(char *input, char *start)
 {
-    char	*result;
+	char	*result;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-    result = malloc(ft_strlen(input));
-    if (!result)
+	result = malloc(ft_strlen(input));
+	if (!result)
 	{
-        return (NULL);
+		return (NULL);
 	}
 	while (input[i])
 	{

@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input_reading.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/14 19:04:24 by akassous          #+#    #+#             */
-/*   Updated: 2025/02/28 18:26:04 by bdenfir          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   input_reading.c									:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: bdenfir <bdenfir@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/14 19:04:24 by akassous		  #+#	#+#			 */
+/*   Updated: 2025/02/28 18:26:04 by bdenfir		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -29,31 +29,31 @@ char	*handle_special_char(char *start, char **tokens, int *i)
 
 char	*handle_quotes(char *start, char **tokens, int *i)
 {
-    char	*end;
-    
-    while (*start && (*start == '"' || *start == '\'') && *(start + 1) == *start)
-        start += 2;
-    if (*start && *start != '"' && *start != '\'')
-    {
-        end = find_token_end(start);
-        tokens[*i] = ft_strndup(start, end - start);
-        if (!tokens[*i])
-            return (NULL);
-        (*i)++;
-        return (end);
-    }
-    if (*start == '"' || *start == '\'')
-    {
-        end = get_next_quote(start + 1, *start == '"');
-        if (*end == *start)
-            end++;
-        tokens[*i] = ft_strndup(start, end - start);
-        if (!tokens[*i])
-            return (NULL);
-        (*i)++;
-        return (end);
-    }
-    return (start);
+	char	*end;
+
+	while (*start && (*start == '"' || *start == '\'')
+		&& *(start + 1) == *start)
+		start += 2;
+	if (*start && *start != '"' && *start != '\'')
+	{
+		end = find_token_end(start);
+		tokens[*i] = ft_strndup(start, end - start);
+		if (!tokens[*i])
+			return (NULL);
+		(*i)++;
+		return (end);
+	}
+	if (*start == '"' || *start == '\'')
+	{
+		end = get_next_quote(start + 1, *start == '"');
+		end += *end == *start;
+		tokens[*i] = ft_strndup(start, end - start);
+		if (!tokens[*i])
+			return (NULL);
+		(*i)++;
+		return (end);
+	}
+	return (start);
 }
 
 char	*handle_token(char *start, char **tokens, int *i)

@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 22:20:44 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/17 21:25:51 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:50:18 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ void	check_args(char *arg, int *ret, t_data *data)
 		}
 	}
 	else
-	{
-		printf(COLOR_RED "unset: '%s': invalid identifier\n" COLOR_RESET, arg);
 		*ret = KO;
-	}
 }
 
 // Function to process the arguments

@@ -12,27 +12,28 @@
 
 #include "minishell.h"
 
-int has_unclosed_quote(char *token)
+int	has_unclosed_quote(char *token)
 {
-    int inside_single_quotes = 0;
-    int inside_double_quotes = 0;
-    
-    while (*token)
-    {
-        if (*token == '\'' && !inside_double_quotes)
-            inside_single_quotes = !inside_single_quotes;
-        else if (*token == '"' && !inside_single_quotes)
-            inside_double_quotes = !inside_double_quotes;
-        token++;
-    }
-    
-    if (inside_single_quotes || inside_double_quotes)
-    {
-        ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
-        g_signal_received = 2;
-        return (1);																																								
-    }
-    return (0);
+	int	inside_single_quotes;
+	int	inside_double_quotes;
+
+	inside_double_quotes = 0;
+	inside_single_quotes = 0;
+	while (*token)
+	{
+		if (*token == '\'' && !inside_double_quotes)
+			inside_single_quotes = !inside_single_quotes;
+		else if (*token == '"' && !inside_single_quotes)
+			inside_double_quotes = !inside_double_quotes;
+		token++;
+	}
+	if (inside_single_quotes || inside_double_quotes)
+	{
+		ft_putstr_fd("error : unclosed quote\n", STDERR_FILENO);
+		g_signal_received = 2;
+		return (1);
+	}
+	return (0);
 }
 
 char	*get_last_token(char **tokens)
@@ -72,7 +73,8 @@ int	check_doubles(char **lexed_input)
 		if (is_special_char(lexed_input[i])
 			&& is_special_char(lexed_input[i + 1]))
 		{
-			printf("minishell: syntax error near unexpected token %s\n", lexed_input[i + 1]);
+			printf("minishell: syntax error near unexpected token %s\n",
+				lexed_input[i + 1]);
 			g_signal_received = 2;
 			return (0);
 		}
@@ -80,7 +82,8 @@ int	check_doubles(char **lexed_input)
 	}
 	if (is_special_char(lexed_input[i]))
 	{
-		printf("minishell: syntax error near unexpected token %s\n", lexed_input[i]);
+		printf("minishell: syntax error near unexpected token %s\n",
+			lexed_input[i]);
 		g_signal_received = 2;
 		return (0);
 	}
@@ -101,6 +104,13 @@ t_ast_node	*lexing(char *input, t_data *data)
 		return (NULL);
 	first_input = split_whitespace(input);
 	lexed_input = fix_order(first_input);
+	int i = 0;
+	while (lexed_input[i])
+	{
+		printf("%s\n", lexed_input[i]);
+		i++;
+	}
+	
 	free_args(first_input);
 	if (!lexed_input || !check_doubles(lexed_input))
 		return (double_free_input(lexed_input));
@@ -112,5 +122,6 @@ t_ast_node	*lexing(char *input, t_data *data)
 	free_args(true_input);
 	if (!ast)
 		return (double_free_input(lexed_input));
+	print_ast(ast, "", 0);
 	return (ast);
 }

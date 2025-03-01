@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/03/01 10:42:23 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 11:11:20 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ char		*join_expanded_status(int status, char *input, char *str);
 char		*join_expanded_pid(char *pid, char *input, char *str);
 int			find_first_dollar(char *input);
 char		*ft_strdup_without_dollar(char *input, char *start);
+int			found_builtin(char *input);
 
 // EXEC
 int			heredoc_logic(char *delimiter, t_data *data);
