@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 14:13:51 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 08:28:06 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ int	open_redirection_file(t_ast_node *node, t_data *data)
 	if (!node->right || !node->right->value)
 	return (printf("Syntax error near unexpected token %s\n", node->value),
 		g_signal_received = 2, -1);
-	if (!can_write_to_file(node->right->value))
-		return (-1);
+	if (access(node->right->value, F_OK) == 0) 
+		if (!can_write_to_file(node->right->value))
+			return (-1);
 	if (node->type == TRUNCATE)
 		return (open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	if (node->type == APPEND)
@@ -50,7 +51,7 @@ int	open_redirection_file(t_ast_node *node, t_data *data)
 
 int	can_write_to_file(char *filepath)
 {
-	int	fd;
+	int		fd;
 	ssize_t	ret;
 
 	fd = open(filepath, O_WRONLY | O_APPEND);

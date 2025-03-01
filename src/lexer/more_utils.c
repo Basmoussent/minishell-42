@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amine <amine@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:44:55 by amine             #+#    #+#             */
-/*   Updated: 2025/02/27 10:32:26 by amine            ###   ########.fr       */
+/*   Updated: 2025/03/01 08:14:41 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,40 @@ int		found_builtin(char *input)
 static char	**temp_loop(char **tokens, char **fix_tokens)
 {
 	int		i;
+	int		cmd_start;
 
 	i = 0;
+	cmd_start = 1;
     while (tokens[i])
     {
-        if (tokens[i] && tokens[i + 1] && tokens[i + 2] && 
-			is_speci(tokens[i]) && !is_speci(tokens[i + 1])
-			&& !is_speci(tokens[i + 2]))
-		{
-			fix_tokens[i] = ft_strdup(tokens[i + 2]);
-			fix_tokens[i + 1] = ft_strdup(tokens[i]);
-			fix_tokens[i + 2] = ft_strdup(tokens[i + 1]);
-			if (!fix_tokens[i] || !fix_tokens[i + 1] || !fix_tokens[i + 2])
-				return (NULL);
-			i += 3;
-		}
-		else
+		if (ft_strncmp(tokens[i], "|", 2)) 
 		{
 			fix_tokens[i] = ft_strdup(tokens[i]);
 			if (!fix_tokens[i])
 				return (NULL);
+			cmd_start = 1; 
 			i++;
+			continue;
 		}
+        if (cmd_start && tokens[i] && tokens[i + 1] && !is_speci(tokens[i]) && is_speci(tokens[i + 1]))
+        {
+            fix_tokens[i] = ft_strdup("cat");
+            fix_tokens[i + 1] = ft_strdup(tokens[i]);
+            fix_tokens[i + 2] = ft_strdup(tokens[i + 1]);
+            if (!fix_tokens[i] || !fix_tokens[i + 1] || !fix_tokens[i + 2])
+                return (NULL);
+            i += 3;
+			cmd_start = 0;
+        }
+        else
+        {
+            fix_tokens[i] = ft_strdup(tokens[i]);
+            if (!fix_tokens[i])
+                return (NULL);
+            i++;
+			if (!is_speci(tokens[i - 1]))
+				cmd_start = 0;
+        }
     }
 	return (fix_tokens);
 }
