@@ -14,8 +14,9 @@
 
 int	ft_fix(int *cmd_start, char **tokens, char **fix_tokens, int *i)
 {
-	if (cmd_start && tokens[*i] && tokens[*i + 1]
-		&& !is_speci(tokens[*i]) && is_speci(tokens[*i + 1]))
+	if (cmd_start && tokens[*i] && tokens[*i + 1] && tokens[*i + 2]
+		&& is_speci(tokens[*i]) && !is_speci(tokens[*i + 1])
+		&& !is_speci(tokens[*i + 2]))
 	{
 		fix_tokens[*i] = ft_strdup(tokens[*i + 2]);
 		fix_tokens[*i + 1] = ft_strdup(tokens[*i]);
@@ -46,7 +47,7 @@ static char	**temp_loop(char **tokens, char **fix_tokens)
 	cmd_start = 1;
 	while (tokens[i])
 	{
-		if (ft_strncmp(tokens[i], "|", 2))
+		if (ft_strncmp(tokens[i], "|", 2) == 0)
 		{
 			fix_tokens[i] = ft_strdup(tokens[i]);
 			if (!fix_tokens[i])
