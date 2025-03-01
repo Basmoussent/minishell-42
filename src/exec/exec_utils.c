@@ -79,10 +79,6 @@ void	handle_command_child(t_ast_node *node, t_data *data, char **args)
 	signal(SIGQUIT, SIG_DFL);
 	cmd_path = NULL;
 	get_cmd_path(node, data->envp, &cmd_path, args);
-	// if (ft_strnstr(cmd_path, "minishell", ft_strlen(cmd_path)) || ft_strnstr(args[0], "minishell", ft_strlen(args[0])))
-	// {
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
 	execve(cmd_path, args, data->envp);
 	perror("execve");
 	cleanup_and_exit(node, data, args, cmd_path);
@@ -94,13 +90,12 @@ void	handle_command_parent(pid_t pid, char **args)
 
 	free_args(args);
 	waitpid(pid, &status, 0);
-	if (((status) & 0x7F) != 0) {
-		if (((status) & 0x7F) == SIGQUIT) {
+	if (((status) & 0x7F) != 0)
+	{
+		if (((status) & 0x7F) == SIGQUIT)
 			write(2, "Quit (Core dumped)\n", 19);
-		}
 		g_signal_received = 128 + ((status) & 0x7F);
-	} 
-	else if (((status) & 0x7F) == 0) {
-		g_signal_received = ((status) >> 8) & 0xFF;
 	}
+	else if (((status) & 0x7F) == 0)
+		g_signal_received = ((status) >> 8) & 0xFF;
 }

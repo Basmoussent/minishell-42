@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 15:16:23 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:35:19 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void	handle_pipe_parent(int *pipe_fds,
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &status, 0);
-	if (((status) & 0x7F) != 0) {
-		if (((status) & 0x7F) == SIGQUIT) {
+	if (((status) & 0x7F) != 0)
+	{
+		if (((status) & 0x7F) == SIGQUIT)
 			write(2, "Quit (Core dumped)\n", 19);
-		}
 		g_signal_received = 128 + ((status) & 0x7F);
-	} 
-	else if (((status) & 0x7F) == 0) {
-		g_signal_received = ((status) >> 8) & 0xFF;
 	}
+	else if (((status) & 0x7F) == 0)
+		g_signal_received = ((status) >> 8) & 0xFF;
 }

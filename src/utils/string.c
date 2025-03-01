@@ -63,7 +63,7 @@ void	ft_process_input(char *input, char *buffer)
 			in_double_quotes = !in_double_quotes;
 			continue ;
 		}
-		i+= input[i] == '\\';
+		i += input[i] == '\\';
 		buffer[buffer_index++] = input[i];
 	}
 	buffer[buffer_index] = '\0';
@@ -102,4 +102,31 @@ void	free_ast(t_ast_node *node)
 	free_ast(node->right);
 	ft_free((void **)&node->value);
 	ft_free((void **)&node);
+}
+
+int	add_to_export(char *var, t_data *data)
+{
+	size_t	i;
+	size_t	export_len;
+	char	**new_export;
+
+	export_len = 0;
+	while (data->export && data->export[export_len])
+		export_len++;
+	new_export = malloc((export_len + 2) * sizeof(char *));
+	if (!new_export)
+		return (-1);
+	i = -1;
+	while (++i < export_len)
+		new_export[i] = data->export[i];
+	new_export[i] = ft_strdup(var);
+	if (!new_export[i])
+	{
+		free(new_export);
+		return (-1);
+	}
+	new_export[i + 1] = NULL;
+	free(data->export);
+	data->export = new_export;
+	return (0);
 }

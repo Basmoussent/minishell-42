@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/03/01 08:28:06 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:36:24 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ void	reset_stream(int saved_stdin, int saved_stdout)
 
 int	open_redirection_file(t_ast_node *node, t_data *data)
 {
-	
 	if (!node->right || !node->right->value)
-	return (printf("Syntax error near unexpected token %s\n", node->value),
-		g_signal_received = 2, -1);
-	if (access(node->right->value, F_OK) == 0) 
+		return (printf("Syntax error near unexpected token %s\n", node->value),
+			g_signal_received = 2, -1);
+	if (access(node->right->value, F_OK) == 0)
 		if (!can_write_to_file(node->right->value))
 			return (-1);
 	if (node->type == TRUNCATE)

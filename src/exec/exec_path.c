@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/03/01 08:17:00 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 09:19:04 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	handle_redirection(t_ast_node *node, t_data *data)
 	fd = open_redirection_file(node, data);
 	if (fd == -1)
 		return (perror("Error opening file"), g_signal_received = 1, -1);
-	if (node->type == REDIRECT_INPUT)
+	if (node->type == REDIRECT_INPUT || node->type == HEREDOC)
 		dup2(fd, STDIN_FILENO);
 	else
 		dup2(fd, STDOUT_FILENO);

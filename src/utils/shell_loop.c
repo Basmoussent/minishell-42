@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 14:24:20 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 09:33:41 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	shell_loop(t_data *data)
 {
 	while (1)
 	{
-		data->hd_file = ft_strdup("");
 		signal(SIGINT, handle_signals);
 		signal(SIGQUIT, SIG_IGN);
 		data->original_stdin = dup(STDIN_FILENO);

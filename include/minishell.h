@@ -6,7 +6,7 @@
 /*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 16:40:52 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/03/01 07:58:44 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:42:23 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@
 # include <readline/history.h>
 # include <termios.h>
 # include <signal.h>
-#include <sys/ioctl.h>
-
+# include <sys/ioctl.h>
 
 # define COLOR_RESET   "\033[0m"
 # define COLOR_GREEN   "\033[32m"
@@ -176,8 +175,8 @@ void		cleanup_and_exit(t_ast_node *root, t_data *data,
 void		handle_signals(int signum);
 void		handle_signals_child(void);
 void		handle_sigint_child(int signum);
-void cleanup_shell(t_data *data);
-void close_fds(t_data *data);
+void		cleanup_shell(t_data *data);
+void		close_fds(t_data *data);
 char		*remove_quotes(char *input);
 int			can_expand(char *rslt);
 char		*expand_status(int status, char *input);

@@ -71,7 +71,7 @@ char	*expand_status(int status, char *input)
 	return (result);
 }
 
-int		find_first_dollar(char *input)
+int	find_first_dollar(char *input)
 {
 	int	i;
 
@@ -83,25 +83,28 @@ int		find_first_dollar(char *input)
 
 char	*join_expanded_status(int status, char *input, char *str)
 {
-    char	*rslt;
-    char	*status_str;
-    char	*cpy;
-    size_t	cpy_len;
+	char	*rslt;
+	char	*status_str;
+	char	*cpy;
+	size_t	cpy_len;
 
-    cpy_len = find_first_dollar(input);
-    status_str = expand_status(status, str);
-    if (!status_str)
-        return (NULL);
-    if (cpy_len > ft_strlen(input))
-        cpy_len = 0;
-    cpy = ft_strndup(input, cpy_len);
-    if (!cpy)
-    {
-        free(status_str);
-        return (NULL);
-    }
-    rslt = ft_strjoin(cpy, status_str);
-    free(cpy);
-    free(status_str);
-    return (rslt);
+	cpy_len = find_first_dollar(input);
+	status_str = expand_status(status, str);
+	if (!status_str)
+		return (NULL);
+	if (cpy_len > ft_strlen(input))
+		cpy_len = 0;
+	cpy = ft_strndup(input, cpy_len);
+	if (!cpy)
+		return (free(status_str), NULL);
+	if (cpy[0] == '"' && cpy[1])
+	{
+		rslt = ft_strdup(cpy + 1);
+		free(cpy);
+		cpy = rslt;
+	}
+	rslt = ft_strjoin(cpy, status_str);
+	free(cpy);
+	free(status_str);
+	return (rslt);
 }

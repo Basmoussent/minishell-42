@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:45:47 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/27 15:22:35 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 09:36:04 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	exec_ast(t_ast_node *node, t_data *data)
 {
 	if (!node || !data)
 		return ;
-	data->saved_stdin = dup(STDIN_FILENO);
-	data->saved_stdout = dup(STDOUT_FILENO);
 	if (node->type == PIPE)
 		execute_pipe(node, data);
 	else if (node->type == TRUNCATE || node->type == APPEND
@@ -75,7 +73,6 @@ void	exec_ast(t_ast_node *node, t_data *data)
 		if (handle_redirection(node, data) == -1)
 			return ;
 		exec_ast(node->left, data);
-		reset_stream(data->saved_stdin, data->saved_stdout);
 	}
 	else
 		execute_command(node, data);

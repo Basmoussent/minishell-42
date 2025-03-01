@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:26:05 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/24 19:10:43 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:36:50 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,8 @@ void	cleanup_shell(t_data *data)
 	clear_history();
 }
 
-void	close_fds(t_data * data)
+void	close_fds(t_data *data)
 {
-	if (data->saved_stdin != -1)
-	{
-		close(data->saved_stdin);
-		data->saved_stdin = -1;
-	}
-	if (data->saved_stdout != -1)
-	{
-		close(data->saved_stdout);
-		data->saved_stdout = -1;
-	}
 	if (data->original_stdin != -1)
 	{
 		close(data->original_stdin);

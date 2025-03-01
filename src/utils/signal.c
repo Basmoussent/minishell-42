@@ -46,4 +46,3 @@ void	handle_sigint_child(int signum)
 		rl_redisplay();
 	}
 }
-

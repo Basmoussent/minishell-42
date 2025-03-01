@@ -49,12 +49,12 @@ char	*process_variables(char *result, t_data *data)
 		if (result[i] == '"')
 		{
 			handle_double_quote(&in_quotes, &i);
-			continue;
+			continue ;
 		}
 		if (!in_quotes && result[i] == '\'' && result[i + 1])
 		{
 			skip_single_quotes(result, &i);
-			continue;
+			continue ;
 		}
 		if (result[i] == '$' && can_expand(&result[i]))
 			result = handle_expansion(result, data, &i);

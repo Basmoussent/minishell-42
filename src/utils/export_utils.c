@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 01:39:48 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 14:26:17 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:38:06 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	add_to_export(char *var, t_data *data)
-{
-	size_t	i;
-	size_t	export_len;
-	char	**new_export;
-
-	export_len = 0;
-	while (data->export && data->export[export_len])
-		export_len++;
-	new_export = malloc((export_len + 2) * sizeof(char *));
-	if (!new_export)
-		return (-1);
-	i = -1;
-	while (++i < export_len)
-		new_export[i] = data->export[i];
-	new_export[i] = ft_strdup(var);
-	if (!new_export[i])
-	{
-		free(new_export);
-		return (-1);
-	}
-	new_export[i + 1] = NULL;
-	free(data->export);
-	data->export = new_export;
-	return (0);
-}
 
 int	ft_set_env(char *var, char *value, t_data *data)
 {
@@ -103,7 +76,8 @@ int	is_in_export_list(char *var, char **export_list)
 	while (export_list[i])
 	{
 		if (ft_strncmp(export_list[i], var, var_len) == 0
-			&& (export_list[i][var_len] == '=' || export_list[i][var_len] == '\0'))
+			&& (export_list[i][var_len] == '='
+			|| export_list[i][var_len] == '\0'))
 			return (1);
 		i++;
 	}

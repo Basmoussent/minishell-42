@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bdenfir <bdenfir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bdenfir <bdenfir@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 01:39:48 by bdenfir           #+#    #+#             */
-/*   Updated: 2025/02/25 14:26:31 by bdenfir          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:28:34 by bdenfir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,40 +39,37 @@ int	is_valid_varname(char *var)
 	return (1);
 }
 
-int	ft_export(char *str, t_data *data)
+void	handle_export_var(char *var_str, t_data *data)
 {
 	char	*equal_sign;
 	char	*var;
 	char	*value;
+
+	equal_sign = ft_strchr(var_str, '=');
+	if (equal_sign)
+	{
+		var = ft_substr(var_str, 0, equal_sign - var_str);
+		value = equal_sign + 1;
+		ft_set_env(var, value, data);
+		if (!is_in_export_list(var, data->export))
+			add_to_export(var_str, data);
+		free(var);
+	}
+	else if (!is_in_export_list(var_str, data->export))
+		add_to_export(var_str, data);
+}
+
+int	ft_export(char *str, t_data *data)
+{
 	char	**vars;
 	int		i;
 
 	if (!str || !*str)
-	{
-		print_export_list(data->export);
-		return (0);
-	}
+		return (ft_env(data->envp, ""), 0);
 	vars = ft_split(str, ' ');
 	i = 0;
 	while (vars[i])
-	{
-		equal_sign = ft_strchr(vars[i], '=');
-		if (equal_sign)
-		{
-			var = ft_substr(vars[i], 0, equal_sign - vars[i]);
-			value = equal_sign + 1;
-			ft_set_env(var, value, data);
-			if (!is_in_export_list(var, data->export))
-				add_to_export(vars[i], data);
-			free(var);
-		}
-		else
-		{
-			if (!is_in_export_list(vars[i], data->export))
-				add_to_export(vars[i], data);
-		}
-		i++;
-	}
+		handle_export_var(vars[i++], data);
 	free_args(vars);
 	return (0);
 }

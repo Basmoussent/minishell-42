@@ -15,56 +15,47 @@
 // Function to skip spaces in the input
 char	*ft_skip_spaces(char *input)
 {
-	while (*input == ' ' || *input == '\t' || *input == '\n' || *input == '\r' || *input == '\v' || *input == '\f')
+	while (*input == ' ' || *input == '\t'
+		|| *input == '\n' || *input == '\r' || *input == '\v' || *input == '\f')
 		input++;
 	return (input);
 }
 
 bool	ft_validate_n_flag(char **current, char quote_char, bool *n_flag)
 {
-    char	*temp;
+	char	*temp;
 
-    temp = *current + 1;
-    while (*temp == 'n')
-        temp++;
-    if (*temp != ' ' && *temp != '\0' && *temp != quote_char)
-        return (false);
-    if (quote_char && *temp == quote_char)
-        temp++;
-    *n_flag = true;
-    *current = ft_skip_spaces(temp);
-    return (true);
+	temp = *current + 1;
+	while (*temp == 'n')
+		temp++;
+	if (*temp != ' ' && *temp != '\0' && *temp != quote_char)
+		return (false);
+	if (quote_char && *temp == quote_char)
+		temp++;
+	*n_flag = true;
+	*current = ft_skip_spaces(temp);
+	return (true);
 }
 
-// Function to check if the -n flag is present
 bool	ft_check_n_flag(char **input)
 {
 	bool	n_flag;
-	char	*original;
 	char	*current;
 	char	quote_char;
 
 	n_flag = false;
-	original = *input;
 	current = *input;
 	while (*current == '-' || *current == '\"' || *current == '\'')
 	{
 		quote_char = 0;
 		if (*current == '\"' || *current == '\'')
 		{
-			quote_char = *current;
-			current++;
+			quote_char = *current++;
 			if (*current != '-')
-			{
-				*input = original;
-				return (false);
-			}
+				return (*input = *input, false);
 		}
 		if (!ft_validate_n_flag(&current, quote_char, &n_flag))
-		{
-			*input = original;
-			return (false);
-		}
+			return (*input = *input, false);
 	}
 	if (n_flag)
 		*input = current;
